@@ -1,0 +1,10 @@
+# Keep install-time code execution limited to declared build dependencies.
+minimumReleaseAge: 7200
+strictDepBuilds: true
+allowBuilds:
+  sharp: true
+  unrs-resolver: true
+# Explicit patched transitive dependencies for the supplied lockfile lineage.
+overrides:
+  browserslist: 4.29.0
+  baseline-browser-mapping: 2.11.25

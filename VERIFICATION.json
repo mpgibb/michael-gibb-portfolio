@@ -1,0 +1,59 @@
+{
+  "updated": "2026-09-28",
+  "release": "commercial portfolio",
+  "publication": "verified production",
+  "local": {
+    "lint": "passed",
+    "typescript": "passed",
+    "build": "passed",
+    "http_smoke": "passed",
+    "unavailable_routes": "404, no redirect",
+    "source_zip": "SHA-256 verified"
+  },
+  "study": {
+    "repository": "https://github.com/mpgibb/marketing-incrementality",
+    "revision": "4ed728e23d65a01b64ab2b860298e37bcf60e922",
+    "tests": 7,
+    "ci": "passed",
+    "reproduction": "exact tracked data and results"
+  },
+  "dns_changes": [],
+  "independent_technical_review": "pending",
+  "public_http_smoke": "passed",
+  "browser": {
+    "desktop": "passed locally and on production",
+    "mobile": "390px and 320px identical local build passed",
+    "keyboard": "radio/range controls, boundary values and skip link passed",
+    "console": "no material warnings/errors",
+    "preview_indexing": "protected and noindex"
+  },
+  "public_zip_reproduction": {
+    "tests": 7,
+    "identical_generated_files": 4
+  },
+  "dns_comparison": "all queried authoritative records unchanged",
+  "tls": "both names validated",
+  "redirects": "paths and queries preserved without loops",
+  "provider_deletions": "awaiting final browser confirmation",
+  "historical_objects": "known old GitHub SHA-addressed files remain retrievable",
+  "public_wording_update": {
+    "scope": "case-study copy, linked study documentation, source download and current project instructions",
+    "research_results": "unchanged",
+    "protocol_hash": "refreshed for documentation edit",
+    "source_archive": "current tracked study source, verified SHA-256"
+  },
+  "release_ref": "main",
+  "deployment_status": "https://vercel.com/mike-gibb/michael-gibb-portfolio/deployments",
+  "ci_status": "https://github.com/mpgibb/michael-gibb-portfolio/actions?query=branch%3Amain",
+  "history_reset": {
+    "scope": [
+      "portfolio",
+      "marketing study"
+    ],
+    "retained_history": "one current-source snapshot in each repository",
+    "numerical_results": "unchanged",
+    "archive": "rebuilt from new study root; SHA-256 recorded in public/downloads/manifest.json",
+    "previous_browser_checks": "remain applicable; page source and styling unchanged",
+    "provider_retained_objects": "not claimed erased"
+  }
+}
