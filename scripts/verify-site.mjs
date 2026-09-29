@@ -25,7 +25,7 @@ try {
   }
   const titles = new Set();
   const checkedStyles = new Set();
-  for (const path of ["/", "/research", ...names.map(name=>`/projects/${name}`), ...published.map(study=>`/research/${study.slug}`)]) {
+  for (const path of ["/", "/research", "/privacy", "/terms", ...names.map(name=>`/projects/${name}`), ...published.map(study=>`/research/${study.slug}`)]) {
     const response = await fetch(new URL(path,base));
     assert.equal(response.status,200,path);
     const html = await response.text();
@@ -41,7 +41,7 @@ try {
       const stylesheet = await fetch(new URL(href.replaceAll('&amp;', '&'), base));
       assert.equal(stylesheet.status, 200, `Stylesheet: ${href}`);
       const css = await stylesheet.text();
-      for (const selector of ['.research-menu', '.research-dropdown', '.collection-grid', '.executive-summary', '.catalog-filters', '.program-explorer']) {
+      for (const selector of ['.research-menu', '.industry-panel', '.collection-grid', '.executive-summary', '.catalog-filters', '.program-explorer']) {
         assert(css.includes(selector), `Published stylesheet is missing ${selector}`);
       }
       checkedStyles.add(href);
@@ -51,7 +51,11 @@ try {
     assert.match(html, /<meta name="description" content="[^"]+"/);
     const canonical = html.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
     assert(canonical); assert.equal(new URL(canonical).href,new URL(path,canonicalOrigin).href);
-    assert.match(html,/href="mailto:mike@michaelpgibb.com"/);
+    assert(!/mailto:|[a-z0-9._%+-]+@michael(?:paul|p)gibb\.com/i.test(html), `No public contact address: ${path}`);
+    assert.match(html, /href="\/#contact"/);
+    assert.match(html, /href="\/privacy"/);
+    assert.match(html, /href="\/terms"/);
+    assert.equal((html.match(/<footer class="site-footer"/g) ?? []).length, 1);
     assert.match(html,/https:\/\/www.linkedin.com\/in\/mp-gibb\//);
     assert.match(html,/id="main"/);assert.match(html,/Skip to content/);
     assert.equal((html.match(/<header class="site-header"/g) ?? []).length, 1, `One shared header: ${path}`);
@@ -98,19 +102,19 @@ try {
       assert(html.includes(`/downloads/research/${study.id}.json`));
     } else if (path === "/research") {
       assert.match(html,/data-testid="research-catalog"/);
-      assert.match(html,/Research agenda/);
+      assert(!html.includes("Research agenda"));
       assert(!html.includes("Original dataset selection position"));
       assert(!html.includes("of 60</strong>"));
       assert.match(html,/20/);
       for(const study of published) assert(html.includes(`/research/${study.slug}`));
       for(const study of agenda) assert(!html.includes(`href="/research/${study.slug}"`));
       for(const name of names) assert(html.includes(`/projects/${name}`));
-    } else {
+    } else if (path === "/") {
       assert.match(html,/Analytics and AI leadership for <span class="hero-emphasis">growth and better business decisions\.<\/span>/);
       assert.match(html,/CHICAGO • OPEN TO REMOTE/);
       assert.match(html,/Statistical rigor\. Technical leadership\. Commercial impact\./);
-      assert.match(html,/href="#work">Explore my work/);
-      assert.match(html,/href="#contact">Get in touch/);
+      assert.match(html,/href="\/#work">Explore my work/);
+      assert.match(html,/href="\/#contact">Get in touch/);
       assert.match(html,/class="signal-field"/);
       assert.match(html,/Pause animation/);
       assert.match(html,/S02 \/ FEATURED/);
@@ -121,7 +125,16 @@ try {
     }
     console.log(`PASS ${path}: metadata, contact, status, section order and indexing`);
   }
-  assert.equal(titles.size,6+published.length);
+  for (const industry of [...new Set(catalog.map(study => study.industry))]) {
+    const response = await fetch(new URL(`/research?industry=${encodeURIComponent(industry)}&status=all`, base));
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    const cards = [...html.matchAll(/data-study-id="(S[0-9]{2})"/g)].map(match => match[1]);
+    assert.deepEqual(cards.sort(), catalog.filter(study => study.industry === industry).map(study => study.id).sort(), `Industry collection: ${industry}`);
+    assert(!html.includes('Research agenda'));
+  }
+  console.log('PASS all 20 industry destinations include their actual published and unfinished topics');
+  assert.equal(titles.size,8+published.length);
   for (const study of published) {
     const response = await fetch(new URL(`/downloads/research/${study.resultFile}`,base)); assert.equal(response.status,200);
     const bytes=Buffer.from(await response.arrayBuffer());
@@ -180,7 +193,7 @@ try {
   const robots=await(await fetch(new URL('/robots.txt',base))).text();
   assert.match(robots,indexable ? /Allow: \// : /Disallow: \//);
   const sitemap=await(await fetch(new URL('/sitemap.xml',base))).text();
-  assert.equal((sitemap.match(/<loc>/g)??[]).length,indexable?6+published.length:0);
+  assert.equal((sitemap.match(/<loc>/g)??[]).length,indexable?8+published.length:0);
   if(indexable) {assert(robots.includes(`Sitemap: ${canonicalOrigin}/sitemap.xml`));for(const name of names) assert(sitemap.includes(`${canonicalOrigin}/projects/${name}`));}
   for(const study of agenda) assert(!sitemap.includes(`/research/${study.slug}`));
   if(indexable) for(const study of published) assert(sitemap.includes(`${canonicalOrigin}/research/${study.slug}`));

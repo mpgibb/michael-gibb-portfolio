@@ -4,7 +4,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/lib/projects";
 import results from "@/lib/marketing-results.json";
-import { Footer } from "@/components/portfolio";
 import { FlagshipEvidence } from "@/components/flagship-evidence";
 import { CommercialEvidence } from "@/components/commercial-evidence";
 
@@ -35,5 +34,5 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       <section id="code"><p className="eyebrow">07 / CODE & NEXT STEPS</p><h2>Reproduce the result.</h2><div className="code-label mono">PYTHON 3.11.16 · {flagship ? "STANDARD LIBRARY" : "LOCKED NUMPY / SCIPY"} · FIXED SEEDS</div><pre><code>{`git clone https://github.com/mpgibb/${slug}.git\ncd ${slug}\nuv sync --frozen\nuv run python -m unittest discover -s tests -v\nuv run python study.py\ngit diff --exit-code -- data results`}</code></pre><div className="project-links"><a className="text-link" href={p.repository}>Study source ↗</a><a className="text-link" href={`/downloads/${slug}.zip`}>Download reproducible study ↓</a><a className="text-link" href={`/downloads/${p.resultFile}`}>Full results JSON ↓</a>{!flagship && <a className="text-link" href={`${p.repository}/blob/main/REPORT.md`}>Full research report ↗</a>}</div><p className="caption review-status">Automated checks and synthetic evaluation are complete; Michael’s independent technical review is pending.</p><div className="next-step"><h3>Next step</h3><p>{p.next}</p></div></section>
       <StudyNextSteps id={slug} />
     </article></div>
-  </main><Footer /></>;
+  </main></>;
 }

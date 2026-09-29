@@ -43,3 +43,10 @@ export function inBusinessArea(area: string, id: string, description: string) {
   };
   return patterns[area]?.test(description) ?? false;
 }
+import type { ProgramStudy } from "./program-registry";
+
+export type NavigationStudy = Pick<ProgramStudy, "id" | "title" | "industry" | "question" | "methods" | "methodSummary" | "slug" | "executionStatus" | "publicationStatus">;
+export const industryNames = (studies: Pick<ProgramStudy, "industry">[]) => [...new Set(studies.map(study => study.industry))].sort((a, b) => a.localeCompare(b));
+export const industryDestination = (industry: string) => `/research?industry=${encodeURIComponent(industry)}&status=all`;
+export const studyDescription = (study: NavigationStudy) => `${study.id} ${study.title} ${study.industry} ${study.question} ${study.methods.join(" ")} ${study.methodSummary}`;
+export const topicStatus = (study: Pick<ProgramStudy, "executionStatus" | "publicationStatus">) => study.publicationStatus === "published" ? "Published study" : study.executionStatus === "planned" ? "Planned topic" : study.executionStatus === "blocked" ? "Awaiting prerequisite" : "In progress";

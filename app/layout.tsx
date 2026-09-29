@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Header } from "@/components/portfolio";
+import { Header, Footer } from "@/components/portfolio";
 import { isPublicProduction, productionOrigin } from "@/lib/site";
 export const metadata: Metadata = {
   title: {
@@ -23,6 +23,7 @@ export default function RootLayout({
         </a>
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

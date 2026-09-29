@@ -96,11 +96,11 @@ export function SignalField() {
 
   return <div className="signal-field" ref={field}>
     <svg viewBox={`0 0 ${signalConfig.width} ${signalConfig.height}`} aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-      <g fill="#CBD5E1">{initialFrame.ambient.map((point, i) => <circle key={i} className="signal-noise" cx={point.x} cy={point.y} r={point.radius} opacity={point.opacity} />)}</g>
+      <g fill="#CBD5E1">{initialFrame.ambient.map((point, i) => <circle key={i} className="signal-noise" cx={point.x.toFixed(3)} cy={point.y.toFixed(3)} r={point.radius.toFixed(3)} opacity={point.opacity.toFixed(4)} />)}</g>
       {initialFrame.signals.map((signal, i) => <g key={i} className="signal-group">
-        <path d={signal.path} fill="none" stroke="#E3AC79" strokeWidth={signalConfig.strokeWidth} opacity={signal.opacity} />
-        {signal.points.map((point, j) => <circle key={j} className="signal-point" cx={point.x} cy={point.y} r="1.7" fill="#E3AC79" opacity={point.opacity} />)}
-        <circle className="signal-marker" cx={signal.marker.x} cy={signal.marker.y} r={signalConfig.markerRadius} fill="#E3AC79" opacity={signal.marker.opacity} />
+        <path d={signal.path} fill="none" stroke="#E3AC79" strokeWidth={signalConfig.strokeWidth} opacity={signal.opacity.toFixed(4)} />
+        {signal.points.map((point, j) => <circle key={j} className="signal-point" cx={point.x.toFixed(3)} cy={point.y.toFixed(3)} r="1.7" fill="#E3AC79" opacity={point.opacity.toFixed(4)} />)}
+        <circle className="signal-marker" cx={signal.marker.x.toFixed(3)} cy={signal.marker.y.toFixed(3)} r={signalConfig.markerRadius} fill="#E3AC79" opacity={signal.marker.opacity.toFixed(4)} />
       </g>)}
     </svg>
     <button className="motion-toggle" type="button" onClick={() => setPaused(value => !value)}>

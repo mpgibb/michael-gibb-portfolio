@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Footer } from "@/components/portfolio";
 export default function NotFound() {
   return (
     <>
@@ -11,7 +10,6 @@ export default function NotFound() {
           Return to selected work
         </Link>
       </main>
-      <Footer />
     </>
   );
 }
