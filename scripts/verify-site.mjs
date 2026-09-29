@@ -18,10 +18,24 @@ try {
     assert(ready);
   }
   const titles = new Set();
+  const checkedStyles = new Set();
   for (const path of ["/", "/research", ...names.map(name=>`/projects/${name}`)]) {
     const response = await fetch(new URL(path,base));
     assert.equal(response.status,200,path);
     const html = await response.text();
+    const styles = [...html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*>/g)]
+      .map(match => match[0].match(/href="([^"]+)"/)?.[1]).filter(Boolean);
+    assert(styles.length, `Stylesheet missing: ${path}`);
+    for (const href of styles) {
+      if (checkedStyles.has(href)) continue;
+      const stylesheet = await fetch(new URL(href.replaceAll('&amp;', '&'), base));
+      assert.equal(stylesheet.status, 200, `Stylesheet: ${href}`);
+      const css = await stylesheet.text();
+      for (const selector of ['.research-menu', '.research-dropdown', '.collection-grid', '.executive-summary']) {
+        assert(css.includes(selector), `Published stylesheet is missing ${selector}`);
+      }
+      checkedStyles.add(href);
+    }
     const title = html.match(/<title>([^<]+)<\/title>/)?.[1];
     assert(title?.includes("Michael P. Gibb")); titles.add(title);
     assert.match(html, /<meta name="description" content="[^"]+"/);
@@ -86,5 +100,5 @@ try {
   const sitemap=await(await fetch(new URL('/sitemap.xml',base))).text();
   assert.equal((sitemap.match(/<loc>/g)??[]).length,indexable?6:0);
   if(indexable) {assert(robots.includes(`Sitemap: ${canonicalOrigin}/sitemap.xml`));for(const name of names) assert(sitemap.includes(`${canonicalOrigin}/projects/${name}`));}
-  console.log('PASS results, favicon, robots, sitemap and removed URLs');
+  console.log('PASS published stylesheets, results, favicon, robots, sitemap and removed URLs');
 } finally {server?.kill('SIGTERM');}

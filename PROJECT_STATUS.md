@@ -38,6 +38,8 @@ Local lint, TypeScript, production build and HTTP smoke checks passed. The smoke
 
 Browser checks cover the industry dropdown, pointer and keyboard operation, Escape dismissal, industry navigation, all four executive summaries, scenario and horizon controls, and mobile layouts at 320px and 390px. No horizontal page overflow or material console warnings/errors was found. Local builds remain noindex; production uses the purchased-domain canonical and public indexing. Run the public smoke command below after each deployment; CI and deployment status identify the deployed revision.
 
+The first extension deployment served an older stylesheet alongside the new pages. A fresh production redeployment with “Use existing Build Cache” unchecked restored the correct styling. The smoke suite now fetches the published stylesheet and checks its research-menu, collection and executive-summary rules; this check reproduced the failure and passed after the clean rebuild. Public page/download/indexing checks, valid HTTPS and path/query-preserving HTTP/www redirects also passed. If this cache mismatch recurs, redeploy the current reviewed source without the existing build cache and rerun both HTTP and visual checks.
+
 ```bash
 pnpm check
 pnpm test:smoke --start

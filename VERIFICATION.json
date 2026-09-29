@@ -60,6 +60,9 @@
     "local_and_preview": "noindex",
     "production": "index, follow; six public sitemap URLs"
   },
+  "production_smoke": "passed, including served stylesheet selectors and all four archive checksums",
+  "deployment_cache_repair": "fresh production redeployment without existing build cache restored the current stylesheet",
+  "https_and_redirects": "valid TLS on both names; HTTP and www preserve path/query in 308 redirects",
   "production_verification_command": "TEST_BASE_URL=https://michaelpgibb.com EXPECT_INDEXABLE=true pnpm test:smoke",
   "deployment_status": "https://vercel.com/mike-gibb/michael-gibb-portfolio/deployments",
   "ci_status": "https://github.com/mpgibb/michael-gibb-portfolio/actions?query=branch%3Amain",
