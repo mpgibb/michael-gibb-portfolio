@@ -1,19 +1,18 @@
 import Link from "next/link";
-import { ResearchMenu } from "./research-menu";
+import { SkylineMark } from "./skyline-mark";
+import { SiteNavigation } from "./site-navigation";
 
 export function Header() {
   return (
     <header className="site-header">
       <div className="shell header-inner">
-        <Link className="wordmark" href="/">
-          Michael P. Gibb<span>, Ph.D.</span>
+        <Link className="wordmark" href="/" aria-label="Michael P. Gibb, Ph.D. — Home">
+          <SkylineMark />
+          <span className="wordmark-type"><span className="wordmark-name">Michael P. Gibb,<span className="wordmark-credential"> Ph.D.</span></span>
+            <span className="wordmark-tagline">Analytics <span>•</span> AI <span>•</span> Leadership</span>
+          </span>
         </Link>
-        <nav aria-label="Main navigation">
-          <ResearchMenu />
-          <Link href="/#approach">Approach</Link>
-          <Link href="/#about">Leadership</Link>
-          <Link href="/#contact">Contact</Link>
-        </nav>
+        <SiteNavigation />
       </div>
     </header>
   );

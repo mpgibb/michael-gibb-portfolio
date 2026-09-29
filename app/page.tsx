@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Header, Footer } from "@/components/portfolio";
 import { inventoryResult } from "@/lib/inventory-results";
+import { SignalField } from "@/components/signal-field";
 import { publishedStudies } from "@/lib/program-registry";
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 export default function Home() {
@@ -11,14 +12,23 @@ export default function Home() {
   return <><Header /><main tabIndex={-1} id="main">
     <section className="hero">
       <div className="shell hero-grid">
-        <div><p className="eyebrow">MICHAEL P. GIBB, PH.D. · CHICAGO</p>
-          <h1>Analytics and AI leadership for <em>growth and better business decisions.</em></h1>
-          <p className="hero-copy">Statistical rigor, technical leadership and a clear commercial question. I connect analytical work to decisions about customers, revenue and the operations that support them.</p>
-          <a className="button-light" href="#work">Explore the research <span aria-hidden="true">↘</span></a>
+        <div className="hero-message"><p className="eyebrow">CHICAGO • OPEN TO REMOTE</p>
+          <h1>Analytics and AI leadership for growth and better business decisions.</h1>
+          <p className="hero-copy">Statistical rigor. Technical leadership. Commercial impact.</p>
+          <div className="hero-actions"><a className="button-light button-primary" href="#work">Explore my work</a><a className="button-light button-secondary" href="#contact">Get in touch</a></div>
         </div>
-        <aside className="hero-aside"><span className="aside-rule" /><p className="mono">COMMERCIAL APPLICATIONS</p><p>Marketing effectiveness.<br />Revenue confidence.<br />Customer value.<br />Operational planning.</p><div className="aside-bottom">Analytics · AI · Machine learning<br /><span>Evidence before scale.</span></div></aside>
+        <SignalField />
       </div>
-      <div className="shell hero-foot"><span>From a business question to a defensible decision.</span><span className="mono">LEADERSHIP + APPLIED RESEARCH</span></div>
+    </section>
+    <section className="shell commercial-applications" aria-labelledby="applications-heading">
+      <h2 id="applications-heading">Commercial applications</h2>
+      <div className="applications-grid">
+        <article><h3>Marketing effectiveness</h3><p>Connect customer acquisition and investment decisions to evidence about incremental impact.</p></article>
+        <article><h3>Sales intelligence</h3><p>Build revenue confidence through forecasting, prioritization and a clear commercial question.</p></article>
+        <article><h3>Customer value</h3><p>Understand purchase patterns, customer growth and retention with visible uncertainty.</p></article>
+        <article><h3>Business operations</h3><p>Inform inventory, capacity and operational planning with practical analytical evidence.</p></article>
+      </div>
+      <p className="applications-principle">I connect analytical work to decisions about customers, revenue and the operations that support them. <span>Evidence before scale.</span></p>
     </section>
     <section className="shell leadership section" id="about">
       <div className="section-heading"><div><p className="eyebrow">LEADERSHIP FOUNDATION</p><h2>Depth in the methods.<br />Clarity in the work.</h2></div><p className="reading">My background spans enterprise analytics, applied machine learning and technical program leadership. I lead analytical teams and technical programs that connect statistical work to organizational priorities.</p></div>

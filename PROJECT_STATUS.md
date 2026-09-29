@@ -1,5 +1,18 @@
 # Project status
 
+## Executive design release — September 29, 2026
+
+The approved navy/white/copper design is implemented with a static Chicago skyline and bell curve, exactly four six-point stars, an accessible serif name, desktop tagline and keyboard-operated mobile navigation. The hero uses the approved copy and work/contact actions, with a separate decorative signal illustration. Four commercial application columns lead into the current leadership, curated research and approach content. All nine published program studies, four synthetic demonstrations, 51 unpublished exclusions, evidence, source links and downloads are retained. Approved favicon files, icon metadata, domain, hosting, email and indexing configuration are unchanged.
+
+Motion geometry and settings are in `lib/signal-motion.ts`; lifecycle handling is in `components/signal-field.tsx`. The 24-second groups have staggered phases, smooth periodic point alignment and markers that fade fully before recycling. One drawing loop avoids React frame renders and layout reads. The clock freezes on explicit pause, and observers stop work when offscreen, responsive-hidden or in a hidden tab. Reduced motion displays a deterministic static frame. The graphic is hidden below 900px and simplified below 1200px; its SVG is decorative and does not intercept pointer events. No animation dependency or new service was added.
+
+Pre-release checks pass: lint, TypeScript, optimized build, fifteen public routes, nine exact result downloads, four archive checksums, 51 unpublished 404s, seven unchanged icon assets and production/preview indexing contracts. Source review and generated-output review find no new publication concerns. Browser inspection covers 320, 360, 390, 768, 1024 and 1440px plus 200% Chrome zoom, with no document overflow or material console errors. Mobile and nested research menus support keyboard opening, Escape and focus return. Work/contact anchors, pause/resume, persistent explicit pause through offscreen navigation, offscreen frozen drawing and responsive hiding pass. Chrome reduced-motion emulation passes both a live preference change and page reload; the drawing remains frozen and the motion control is hidden. Text/button contrast pairs range from 6.03:1 to 17.60:1. A 52-second browser observation samples more than two 24-second cycles; a numerical continuity check across 2,401 phases finds a maximum periodic difference below 5e-13 normalized units. Capture cadence is not a measured display frame rate.
+
+Production deployment and final live evidence are pending at this source checkpoint. After release, record the deployed commit, deployment URL and live verification here. Browser evidence is limited to desktop Chrome with responsive emulation; no physical-device Safari/Firefox validation is claimed. Hidden-tab stopping is implemented and code-reviewed; automated reads reactivate the test tab, so independent background scheduling measurement is not claimed.
+
+Rollback: revert this design release and deploy through the existing main-branch integration, or restore verified deployment `https://michael-gibb-portfolio-ci0q1ygk0-mike-gibb.vercel.app` at commit `aaf892a542105dcc7f7733b9e616b6feec6b79c1`. No DNS, email, paid-service or recurring-monitor changes are required.
+
+
 Updated September 29, 2026. Research-program milestone: nine evaluated public-data studies (S28, S02, S04, S58, S43, S13, S31, S03 and S47), 51 agenda studies across the full 60-study catalog, and four separately labeled synthetic demonstrations. Independent technical review is pending.
 
 ## Skyline Curve favicon

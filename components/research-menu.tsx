@@ -18,7 +18,7 @@ export function ResearchMenu() {
 
   return <div className="research-menu" ref={container}
     onBlur={event => { if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) setOpen(false); }}
-    onKeyDown={event => { if (event.key === "Escape" && open) { setOpen(false); trigger.current?.focus(); } }}>
+    onKeyDown={event => { if (event.key === "Escape" && open) { event.stopPropagation(); setOpen(false); trigger.current?.focus(); } }}>
     <button ref={trigger} type="button" aria-expanded={open} aria-controls="research-industries" onClick={() => setOpen(previous => !previous)}>Research <span aria-hidden="true">⌄</span></button>
     <ul id="research-industries" className="research-dropdown" hidden={!open}>
       <li><Link href="/research" onClick={() => setOpen(false)}><strong>Published research</strong><span>Findings, evidence and source</span></Link></li>

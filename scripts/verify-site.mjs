@@ -54,6 +54,8 @@ try {
     assert.match(html,/href="mailto:mike@michaelpgibb.com"/);
     assert.match(html,/https:\/\/www.linkedin.com\/in\/mp-gibb\//);
     assert.match(html,/id="main"/);assert.match(html,/Skip to content/);
+    assert.equal((html.match(/class="chicago-star"/g)??[]).length, 4, `Chicago logo: ${path}`);
+    assert.match(html,/aria-label="Open navigation" aria-expanded="false" aria-controls="main-navigation"/);
     assert.match(html,indexable ? /name="robots" content="index, follow"/ : /name="robots" content="noindex, nofollow"/);
     if(!indexable) assert.match(response.headers.get("x-robots-tag")??"",/noindex/);
     else assert(!response.headers.get("x-robots-tag")?.includes("noindex"));
@@ -95,6 +97,12 @@ try {
       for(const name of names) assert(html.includes(`/projects/${name}`));
     } else {
       assert.match(html,/growth and better business decisions/);
+      assert.match(html,/CHICAGO • OPEN TO REMOTE/);
+      assert.match(html,/Statistical rigor\. Technical leadership\. Commercial impact\./);
+      assert.match(html,/href="#work">Explore my work/);
+      assert.match(html,/href="#contact">Get in touch/);
+      assert.match(html,/class="signal-field"/);
+      assert.match(html,/Pause animation/);
       assert.match(html,/S02 \/ FEATURED/);
       const curated=published.filter(study=>["S02","S28","S04","S58","S43","S13"].includes(study.id));
       assert(curated.length>=4&&curated.length<=6);

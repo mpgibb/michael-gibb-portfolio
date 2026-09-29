@@ -20,6 +20,14 @@ TEST_BASE_URL=https://michaelpgibb.com EXPECT_INDEXABLE=true pnpm test:smoke
 
 The original demonstrations remain in `lib/projects.ts`, `lib/completed-studies.json` and their independent source repositories. Their source ZIPs are exact tracked-file archives with commit and SHA-256 in `public/downloads/manifest.json`. Keep source, generated results, copied JSON and downloads synchronized when changing findings. All findings retain limitations and pending independent-review status.
 
+## Design and motion
+
+The static Chicago header mark lives in `components/skyline-mark.tsx`, with four six-point stars, selectable serif name text and a separate mobile navigation in `components/site-navigation.tsx`. The approved favicon files and their metadata are independent of this header artwork.
+
+`components/signal-field.tsx` renders a deterministic SVG composition. `lib/signal-motion.ts` contains the curve geometry, 24-second cycle, staggered phases, point counts, opacity, drift, marker size and drawing cadence. Its periodic easing keeps positions and velocities continuous; traveling markers become fully transparent before recycling. One animation loop updates SVG attributes without React frame renders or layout reads. Pause freezes the clock, and visibility, intersection and media queries suspend work. Reduced motion uses the initial static frame. Below 900px the decoration is hidden; below 1200px it uses two curves and fewer points. Keep the corresponding CSS breakpoints in `app/globals.css` synchronized when changing the visibility settings.
+
+The homepage uses the approved hero copy, two existing anchor destinations and four commercial application columns, followed by the current leadership, research, approach and contact content. Reference images and recordings are review artifacts outside the public repository/build.
+
 ## Deployment
 
 Existing project: [michael-gibb-portfolio](https://vercel.com/mike-gibb/michael-gibb-portfolio). GitHub `main` deploys production; feature branches deploy previews. Use the Next.js preset, repository root, Node 24, frozen pnpm install and `pnpm build` from `vercel.json`. No custom secrets are required. The canonical origin is https://michaelpgibb.com. `VERCEL_ENV=production` enables public indexing; local/preview builds use noindex headers/metadata, disallow-all robots and an empty sitemap. Rebuild before promoting across environments.
@@ -28,7 +36,7 @@ After deployment, run the public smoke suite and inspect desktop/mobile filterin
 
 ## Rollback and ownership
 
-Use an ordinary revert of the faulty release or restore a previously verified Vercel production deployment. Before promoting a rollback, compare its public content, result versions and indexing settings. The previous verified milestone is portfolio commit `8db74f5627a49e5036fc44d5dac74dc692977c32`; a rollback to it retains the 60-study catalog and eight evaluated studies while removing S47. Never combine model output from one source version with claims from another.
+Use an ordinary revert of the faulty release or restore a previously verified Vercel production deployment. Before promoting a rollback, compare its public content, result versions and indexing settings. The pre-redesign verified milestone is portfolio commit `aaf892a542105dcc7f7733b9e616b6feec6b79c1`; a rollback to it retains all nine published program studies and the approved favicon. Never combine model output from one source version with claims from another.
 
 Porkbun remains registrar, authoritative DNS and email provider. No DNS/email change is part of this release. Preserve existing nameservers, MX/SPF/DKIM/DMARC/mail records and www redirect. Confirmed contact: mike@michaelpgibb.com; [LinkedIn](https://www.linkedin.com/in/mp-gibb/). The existing Vercel Hobby plan and domain/mailbox renewal commitments remain unchanged. No new paid service or recurring job is configured.
 
