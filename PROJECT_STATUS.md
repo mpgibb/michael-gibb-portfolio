@@ -1,6 +1,6 @@
 # Project status
 
-Updated September 29, 2026. Research-program milestone: seven evaluated public-data studies (S28, S02, S04, S58, S43, S13 and S31), 53 agenda studies across the full 60-study catalog, and four separately labeled synthetic demonstrations. Independent technical review is pending.
+Updated September 29, 2026. Research-program milestone: eight evaluated public-data studies (S28, S02, S04, S58, S43, S13, S31 and S03), 52 agenda studies across the full 60-study catalog, and four separately labeled synthetic demonstrations. Independent technical review is pending.
 
 ## Published content and research
 
@@ -13,17 +13,23 @@ Updated September 29, 2026. Research-program milestone: seven evaluated public-d
 
 S28 evaluates 41,188 UCI Bank Marketing records with a chronological 70% development / 10% calibration / 20% final split. At 20% final contact capacity the history rule identifies 934 subscriptions versus 843 for the development-selected logistic model. The primary log-loss difference is +0.0822 (95% interval 0.0470–0.1177), favoring the simpler rule. This is historical response prediction among observed contacts, not a causal effect or realized profit.
 
-Executed analysis revision: `da76dd823b1b242cd90fc0280f93926d2bd575ba`; research release with reports and checks: `5cb444d`. Run: `S28-da76dd82-74adfc57`. The result JSON contains source/data hashes and all prespecified comparisons. No future study is claimed evaluated. The catalog separates execution/publication status; S28, S02, S04, S58, S43, S13 and S31 receive full program case-study routes.
+Executed analysis revision: `da76dd823b1b242cd90fc0280f93926d2bd575ba`; research release with reports and checks: `5cb444d`. Run: `S28-da76dd82-74adfc57`. The result JSON contains source/data hashes and all prespecified comparisons. No future study is claimed evaluated. The catalog separates execution/publication status; S28, S02, S04, S58, S43, S13, S31 and S03 receive full program case-study routes.
 
 Original demonstration revisions remain marketing `4ed728e`, revenue `076e305`, customer value `5d9400b`, operations `c0fd557`; full revisions and archive hashes are in the download manifest. These synthetic evaluations remain separate from the 60-study program.
 
 S02 uses 210 M5 product/store series and four final 28-day windows. Quantile boosting reduces primary cycle forecast error from 0.9746 to 0.8049 (17.4%); paired 95% difference interval −0.2554 to −0.0885. The default inventory replay costs $7,775.46 versus $7,962.33 for the conventional target, but loses 4,190 versus 4,149 scenario units. Total-assortment forecast bands cover only two of four final windows. Recorded sales are not unconstrained demand; all inventory economics are assumptions. Run `S02-5145fea6-e598f30c`, analysis commit `5145fea621938bb3455655a685897dfa69a2cd83`.
 
+## S03 release checks
+
+Run `S03-2f7d21cd-572e3627` evaluates 14,388 final 90-day customer-window forecasts, 5,155 unique customers and 10,569 future purchase days. BG/NBD deviance is 0.990 versus hurdle boosting 1.072; paired customer-bootstrap difference +0.082 (95% interval 0.068–0.096) favors BG/NBD. Seasonal calibration reverses: March purchase-count overprediction 28.9%, September underprediction 19.5%. Campaign economics remain assumed, without a measured win-back effect.
+
+111 research tests and 1,532 independent metric, outcome-reconstruction, bootstrap and cohort comparisons pass. Two report figures are rendered and inspected. Research release `aac3308cbc41167edb1cf380648e59519d4ffc6a` passed GitHub Actions 36608763713. Website lint, TypeScript and optimized build pass. Local checks cover fourteen public routes, eight exact result exports, four archives and 52 unpublished exclusions. Desktop, 390px and 320px checks pass with no material console errors or document overflow. All four models, 30/60/90-day horizons, recency/frequency filters, suppressed small cohorts, unavailable zero-value scenarios, cost/margin endpoints and keyboard reset reproduce saved evidence. Source and generated-output publication checks pass. Production deployment and verification remain pending.
+
 ## S31 release checks
 
 Run `S31-02c309de-1e141502` evaluates 136,271 held-out French motor policies and 5,426 claims. Full-loss boosting deviance is 77.894 versus 78.424 for interpretable frequency–severity regression; paired difference −0.531 (95% interval −1.626 to +0.811) is inconclusive. Observed pure premium is €147.76 per policy-year; boosting predicts €138.35. Capped-target and reserved-region findings remain separate. Expense loadings are explicit assumptions.
 
-101 research checks and 1,300 independent metric, paired-bootstrap, cohort and calibration comparisons pass. Original figures are rendered and inspected. The homepage remains curated to six cases; S31 is accessible through the catalog. Research release `25d7e8c44a295d42adf78698db04df50287d5efa` passed GitHub Actions 36602823701. Website lint, TypeScript and a clean optimized build pass. Thirteen public routes, seven exact result downloads, four source archives and 53 unpublished-route exclusions pass locally. Desktop, 390px and 320px checks pass with no material console errors or document overflow. Full/capped outcomes, model and cohort selection, expense endpoints, calibration expansion and keyboard reset match saved artifacts. Source and generated-output publication checks pass. Production verification is pending for this release.
+101 research checks and 1,300 independent metric, paired-bootstrap, cohort and calibration comparisons pass. Original figures are rendered and inspected. The homepage remains curated to six cases; S31 is accessible through the catalog. Research release `25d7e8c44a295d42adf78698db04df50287d5efa` passed GitHub Actions 36602823701. Website lint, TypeScript and a clean optimized build pass. Thirteen public routes, seven exact result downloads, four source archives and 53 unpublished-route exclusions pass locally. Desktop, 390px and 320px checks pass with no material console errors or document overflow. Full/capped outcomes, model and cohort selection, expense endpoints, calibration expansion and keyboard reset match saved artifacts. Source and generated-output publication checks pass. Production release `81c281349a7512e9c37a855f5f2c669b39f2d128` is verified live at `https://michael-gibb-portfolio-6pv5r91rv-mike-gibb.vercel.app`; GitHub Actions 36603021971 and Vercel succeeded. Public checks pass for thirteen routes, seven result exports, four archives and 53 unpublished exclusions. Fresh production controls reproduce expense endpoints, cohort comparisons, capped outcomes, direct-model handling and reset; 390px layout has no document overflow and no warning/error console entries were observed.
 
 ## S13 release checks
 
@@ -65,7 +71,7 @@ A local browser tab opened during a rebuild briefly encountered an obsolete chun
 
 ## Remaining work and boundaries
 
-S60 has completed reanalysis of 1,980 publisher-recorded dialogs; new controlled trials require model API access and a bounded cost approval. S07 requires authenticated Kaggle access and acceptance of its source rules. S22 requires an applicable research-use permission or licensed source. The other 50 studies remain planned. Continue every ready design while those prerequisites are pending. Source inspection must establish access, license, feature timing, grain and a valid evaluation. Some designs require reviewed labels or bounded inference resources; no unavailable prerequisite is represented as completed evidence.
+S60 has completed reanalysis of 1,980 publisher-recorded dialogs; new controlled trials require model API access and a bounded cost approval. S07 requires authenticated Kaggle access and acceptance of its source rules. S22 requires an applicable research-use permission or licensed source. S01 needs authorized publisher terms acceptance and resolution of aggregate-publication rights. The other 48 studies remain planned. Continue every ready design while those prerequisites are pending. Source inspection must establish access, license, feature timing, grain and a valid evaluation. Some designs require reviewed labels or bounded inference resources; no unavailable prerequisite is represented as completed evidence.
 
 The catalog uses server rendering so initial HTML includes the published work; case studies and results are static. Training and raw data remain outside deployment. No unrestricted model API, paid infrastructure or scheduled job is configured.
 

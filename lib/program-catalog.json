@@ -21,7 +21,7 @@
       "url": "https://www.dunnhumby.com/source-files/",
       "selectionRank": 1
     },
-    "executionStatus": "planned",
+    "executionStatus": "blocked",
     "publicationStatus": "unpublished",
     "codeUrl": null,
     "resultFile": null,
@@ -79,11 +79,11 @@
       "url": "https://archive.ics.uci.edu/dataset/502/online+retail+ii",
       "selectionRank": 3
     },
-    "executionStatus": "planned",
-    "publicationStatus": "unpublished",
-    "codeUrl": null,
-    "resultFile": null,
-    "publishedUrl": null,
+    "executionStatus": "evaluated",
+    "publicationStatus": "published",
+    "codeUrl": "https://github.com/mpgibb/michael-gibb-research/tree/main/studies/S03",
+    "resultFile": "S03.json",
+    "publishedUrl": "https://michaelpgibb.com/research/s03-when-does-a-customer-become-worth-winning-back",
     "updated": "2026-09-29"
   },
   {
