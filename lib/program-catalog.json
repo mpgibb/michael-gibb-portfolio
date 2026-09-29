@@ -108,11 +108,11 @@
       "url": "https://ailab.criteo.com/criteo-uplift-prediction-dataset/",
       "selectionRank": 1
     },
-    "executionStatus": "planned",
-    "publicationStatus": "unpublished",
-    "codeUrl": null,
-    "resultFile": null,
-    "publishedUrl": null,
+    "executionStatus": "evaluated",
+    "publicationStatus": "published",
+    "codeUrl": "https://github.com/mpgibb/michael-gibb-research/tree/main/studies/S04",
+    "resultFile": "S04.json",
+    "publishedUrl": "https://michaelpgibb.com/research/s04-incremental-advertising-under-a-fixed-contact-budget",
     "updated": "2026-09-29"
   },
   {

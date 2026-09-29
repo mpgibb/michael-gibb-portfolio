@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ContactStudy } from "@/components/contact-study";
+import { AdvertisingStudy } from "@/components/advertising-study";
 import { InventoryStudy } from "@/components/inventory-study";
 import { publishedStudies } from "@/lib/program-registry";
 import { productionOrigin } from "@/lib/site";
 
 const descriptions: Record<string, string> = {
+  S04: "An independent corrected-release advertising benchmark finds no demonstrated uplift advantage over response targeting. Explore budget-specific estimates and uncertainty.",
   S28: "A chronological bank-contact evaluation finds that a simple history rule outperforms the selected response model. Explore capacity and uncertainty.",
   S02: "A 210-series retail evaluation improves 28-day sales forecasts by 17.4%. Explore forecast bands and the explicitly simulated service–cost tradeoff.",
 };
@@ -25,5 +27,6 @@ export default async function ResearchStudy({ params }: { params: Promise<{ slug
   const study = published((await params).slug);
   if (study.id === "S28") return <ContactStudy study={study}/>;
   if (study.id === "S02") return <InventoryStudy study={study}/>;
+  if (study.id === "S04") return <AdvertisingStudy study={study}/>;
   notFound();
 }
