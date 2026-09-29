@@ -1670,11 +1670,11 @@
       "url": "https://figshare.com/articles/dataset/BPI_Challenge_2017/12696884",
       "selectionRank": 1
     },
-    "executionStatus": "planned",
-    "publicationStatus": "unpublished",
-    "codeUrl": null,
-    "resultFile": null,
-    "publishedUrl": null,
+    "executionStatus": "evaluated",
+    "publicationStatus": "published",
+    "codeUrl": "https://github.com/mpgibb/michael-gibb-research/tree/main/studies/S58",
+    "resultFile": "S58.json",
+    "publishedUrl": "https://michaelpgibb.com/research/s58-where-business-workflows-accumulate-delay",
     "updated": "2026-09-29"
   },
   {
@@ -1727,9 +1727,9 @@
       "url": "https://github.com/sierra-research/tau-bench",
       "selectionRank": 3
     },
-    "executionStatus": "planned",
+    "executionStatus": "baseline_complete",
     "publicationStatus": "unpublished",
-    "codeUrl": null,
+    "codeUrl": "https://github.com/mpgibb/michael-gibb-research/tree/main/studies/S60",
     "resultFile": null,
     "publishedUrl": null,
     "updated": "2026-09-29"

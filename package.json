@@ -10,7 +10,7 @@
     "build": "next build",
     "start": "next start --hostname 127.0.0.1",
     "typecheck": "next typegen && tsc --noEmit",
-    "lint": "eslint app components/portfolio.tsx components/incrementality-explorer.tsx components/flagship-evidence.tsx components/research-menu.tsx components/research-catalog.tsx components/contact-priority-evidence.tsx components/contact-study.tsx components/inventory-study.tsx components/inventory-evidence.tsx components/study-frame.tsx components/advertising-study.tsx components/advertising-evidence.tsx components/commercial-evidence.tsx lib next.config.ts scripts",
+    "lint": "eslint app components/portfolio.tsx components/incrementality-explorer.tsx components/flagship-evidence.tsx components/research-menu.tsx components/research-catalog.tsx components/contact-priority-evidence.tsx components/contact-study.tsx components/inventory-study.tsx components/inventory-evidence.tsx components/study-frame.tsx components/workflow-study.tsx components/workflow-evidence.tsx components/advertising-study.tsx components/advertising-evidence.tsx components/commercial-evidence.tsx lib next.config.ts scripts",
     "check": "pnpm lint && pnpm typecheck && pnpm build",
     "test:smoke": "node scripts/verify-site.mjs"
   },

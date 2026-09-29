@@ -1,6 +1,6 @@
 # Project status
 
-Updated September 29, 2026. Research-program milestone: three evaluated public-data studies (S28, S02 and S04), 57 agenda studies across the full 60-study catalog, and four separately labeled synthetic demonstrations. Independent technical review is pending.
+Updated September 29, 2026. Research-program milestone: four evaluated public-data studies (S28, S02, S04 and S58), 56 agenda studies across the full 60-study catalog, and four separately labeled synthetic demonstrations. Independent technical review is pending.
 
 ## Published content and research
 
@@ -13,17 +13,23 @@ Updated September 29, 2026. Research-program milestone: three evaluated public-d
 
 S28 evaluates 41,188 UCI Bank Marketing records with a chronological 70% development / 10% calibration / 20% final split. At 20% final contact capacity the history rule identifies 934 subscriptions versus 843 for the development-selected logistic model. The primary log-loss difference is +0.0822 (95% interval 0.0470–0.1177), favoring the simpler rule. This is historical response prediction among observed contacts, not a causal effect or realized profit.
 
-Executed analysis revision: `da76dd823b1b242cd90fc0280f93926d2bd575ba`; research release with reports and checks: `5cb444d`. Run: `S28-da76dd82-74adfc57`. The result JSON contains source/data hashes and all prespecified comparisons. No future study is claimed evaluated. The catalog separates execution/publication status; S28, S02 and S04 receive full program case-study routes.
+Executed analysis revision: `da76dd823b1b242cd90fc0280f93926d2bd575ba`; research release with reports and checks: `5cb444d`. Run: `S28-da76dd82-74adfc57`. The result JSON contains source/data hashes and all prespecified comparisons. No future study is claimed evaluated. The catalog separates execution/publication status; S28, S02, S04 and S58 receive full program case-study routes.
 
 Original demonstration revisions remain marketing `4ed728e`, revenue `076e305`, customer value `5d9400b`, operations `c0fd557`; full revisions and archive hashes are in the download manifest. These synthetic evaluations remain separate from the 60-study program.
 
 S02 uses 210 M5 product/store series and four final 28-day windows. Quantile boosting reduces primary cycle forecast error from 0.9746 to 0.8049 (17.4%); paired 95% difference interval −0.2554 to −0.0885. The default inventory replay costs $7,775.46 versus $7,962.33 for the conventional target, but loses 4,190 versus 4,149 scenario units. Total-assortment forecast bands cover only two of four final windows. Recorded sales are not unconstrained demand; all inventory economics are assumptions. Run `S02-5145fea6-e598f30c`, analysis commit `5145fea621938bb3455655a685897dfa69a2cd83`.
 
+## S58 release checks
+
+Run `S58-9dd9fde5-183c5e51` evaluates 2,365 December applications and 6,247 event prefixes. Detailed workflow history lowers 30-day restricted-time MAE from 8.722 to 8.583 days. The paired difference is −0.139 days (95% interval −0.181 to −0.093). This is approximately 1.6% less forecasting error, not faster actual completion. Required bibliographic source notification was submitted September 29, 2026.
+
+54 focused research checks and 315 independent workflow metric/count/paired-interval comparisons pass. Website lint, TypeScript, optimized build and local smoke checks pass across ten public routes, four exact result exports, four source archives and 56 unpublished-route exclusions. Source and generated-output review passes. Fresh desktop, 390px and 320px browser checks pass: stage buttons, prefix reset, model comparison, full review capacity, scenario extremes and keyboard reset all update the saved evidence correctly. No console warnings/errors or document overflow were observed. Final production verification follows this release.
+
 ## S04 release checks
 
 Run `S04-36e06a94-2716e1bf` uses corrected Criteo v2.1. On 398,506 independent final records, the validation-selected honest forest estimates 9.78 benchmark conversions per 10,000 at 20% capacity versus 9.86 for response targeting. The paired difference −0.08 (95% interval −0.89 to +0.73) does not establish an uplift advantage. Privacy subsampling prevents original advertiser ROI claims.
 
-37 research checks and 110 independent score/accounting comparisons pass. Website lint, TypeScript, optimized build and local smoke checks pass across nine public routes, three exact result exports, four archives and 57 unpublished-route exclusions. Browser checks pass at desktop, 390px and 320px: budget endpoints, policy changes, economic extremes, keyboard reset and no document overflow. A fresh local tab has no warning/error entries. Source/generated-output publication review passes. Production verification is pending for S04.
+37 research checks and 110 independent score/accounting comparisons pass. Website lint, TypeScript, optimized build and local smoke checks pass across nine public routes, three exact result exports, four archives and 57 unpublished-route exclusions. Browser checks pass at desktop, 390px and 320px: budget endpoints, policy changes, economic extremes, keyboard reset and no document overflow. A fresh local tab has no warning/error entries. Source/generated-output publication review passes. Production release `eebacbf6287bfc8af5adfe151f98e90a4b55d29c` is verified live. GitHub Actions 36588066645 and Vercel deployment `https://michael-gibb-portfolio-3rjm34xg2-mike-gibb.vercel.app` succeeded. The public smoke suite passes all nine pages, three result exports, four source archives and 57 unpublished-route exclusions. Fresh production desktop/mobile checks confirm rendering, policy/capacity changes, reset and no warning/error console entries; 390px layout has no document overflow.
 
 ## S02 release checks
 
@@ -41,7 +47,7 @@ A local browser tab opened during a rebuild briefly encountered an obsolete chun
 
 ## Remaining work and boundaries
 
-57 program studies have no executed result yet. Continue the specified initial sequence (S58, S60, S43), then every remaining ready design. Source inspection must establish access, license, feature timing, grain and a valid evaluation. Some designs require reviewed labels or bounded inference resources; no unavailable prerequisite is represented as completed evidence.
+S60 has completed reanalysis of 1,980 publisher-recorded dialogs; new controlled trials require model API access and a bounded cost approval. The other 55 studies remain planned. Continue S60 and S43, then every remaining ready design. Source inspection must establish access, license, feature timing, grain and a valid evaluation. Some designs require reviewed labels or bounded inference resources; no unavailable prerequisite is represented as completed evidence.
 
 The catalog uses server rendering so initial HTML includes the published work; case studies and results are static. Training and raw data remain outside deployment. No unrestricted model API, paid infrastructure or scheduled job is configured.
 
