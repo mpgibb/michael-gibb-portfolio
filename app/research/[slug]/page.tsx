@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { InspectionStudy } from "@/components/inspection-study";
 import { PropertyStudy } from "@/components/property-study";
 import { WorkflowStudy } from "@/components/workflow-study";
 import { ContactStudy } from "@/components/contact-study";
@@ -9,6 +10,7 @@ import { publishedStudies } from "@/lib/program-registry";
 import { productionOrigin } from "@/lib/site";
 
 const descriptions: Record<string, string> = {
+  S13: "A chronological sensor-screening evaluation finds weak later-month failure detection. Explore inspection budgets, calibration and sensor-selection stability.",
   S43: "A forward Cook County sale-price evaluation finds no clear spatial-model accuracy gain and substantial local uncertainty gaps. Explore historical township evidence.",
   S58: "A workflow survival comparison reduces forecasting error by 1.6%. Explore application stages, review capacity and explicitly assumed staffing scenarios.",
   S04: "An independent corrected-release advertising benchmark finds no demonstrated uplift advantage over response targeting. Explore budget-specific estimates and uncertainty.",
@@ -33,6 +35,7 @@ export default async function ResearchStudy({ params }: { params: Promise<{ slug
   if (study.id === "S02") return <InventoryStudy study={study}/>;
   if (study.id === "S04") return <AdvertisingStudy study={study}/>;
   if (study.id === "S58") return <WorkflowStudy study={study}/>;
+  if (study.id === "S13") return <InspectionStudy study={study}/>;
   if (study.id === "S43") return <PropertyStudy study={study}/>;
   notFound();
 }

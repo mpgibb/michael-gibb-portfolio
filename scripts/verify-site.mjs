@@ -71,6 +71,7 @@ try {
       const study=published.find(item=>path===`/research/${item.slug}`);
       assert(study);
       if(study.id==="S28") assert.match(html,/data-testid="contact-priority-evidence"/);
+      if(study.id==="S13") { assert.match(html,/data-testid="inspection-evidence"/); assert.match(html,/0.0626/); assert.match(html,/0.0765/); assert.match(html,/4 \/ 22/); }
       if(study.id==="S43") { assert.match(html,/data-testid="property-evidence"/); assert.match(html,/17.29%/); assert.match(html,/70.1%/); assert.match(html,/24,551/); }
       if(study.id==="S58") { assert.match(html,/data-testid="workflow-evidence"/); assert.match(html,/8.72 days/); assert.match(html,/8.58 days/); assert.match(html,/2,365/); }
       if(study.id==="S04") { assert.match(html,/data-testid="advertising-evidence"/); assert.match(html,/9.78/); assert.match(html,/9.86/); assert.match(html,/398,506/); }
@@ -87,7 +88,7 @@ try {
       for(const name of names) assert(html.includes(`/projects/${name}`));
     } else {
       assert.match(html,/growth and better business decisions/);
-      for(const name of names.slice(0,1)) assert(html.includes(`/projects/${name}`));
+      assert.match(html,/S02 \/ FEATURED/);
       for(const study of published) assert(html.includes(`/research/${study.slug}`));
     }
     console.log(`PASS ${path}: metadata, contact, status, section order and indexing`);

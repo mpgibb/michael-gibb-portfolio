@@ -1,6 +1,6 @@
 # Project status
 
-Updated September 29, 2026. Research-program milestone: five evaluated public-data studies (S28, S02, S04, S58 and S43), 55 agenda studies across the full 60-study catalog, and four separately labeled synthetic demonstrations. Independent technical review is pending.
+Updated September 29, 2026. Research-program milestone: six evaluated public-data studies (S28, S02, S04, S58, S43 and S13), 54 agenda studies across the full 60-study catalog, and four separately labeled synthetic demonstrations. Independent technical review is pending.
 
 ## Published content and research
 
@@ -13,17 +13,23 @@ Updated September 29, 2026. Research-program milestone: five evaluated public-da
 
 S28 evaluates 41,188 UCI Bank Marketing records with a chronological 70% development / 10% calibration / 20% final split. At 20% final contact capacity the history rule identifies 934 subscriptions versus 843 for the development-selected logistic model. The primary log-loss difference is +0.0822 (95% interval 0.0470–0.1177), favoring the simpler rule. This is historical response prediction among observed contacts, not a causal effect or realized profit.
 
-Executed analysis revision: `da76dd823b1b242cd90fc0280f93926d2bd575ba`; research release with reports and checks: `5cb444d`. Run: `S28-da76dd82-74adfc57`. The result JSON contains source/data hashes and all prespecified comparisons. No future study is claimed evaluated. The catalog separates execution/publication status; S28, S02, S04, S58 and S43 receive full program case-study routes.
+Executed analysis revision: `da76dd823b1b242cd90fc0280f93926d2bd575ba`; research release with reports and checks: `5cb444d`. Run: `S28-da76dd82-74adfc57`. The result JSON contains source/data hashes and all prespecified comparisons. No future study is claimed evaluated. The catalog separates execution/publication status; S28, S02, S04, S58, S43 and S13 receive full program case-study routes.
 
 Original demonstration revisions remain marketing `4ed728e`, revenue `076e305`, customer value `5d9400b`, operations `c0fd557`; full revisions and archive hashes are in the download manifest. These synthetic evaluations remain separate from the 60-study program.
 
 S02 uses 210 M5 product/store series and four final 28-day windows. Quantile boosting reduces primary cycle forecast error from 0.9746 to 0.8049 (17.4%); paired 95% difference interval −0.2554 to −0.0885. The default inventory replay costs $7,775.46 versus $7,962.33 for the conventional target, but loses 4,190 versus 4,149 scenario units. Total-assortment forecast bands cover only two of four final windows. Recorded sales are not unconstrained demand; all inventory economics are assumptions. Run `S02-5145fea6-e598f30c`, analysis commit `5145fea621938bb3455655a685897dfa69a2cd83`.
 
+## S13 release checks
+
+Run `S13-608719b7-eea568ba` evaluates 359 October 2008 production entities and 22 failures. At 20% inspection capacity, boosting identifies 4 failures, sparse logistic 3 and the PCA monitor 5. Primary average-precision difference is −0.0140 (95% day-cluster interval −0.0963 to +0.0212). This is weak historical screening evidence, not a validated early-warning system. Exact sensor acquisition times and physical identities are unavailable.
+
+87 focused research checks and 291 independent metric, capacity, calibration and paired-interval comparisons pass. Website lint, TypeScript and optimized build pass. Local smoke checks cover twelve public routes, six exact result exports, four archives and 54 unpublished-route exclusions. Inspection-budget endpoints, model selection, sensor-frequency filtering, final-fit filtering and keyboard reset match the evaluated artifacts. Source and generated-output reviews pass. Desktop, 390px and 320px browser checks pass with no material console errors or horizontal document overflow. Mobile filter alignment and accessible budget labels were corrected before release. Research release `16c0a56` contains the verified reports and deterministic figures. Production verification is pending for this milestone.
+
 ## S43 release checks
 
 Run `S43-a92f1ea2-98e410fd` evaluates 24,551 April–December 2025 Cook County sales and 23,898 parcels using the April 2024 characteristics snapshot. Spatial boosting median percentage error is 17.29%, versus 17.50% for hedonic regression. The paired difference is −0.21 percentage points (95% interval −0.53 to +0.18): no clear accuracy advantage. Nominal 90% intervals cover 89.8% countywide and only 70.1% in the historical Hyde Park township cohort. These are historical cohort findings, not current appraisals.
 
-74 focused research checks and 42 independent property metric/count/paired-interval comparisons pass. Research release `2b126db` contains the report, aggregate results and figures. Website lint, TypeScript and a clean optimized build pass. The smoke suite checks eleven public routes, five matching result exports, four source archives and 55 unpublished-route exclusions. Source and clean generated-output review passes. Desktop, 390px and 320px checks verify township, size, model, interval, keyboard map selection and reset against saved evidence, with no warning/error console entries or document overflow. An SVG title hydration issue found during testing was corrected before release. Production verification remains pending for this milestone.
+74 focused research checks and 42 independent property metric/count/paired-interval comparisons pass. Research release `2b126db` contains the report, aggregate results and figures. Website lint, TypeScript and a clean optimized build pass. The smoke suite checks eleven public routes, five matching result exports, four source archives and 55 unpublished-route exclusions. Source and clean generated-output review passes. Desktop, 390px and 320px checks verify township, size, model, interval, keyboard map selection and reset against saved evidence, with no warning/error console entries or document overflow. An SVG title hydration issue found during testing was corrected before release. Production release `9edbda08ecc7d3130b0994b9193d07e1def8b9f0` is verified at `https://michael-gibb-portfolio-je4vnxvei-mike-gibb.vercel.app`; Actions 36596276838 and Vercel deployment 6739687207 succeeded. Public smoke checks pass all eleven routes, five exact result exports, four archives and 55 unpublished-route exclusions. Fresh production desktop/mobile controls, reset and console checks pass with no material errors or document overflow. Research release `2b126db6ebf555905cc9e36c84332e5691215bfb` passed Actions 36596188813.
 
 ## S58 release checks
 
@@ -53,7 +59,7 @@ A local browser tab opened during a rebuild briefly encountered an obsolete chun
 
 ## Remaining work and boundaries
 
-S60 has completed reanalysis of 1,980 publisher-recorded dialogs; new controlled trials require model API access and a bounded cost approval. The other 54 studies remain planned. S07 requires Kaggle access and acceptance of its source rules before ingestion. Continue every remaining ready design while S60 model access and S07 source access are pending. Source inspection must establish access, license, feature timing, grain and a valid evaluation. Some designs require reviewed labels or bounded inference resources; no unavailable prerequisite is represented as completed evidence.
+S60 has completed reanalysis of 1,980 publisher-recorded dialogs; new controlled trials require model API access and a bounded cost approval. S07 requires authenticated Kaggle access and acceptance of its source rules. S22 requires an applicable research-use permission or licensed source. The other 51 studies remain planned; S31 source ingestion is underway. Continue every ready design while those prerequisites are pending. Source inspection must establish access, license, feature timing, grain and a valid evaluation. Some designs require reviewed labels or bounded inference resources; no unavailable prerequisite is represented as completed evidence.
 
 The catalog uses server rendering so initial HTML includes the published work; case studies and results are static. Training and raw data remain outside deployment. No unrestricted model API, paid infrastructure or scheduled job is configured.
 
