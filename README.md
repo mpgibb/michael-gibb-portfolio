@@ -14,15 +14,23 @@ pnpm test:smoke --start
 TEST_BASE_URL=https://michaelpgibb.com EXPECT_INDEXABLE=true pnpm test:smoke
 ```
 
-`lib/projects.ts` controls the four case studies. `lib/marketing-results.json` is a generated copy of the evaluated study results. `components/incrementality-explorer.tsx` implements the accessible, client-side cost-sensitivity visualization. No database or live model API is required.
+`lib/projects.ts` and `lib/completed-studies.json` control the four case studies and executive summaries. `lib/*-results.json` are generated copies of evaluated study results. `components/incrementality-explorer.tsx` and `components/commercial-evidence.tsx` provide accessible client-side sensitivity/scenario comparisons. `/research` groups the commercial studies and identifies future industry collections; the Research dropdown supports keyboard, pointer and mobile use. No database or live model API is required.
 
-## Flagship reproduction
+## Study reproduction
 
 Study repository: https://github.com/mpgibb/marketing-incrementality
 
 Use its Python 3.11.16 environment and frozen uv lockfile. Run `uv sync --frozen`, `uv run python -m unittest discover -s tests -v`, then `uv run python study.py`. The protocol, seeded data generator, CSVs, known ground truth, estimator, evaluation configuration and result/source hashes are included. No external data or runtime dependencies are needed.
 
-Only this project has implemented and evaluated synthetic research. The other three are labeled planned research and have no repository or download link. Do not present planned methods as delivered work.
+All four commercial projects have completed synthetic evaluations. The three additional repositories are:
+
+- https://github.com/mpgibb/revenue-forecasting — competing-risk pipeline forecasting, twelve held-out origins, three horizons and three scenarios.
+- https://github.com/mpgibb/customer-value — matured temporal cohorts, survival/value prediction and honest randomized retention-policy evaluation.
+- https://github.com/mpgibb/operational-planning — rolling demand forecasts and exact constrained staffing optimization over 52 held-out weeks.
+
+For each, run the same `uv sync --frozen`, test and reproduction commands. They use NumPy 2.2.6 and SciPy 1.17.1, pinned in each lockfile. Their README, PROTOCOL.md, DATA.md and REPORT.md document assumptions, complete results and adverse findings. Revenue and customer value include nine correctness tests each; operations includes ten. Independent technical review remains pending. Sports analytics and Other industries are future collections, with no completed-study claims.
+
+When updating a study, run its pipeline and require `git diff --exit-code -- data results` after committing the intended outputs. Copy `results/summary.json` to the matching `lib/` and `public/downloads/` files. Build its source ZIP with `git archive` from the published commit; update the exact commit and SHA-256 in `public/downloads/manifest.json`. Review archive members for excluded local files before publishing. Never change displayed research findings without corresponding source, evaluation and provenance updates.
 
 ## Deployment and domain
 

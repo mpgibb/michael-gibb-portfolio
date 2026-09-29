@@ -2,7 +2,7 @@
 
 ## Commercial direction — September 28, 2026
 
-The user's latest direction supersedes all earlier portfolio priorities. Lead with commercial analytics and AI leadership. Use four coherent areas: marketing incrementality, revenue forecasting, customer value and operational planning. Only the first has implemented and evaluated research. Never republish retired content from source exports, branches, caches or historical deployments.
+The user's latest direction supersedes all earlier portfolio priorities. Lead with commercial analytics and AI leadership. Use four coherent areas: marketing incrementality, revenue forecasting, customer value and operational planning. All four have implemented and evaluated synthetic research. Each starts with a plain-language executive summary and preserves adverse findings. Industry navigation groups these under Commercial and labels Sports analytics and Other industries as future collections. Never republish retired content from source exports, branches, caches or historical deployments.
 
 ## Flagship evidence
 
@@ -19,3 +19,9 @@ Preserve Porkbun DNS, nameservers and email. Code rollback may use only clean re
 ## Research status and claims
 
 Keep user-supplied professional background, contact links and explicit research status. Public pages, linked study documentation and downloads omit development-tool credits. Independent technical review remains pending. No approved résumé or verified numerical career achievements have been supplied for this direction. No original source reuse license has been selected; third-party notices remain intact.
+
+## Completed commercial extensions
+
+Revenue forecasting uses discrete-time competing risks and posterior predictive revenue, with explicit point-in-time exposure rules. Customer value uses finite-horizon survival prediction and a frozen, randomized-policy evaluation with matured temporal cohorts. Operations uses a weekly service-capacity decision, residual scenarios and exact constrained dynamic programming. These are independent repositories with frozen environments, protocols, data dictionaries, detailed reports and reproducible outputs. No future outcome or oracle value may enter an implementable prediction or decision.
+
+Results are deliberately mixed: the detailed sales model does not uniformly beat its simpler comparator; retention profitability is unproven at the tested cost; staffing savings trade off service and weaken under surge. Keep those cautions visible in executive summaries and evidence sections.

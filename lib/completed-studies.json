@@ -1,0 +1,187 @@
+[
+  {
+    "slug": "revenue-forecasting",
+    "number": "02",
+    "category": "SALES · REVENUE OPERATIONS",
+    "title": "Sales pipeline and revenue forecasting",
+    "short": "A point-in-time, competing-risk forecast estimates when open opportunities will become booked revenue—and exposes the risk of a changing sales process.",
+    "question": "What revenue can the current pipeline support, and where is the uncertainty?",
+    "decision": "Create a 4-, 8- and 12-week revenue outlook for opportunities already open at the forecast date. Separate conversion and timing uncertainty from sales commitments. Future opportunities are outside the forecast population.",
+    "implication": "In the stable synthetic process, 12-week aggregate forecast error is 6.5%, compared with 19.6% for fixed stage weights. A simpler pooled-stage model does slightly better at 6.0%. A sudden conversion slowdown causes severe overprediction and every nominal 95% interval misses. A production pilot would need process-change alerts and a fallback outlook before any reliance on the ranges.",
+    "baseline": "Three implemented forecasters are evaluated at twelve held-out forecast dates, over three horizons and three declared scenarios. The study generates 5,760 opportunities per scenario and preserves weekly point-in-time snapshots. No final-period tuning is used.",
+    "evaluation": [
+      "Twelve forecast origins, four weeks apart; 4-, 8- and 12-week outcomes are fully observed.",
+      "Fixed stage weights, pooled-stage competing risks and a Bayesian stage/segment/age model.",
+      "Aggregate revenue error and bias, opportunity probability calibration, and 80%/95% predictive coverage under stable, slowdown and shared-shock conditions."
+    ],
+    "data": "Original synthetic CRM event histories, version synthetic-pipeline-v1. Every opportunity has an entry date, fixed amount and segment, weekly stage/age, and an end-of-week transition. A win books the full amount once; a loss books zero. No real CRM records are included. Open deals are censored at a cutoff and contribute exposure without being labeled lost.",
+    "method": "Estimate weekly probabilities of staying in stage, advancing, winning or losing. The primary model conditions on three stages, two segments and three age bands, with Dirichlet smoothing. Propagate these competing transitions to horizon-specific win probabilities. Aggregate 500 posterior predictive draws that share a sampled transition table across opportunities, then simulate individual paths. Compare against the same open pipeline under both baselines.",
+    "assumptions": [
+      "Only transitions strictly before a forecast cutoff enter estimation; the open snapshot contains start-of-week features only.",
+      "Observed past transitions of currently open deals are valid information. Their later outcomes are excluded until their event dates.",
+      "Deal values stay fixed and are recognized fully upon winning; future-created deals, partial recognition and pipeline revisions are excluded.",
+      "The conditional transition process must remain useful. Posterior parameter sharing does not represent an unobserved market-wide shock."
+    ],
+    "limitations": "This is a completed synthetic evaluation, not demonstrated CRM accuracy. Twelve overlapping forecast windows provide limited, dependent evidence about interval coverage. Process drift and correlated deals can invalidate the predictive ranges, as the stress tests show. The more detailed model is not uniformly better than the simpler baseline.",
+    "next": "Run the frozen approach in shadow mode on authorized CRM snapshots. Define booked revenue, versioned opportunity fields, horizon-specific alert thresholds and a process-change response before assessing actual forecast quality.",
+    "steps": [
+      "Freeze the forecast date",
+      "Model competing transitions",
+      "Evaluate future revenue"
+    ],
+    "repository": "https://github.com/mpgibb/revenue-forecasting",
+    "resultFile": "revenue-forecasting-results.json",
+    "references": [
+      {
+        "title": "Putter, Fiocco & Geskus — competing risks and multi-state models",
+        "url": "https://doi.org/10.1002/sim.2712"
+      }
+    ],
+    "executive": {
+      "headline": "A better forecast still needs a warning system.",
+      "finding": "In the stable simulation, the detailed model's 12-week revenue error was 6.5%, versus 19.6% for fixed stage weights. The simpler timing model was slightly more accurate at 6.0%.",
+      "decision": "Pilot the forecast alongside the existing sales process, with clear alerts when conversion rates or deal timing change.",
+      "caution": "When the simulated sales process slowed abruptly, all twelve 95% forecast ranges missed. The forecast covers only opportunities already open. It cannot support a firm revenue commitment.",
+      "stats": [
+        {
+          "value": "6.5%",
+          "label": "12-week revenue error"
+        },
+        {
+          "value": "6.0%",
+          "label": "Simpler model error"
+        },
+        {
+          "value": "0 / 12",
+          "label": "Ranges covered revenue after slowdown"
+        }
+      ]
+    }
+  },
+  {
+    "slug": "customer-value",
+    "number": "03",
+    "category": "CUSTOMERS · RETENTION & VALUE",
+    "title": "Customer retention and lifetime value",
+    "short": "A contractual survival model and randomized retention study distinguish who may leave, what a customer is worth, and whether paying to intervene creates value.",
+    "question": "Which customers may leave—and which interventions are worth testing?",
+    "decision": "Prioritize a fixed retention intervention for at most 20% of each eligible cohort. Evaluate twelve-month discounted contribution after the intervention cost, keeping predictive churn risk separate from the causal value of treatment.",
+    "implication": "The survival model reduces average twelve-month value error from $183.54 to $149.24. That predictive improvement does not establish intervention profitability. At $35 per contact, the learned policy's net effect is $-0.04 per eligible customer, with a 95% interval from $-7.06 to $6.98. The evidence supports further experimentation, not a profitable-rollout claim.",
+    "baseline": "A fully implemented study of 9,720 synthetic customers across 54 monthly cohorts. Models use 24 training cohorts, six matured validation cohorts and twelve untouched final cohorts after a maturity gap. Prediction is assessed on 1,051 final control customers; policy value uses all 2,160 final randomized customers.",
+    "evaluation": [
+      "Compare segment means with a discrete-time survival model for six-month churn and twelve-month discounted contribution.",
+      "Three-fold out-of-fold training creates a treatment-value score; freeze the policy before the twelve final cohorts.",
+      "Compare no contact, contact everyone, highest churn risk, highest untreated value and learned incremental value; repeat under no effect and response shift."
+    ],
+    "data": "Original synthetic contractual customer histories, version synthetic-retention-v1. Scoring features are tenure, engagement, service friction, tier and baseline monthly contribution. Treatment is randomly assigned with probability 0.5. Cancellation is absorbing; each customer has a complete twelve-month outcome window. Separate oracle files contain known potential expectations for evaluation only.",
+    "method": "Fit a regularized discrete-time cancellation model to untreated customers and combine survival probabilities with baseline margin and a 10% annual discount rate. Fit outcome regressions in three training folds to construct doubly robust treatment-effect scores using the known randomization probability. Learn a prespecified feature-based score, target positive expected net effects within a 20% cohort budget, and evaluate the frozen policy on later randomized cohorts.",
+    "assumptions": [
+      "Training and validation outcomes mature before final scoring begins; no incomplete window is treated as a completed target.",
+      "Randomized treatment, consistency and no interference identify incremental value; churn predictions alone do not.",
+      "A $35 intervention has a fixed form and timing. Cost sensitivity changes accounting cost, not the treatment or its effectiveness.",
+      "Confidence intervals use twelve cohort clusters and a t approximation. They remain uncertain with so few clusters and do not establish individual treatment effects."
+    ],
+    "limitations": "The horizon is twelve months; the title does not imply value over an unlimited customer lifetime. Synthetic intervention response can fail to transfer over time: reversing that relationship makes the learned policy materially harmful. The survival model assumes baseline margin persists, and the upper-risk calibration bins are sparse. Known oracle expectations are unattainable evaluation benchmarks, never model inputs.",
+    "next": "Specify one real intervention and margin measure, then run a budget-limited randomized retention test. Require a positive, decision-relevant net-value result and stable response before broader use.",
+    "steps": [
+      "Predict finite-horizon value",
+      "Learn from random assignment",
+      "Evaluate net intervention value"
+    ],
+    "repository": "https://github.com/mpgibb/customer-value",
+    "resultFile": "customer-value-results.json",
+    "references": [
+      {
+        "title": "Dudík, Langford & Li — doubly robust policy evaluation",
+        "url": "https://arxiv.org/abs/1103.4601"
+      },
+      {
+        "title": "Athey & Wager — policy learning",
+        "url": "https://arxiv.org/abs/1702.02896"
+      }
+    ],
+    "executive": {
+      "headline": "A better churn score is not a case for more retention spending.",
+      "finding": "Average value-forecast error fell from $184 to $149. Yet a policy targeting roughly one in five customers showed no clear net benefit at $35 per contact.",
+      "decision": "Keep the intervention in a controlled test until its incremental contribution clears its cost with adequate evidence.",
+      "caution": "The learned policy ranged from a $7.06 loss to a $6.98 gain per eligible customer at the 95% interval. Selecting the highest-risk customers lost money in the stable simulation; a changed response pattern also harmed the learned policy.",
+      "stats": [
+        {
+          "value": "$-0.04",
+          "label": "Net effect per eligible customer"
+        },
+        {
+          "value": "$149",
+          "label": "Average twelve-month value error"
+        },
+        {
+          "value": "2,160",
+          "label": "Final randomized customers"
+        }
+      ]
+    }
+  },
+  {
+    "slug": "operational-planning",
+    "number": "04",
+    "category": "OPERATIONS · DEMAND & CAPACITY",
+    "title": "Operational planning under uncertainty",
+    "short": "A weekly staffing study joins demand distributions, exact capacity constraints and overtime decisions to measure the cost–service tradeoff on future demand.",
+    "question": "What capacity balances service, cost and uncertainty?",
+    "decision": "Lock seven days of regular staffing for a single service site, then use limited daily overtime after demand is observed. Choose a feasible plan under a weekly staffing budget and daily ramp limits, with explicit costs for labor and unserved requests.",
+    "implication": "Over 52 held-out synthetic weeks, the stochastic plan costs $59,028 less than a feasible 20% buffer rule—a 7.0% reduction. Service decreases from 99.8% to 99.4%. After a sustained demand surge, the savings interval includes zero. Leaders must decide what service floor and shortage costs are acceptable before preferring the lower-cost plan.",
+    "baseline": "A complete rolling forecast-and-decision evaluation over 156 synthetic weeks, with 52 final test weeks. All policies obey the same daily staffing bounds, weekly worker-day budget and within-week ramp limits. The optimizer is checked against exhaustive enumeration on small cases.",
+    "evaluation": [
+      "Compare ridge demand forecasts with seasonal-naive forecasts using only information available before each week.",
+      "Evaluate a projected 20% buffer rule, point-forecast optimization and stochastic planning on the same held-out weeks.",
+      "Report realized cost, service, shortages, overtime and unused capacity; use a perfect-information lower bound, demand-shock tests and shortage-cost sensitivity."
+    ],
+    "data": "Original synthetic daily service demand, version synthetic-capacity-v1. Demand includes weekday and annual seasonality, trend and correlated weekly shocks. There are no real staffing records. Unserved demand is lost rather than queued; staffing does not change demand. Calibration uses archived seven-day forecast-error vectors from earlier weeks.",
+    "method": "Fit a regularized trend/seasonal/recent-level model at each weekly cutoff. Add up to 52 past weekly error vectors to the new forecast, retaining within-week error dependence. Minimize expected labor plus shortage cost with exact dynamic programming over day, cumulative worker-days and previous-day staffing. Evaluate all feasible overtime choices as daily recourse. Compare the realized decisions with practical baselines under identical constraints.",
+    "assumptions": [
+      "Regular staffing is 8–26 workers daily, at most 135 worker-days weekly, and changes by at most four workers between adjacent days within a week.",
+      "One worker supplies 12 units per day. Regular cost is $120 per worker-day; up to five overtime workers cost $180 each; unserved units cost $24 each.",
+      "No cross-week ramp, skill mix, labor-law, absence, shift-length or multisite constraints are modeled.",
+      "All demand and calibration errors available to a plan occur before its cutoff. The perfect-information planner is an evaluator-only benchmark."
+    ],
+    "limitations": "This completed simulation does not establish actual cost savings or staffing feasibility for an employer. Marginal 80% demand intervals cover only 73.6% of stable held-out days, and shifts can degrade performance. The four-week block-bootstrap cost interval describes one synthetic history. A lower-cost plan may deliver lower service; neither forecast accuracy nor cost alone is a sufficient operating criterion.",
+    "next": "Agree on a service floor, shortage economics and actual staffing constraints with an operating owner. Backtest an authorized demand history and run a shadow schedule before changing staff assignments.",
+    "steps": [
+      "Forecast a distribution",
+      "Optimize a feasible week",
+      "Measure service and cost"
+    ],
+    "repository": "https://github.com/mpgibb/operational-planning",
+    "resultFile": "operational-planning-results.json",
+    "references": [
+      {
+        "title": "Hyndman & Athanasopoulos — time-series cross-validation",
+        "url": "https://otexts.com/fpp3/tscv.html"
+      },
+      {
+        "title": "Hyndman & Athanasopoulos — prediction intervals",
+        "url": "https://otexts.com/fpp3/prediction-intervals.html"
+      }
+    ],
+    "executive": {
+      "headline": "Lower staffing cost comes with a service decision.",
+      "finding": "The uncertainty-aware plan reduced simulated 52-week cost by $59,028 (7.0%) versus the buffer rule. It served 99.38% of demand, versus 99.83% for the buffer rule.",
+      "decision": "Set an acceptable service floor, validate shortage costs, then test the schedule in shadow mode before operational use.",
+      "caution": "After a sudden sustained demand increase, the estimated savings fell to about $80 per week and the interval included zero. This is a one-site synthetic study with simplified labor constraints.",
+      "stats": [
+        {
+          "value": "$59,028",
+          "label": "Lower simulated 52-week cost"
+        },
+        {
+          "value": "99.38%",
+          "label": "Demand served"
+        },
+        {
+          "value": "52 weeks",
+          "label": "Held-out operational evaluation"
+        }
+      ]
+    }
+  }
+]

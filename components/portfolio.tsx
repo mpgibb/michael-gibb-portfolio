@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ResearchMenu } from "./research-menu";
 
 export function Header() {
   return (
@@ -8,7 +9,7 @@ export function Header() {
           Michael P. Gibb<span>, Ph.D.</span>
         </Link>
         <nav aria-label="Main navigation">
-          <Link href="/#work">Research</Link>
+          <ResearchMenu />
           <Link href="/#approach">Approach</Link>
           <Link href="/#about">Leadership</Link>
           <Link href="/#contact">Contact</Link>

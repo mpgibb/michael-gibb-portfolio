@@ -5,5 +5,26 @@
     "commit": "4ed728e23d65a01b64ab2b860298e37bcf60e922",
     "filename": "marketing-incrementality.zip",
     "sha256": "831a20c608d98d24d86c24a19bf169108e203f4eebc4a35041bc09974e1ffa8a"
+  },
+  {
+    "project": "revenue-forecasting",
+    "repository": "https://github.com/mpgibb/revenue-forecasting",
+    "commit": "076e30572b0138afae19e65e31add7af98adeece",
+    "filename": "revenue-forecasting.zip",
+    "sha256": "baf1db705be74bb1900f2eba8fcf9a836617f781376baa3489d36ae9be0a690b"
+  },
+  {
+    "project": "customer-value",
+    "repository": "https://github.com/mpgibb/customer-value",
+    "commit": "5d9400b42424eb4dba937d8a4b0330181fec27ed",
+    "filename": "customer-value.zip",
+    "sha256": "b4ff992b799a493c4fb21ab65a8d7e50338627cbd86e0df788efea39dfed3264"
+  },
+  {
+    "project": "operational-planning",
+    "repository": "https://github.com/mpgibb/operational-planning",
+    "commit": "c0fd557c645d0328ff603793868b872400239143",
+    "filename": "operational-planning.zip",
+    "sha256": "0d9be2ec4494bd5991ec8a2e45d84e55a75bc6da7850e7d1e8af115b96bb6f4c"
   }
 ]

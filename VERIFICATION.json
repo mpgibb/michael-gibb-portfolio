@@ -1,59 +1,73 @@
 {
-  "updated": "2026-09-28",
-  "release": "commercial portfolio",
-  "publication": "verified production",
+  "updated": "2026-09-29",
+  "release": "completed commercial research and executive summaries",
   "local": {
     "lint": "passed",
     "typescript": "passed",
     "build": "passed",
     "http_smoke": "passed",
-    "unavailable_routes": "404, no redirect",
-    "source_zip": "SHA-256 verified"
+    "public_routes": 6,
+    "download_archives": 4
   },
-  "study": {
-    "repository": "https://github.com/mpgibb/marketing-incrementality",
-    "revision": "4ed728e23d65a01b64ab2b860298e37bcf60e922",
-    "tests": 7,
-    "ci": "passed",
-    "reproduction": "exact tracked data and results"
-  },
-  "dns_changes": [],
+  "research": [
+    {
+      "project": "marketing-incrementality",
+      "repository": "https://github.com/mpgibb/marketing-incrementality",
+      "revision": "4ed728e23d65a01b64ab2b860298e37bcf60e922",
+      "tests": 7,
+      "archive_sha256": "831a20c608d98d24d86c24a19bf169108e203f4eebc4a35041bc09974e1ffa8a",
+      "clean_archive_reproduction": "exact"
+    },
+    {
+      "project": "revenue-forecasting",
+      "repository": "https://github.com/mpgibb/revenue-forecasting",
+      "revision": "076e30572b0138afae19e65e31add7af98adeece",
+      "tests": 9,
+      "archive_sha256": "baf1db705be74bb1900f2eba8fcf9a836617f781376baa3489d36ae9be0a690b",
+      "clean_archive_reproduction": "exact"
+    },
+    {
+      "project": "customer-value",
+      "repository": "https://github.com/mpgibb/customer-value",
+      "revision": "5d9400b42424eb4dba937d8a4b0330181fec27ed",
+      "tests": 9,
+      "archive_sha256": "b4ff992b799a493c4fb21ab65a8d7e50338627cbd86e0df788efea39dfed3264",
+      "clean_archive_reproduction": "exact"
+    },
+    {
+      "project": "operational-planning",
+      "repository": "https://github.com/mpgibb/operational-planning",
+      "revision": "c0fd557c645d0328ff603793868b872400239143",
+      "tests": 10,
+      "archive_sha256": "0d9be2ec4494bd5991ec8a2e45d84e55a75bc6da7850e7d1e8af115b96bb6f4c",
+      "clean_archive_reproduction": "exact"
+    }
+  ],
   "independent_technical_review": "pending",
-  "public_http_smoke": "passed",
   "browser": {
-    "desktop": "passed locally and on production",
-    "mobile": "390px and 320px identical local build passed",
-    "keyboard": "radio/range controls, boundary values and skip link passed",
-    "console": "no material warnings/errors",
-    "preview_indexing": "protected and noindex"
+    "industry_navigation": "pointer and keyboard passed",
+    "escape_dismissal": "passed",
+    "executive_summaries": 4,
+    "scenario_controls": "passed",
+    "mobile_widths": [
+      320,
+      390
+    ],
+    "horizontal_overflow": "none",
+    "console": "no material warnings/errors"
   },
-  "public_zip_reproduction": {
-    "tests": 7,
-    "identical_generated_files": 4
+  "indexing": {
+    "local_and_preview": "noindex",
+    "production": "index, follow; six public sitemap URLs"
   },
-  "dns_comparison": "all queried authoritative records unchanged",
-  "tls": "both names validated",
-  "redirects": "paths and queries preserved without loops",
-  "provider_deletions": "awaiting final browser confirmation",
-  "historical_objects": "known old GitHub SHA-addressed files remain retrievable",
-  "public_wording_update": {
-    "scope": "case-study copy, linked study documentation, source download and current project instructions",
-    "research_results": "unchanged",
-    "protocol_hash": "refreshed for documentation edit",
-    "source_archive": "current tracked study source, verified SHA-256"
-  },
-  "release_ref": "main",
+  "production_verification_command": "TEST_BASE_URL=https://michaelpgibb.com EXPECT_INDEXABLE=true pnpm test:smoke",
   "deployment_status": "https://vercel.com/mike-gibb/michael-gibb-portfolio/deployments",
   "ci_status": "https://github.com/mpgibb/michael-gibb-portfolio/actions?query=branch%3Amain",
-  "history_reset": {
-    "scope": [
-      "portfolio",
-      "marketing study"
-    ],
-    "retained_history": "one current-source snapshot in each repository",
-    "numerical_results": "unchanged",
-    "archive": "rebuilt from new study root; SHA-256 recorded in public/downloads/manifest.json",
-    "previous_browser_checks": "remain applicable; page source and styling unchanged",
-    "provider_retained_objects": "not claimed erased"
-  }
+  "dns_changes": [],
+  "email_changes": [],
+  "paid_services_added": [],
+  "future_collections": [
+    "Sports analytics",
+    "Other industries"
+  ]
 }

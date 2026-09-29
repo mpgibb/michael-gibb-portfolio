@@ -1,51 +1,61 @@
 # Project status
 
-Updated September 28, 2026. The commercial portfolio replaces the earlier content direction. The commercial release is live and verified. Historical source cleanup is complete; two provider deletion actions await final browser confirmation. See VERIFICATION.json for recorded checks.
+Updated September 29, 2026. All four commercial studies now have completed synthetic evaluations, dedicated case-study pages, executive summaries, reproducible source and downloads. Independent technical review remains pending. Sports analytics and Other industries are future collections.
 
 ## Release and ownership
 
 - Canonical website: https://michaelpgibb.com
+- Research collection: https://michaelpgibb.com/research
 - Portfolio source: https://github.com/mpgibb/michael-gibb-portfolio
-- Hosting: https://vercel.com/mike-gibb/michael-gibb-portfolio ; existing Hobby plan, production main, Node 24, pnpm 11.19.0, Next.js 16.3.6.
-- Flagship study: https://github.com/mpgibb/marketing-incrementality ; source/results revision 4ed728e (full revision and ZIP hash in public/downloads/manifest.json).
+- Vercel project: https://vercel.com/mike-gibb/michael-gibb-portfolio
+- Current build/deployed commit: inspect the project’s Deployments page and GitHub checks on main.
+- Hosting remains the existing Hobby plan, standard Next.js 16.3.6, Node 24 and pnpm 11.19.0.
 - Contact: mike@michaelpgibb.com ; https://www.linkedin.com/in/mp-gibb/ . No approved résumé has been supplied.
 
-Current source is the `main` branch after the September 28 history reset. The portfolio and flagship study each start from one current-source snapshot; the obsolete portfolio feature branch was removed. The source download identifies the new study revision and archive hash. See the [current GitHub checks](https://github.com/mpgibb/michael-gibb-portfolio/actions?query=branch%3Amain) and [Vercel deployments](https://vercel.com/mike-gibb/michael-gibb-portfolio/deployments) for the exact deployment commit and build status. Page content, design, research code, data and evaluation results are unchanged by the reset.
+## Completed commercial research
 
-## Commercial research and evidence
+| Source | Published study revision | Correctness tests |
+|---|---|---:|
+| [marketing-incrementality](https://github.com/mpgibb/marketing-incrementality) | `4ed728e` | 7 |
+| [revenue-forecasting](https://github.com/mpgibb/revenue-forecasting) | `076e305` | 9 |
+| [customer-value](https://github.com/mpgibb/customer-value) | `5d9400b` | 9 |
+| [operational-planning](https://github.com/mpgibb/operational-planning) | `c0fd557` | 10 |
 
-The homepage leads with commercial analytics/AI leadership, supplied professional background and one evaluated synthetic study. Marketing effectiveness, sales/revenue operations, customer value and internal operations are the four application areas. Three future studies are explicitly planned and have no invented repository, download or results.
+The source ZIPs are exact tracked-file archives of these commits. Full revisions and SHA-256 hashes are recorded in public/downloads/manifest.json. Results JSON copies in lib and public/downloads match each study’s generated summary.
 
-The flagship implements a stratified randomized campaign with 6,000 synthetic customers and a separate 4,000-customer historical cohort. The adjusted estimate is $8.1555 per assigned customer (95% interval $6.3599–$9.9511), compared with an unadjusted $8.0695 ($5.5134–$10.6257); known effect $8.00. Adjustment narrows the primary interval by 29.8%. At an assumed fixed-campaign cost of $6, net contribution is $2.1555 ($0.3599–$3.9511). These are simulated outcomes, not client impact.
+- **Marketing:** original 6,000-customer randomized synthetic study remains unchanged. Added an executive summary explaining the $2.16 estimated net contribution at a $6 assumed cost, with a $0.36–$3.95 interval and fixed-treatment limitations.
+- **Revenue:** generated 5,760 opportunities per scenario; evaluated twelve held-out forecast origins, three horizons and three scenarios. Stable 12-week WAPE is 6.5% for the detailed model, 6.0% for the pooled model and 19.6% for fixed weights. All detailed-model 95% ranges miss after the abrupt slowdown. Baselines, probability calibration and negative results are visible.
+- **Customers:** generated 9,720 customers in 54 cohorts, with a maturity gap before 2,160 final randomized customers. Survival/value prediction improves over segment means, but the learned policy’s estimated net effect at $35/contact is −$0.04 per eligible customer (95% interval −$7.06 to $6.98). No profitable rollout is claimed. No-effect and response-shift scenarios remain visible.
+- **Operations:** completed a constrained weekly staffing study over 52 held-out weeks. The stochastic policy costs $59,028 less than the buffer rule in the stable simulation, serving 99.38% versus 99.83% of demand. Surge savings have an interval including zero. A cross-platform reproduction check exposed floating-point tie sensitivity; integer micro-dollar comparisons and a regression test now make schedule selection deterministic. No seed, holdout or business-cost tuning was performed after outcomes.
 
-Across 400 base-scenario experiments, adjusted coverage is 94.5% (Monte Carlo SE 1.14 percentage points); null false positives are 5.5%. Under a weakened historical relationship, adjustment worsens RMSE to $2.20 versus $1.65 for the baseline. All results and limitations remain visible. Cost sensitivity holds treatment fixed and cannot justify arbitrary budget allocation.
+Each new repository includes a protocol recorded before evaluation, fixed seeds/configuration, original data generator, data dictionary, full report, model/evaluator, tests, CI and source/data hashes. Predictions and decisions use only information available at their declared cutoffs. Oracle results are evaluator-only benchmarks.
 
-Reproduction: clone the study repository, run `uv sync --frozen`, `uv run python -m unittest discover -s tests -v`, `uv run python study.py`, then `git diff --exit-code -- data results`. Python 3.11.16, fixed seeds/configuration, CSV/source hashes and a committed protocol are included. Seven correctness tests and research CI passed. Independent technical review remains pending.
+## Website and verification
 
-## Verification and historical cleanup
+The Research dropdown provides Commercial, Sports analytics and Other industries. The latter two explicitly contain no completed studies yet. The industry collection page is public and included in the production sitemap. Every commercial case study begins with an executive summary, followed by decision, implication, evidence, data, methodology, limitations and source.
 
-Local lint, TypeScript and production build passed. HTTP smoke covers all five pages, section order, status labels, metadata/canonicals, contact links, the source ZIP/hash, saved result JSON, robots/sitemap and unavailable routes. Retired project/download paths return 404 without an unrelated redirect. Desktop and 390px/320px local browser review passed, with no horizontal page overflow. All routes loaded directly and after refresh. Public production and protected preview interactivity, keyboard controls and metadata passed with no material console messages. A fresh copy of the public ZIP passed all seven tests and reproduced all four generated data/result files exactly. Current source/downloads contain only the new direction; old screenshots and historical reports have been removed from the current tree.
+Local lint, TypeScript, production build and HTTP smoke checks passed. The smoke suite covers six public pages, metadata/canonicals, contact links, section order, four ZIP checksums, four result downloads, robots/sitemap and unavailable routes. Fresh extracted copies of all four archives passed 35 total correctness tests and reproduced every stored data/result file exactly. The new study repositories passed their independent GitHub reproduction checks, including the corrected operations release.
 
-Branches, tags, commits, associated research repositories, GitHub metadata and provider deployments were inventoried before cleanup. Only the owner is a collaborator; no other active editing session, fork, issue, pull request, release or Actions artifact was found for this portfolio. History cleanup preserved unrelated source and used expected-reference leases before remote changes. Obsolete branches and six Actions run records were removed. Known old SHA-addressed GitHub files remain publicly retrievable despite branch cleanup. See [REMOVAL_AUDIT.md](docs/REMOVAL_AUDIT.md) for completed actions, pending provider deletions and explicit limitations.
+Browser checks cover the industry dropdown, pointer and keyboard operation, Escape dismissal, industry navigation, all four executive summaries, scenario and horizon controls, and mobile layouts at 320px and 390px. No horizontal page overflow or material console warnings/errors was found. Local builds remain noindex; production uses the purchased-domain canonical and public indexing. Run the public smoke command below after each deployment; CI and deployment status identify the deployed revision.
+
+```bash
+pnpm check
+pnpm test:smoke --start
+TEST_BASE_URL=https://michaelpgibb.com EXPECT_INDEXABLE=true pnpm test:smoke
+```
 
 ## Domain, email and costs
 
-No DNS changes were made for this release. Authoritative before/after records match, including nameservers, MX, SPF, full DKIM, DMARC and both ACME TXT values. TLS validation passed for apex and www; HTTP/www redirect chains retain the project path and query parameters and terminate at the canonical HTTPS page without loops. Porkbun remains registrar, authoritative DNS and email provider. Preserve all four Porkbun nameservers, apex A 216.198.79.1 and www CNAME 6c1ebdf435fa4ed5.vercel-dns-017.com. (TTL 600), wildcard parking, MX, SPF, DKIM, DMARC and existing ACME TXT records. The www domain retains its 308 redirect to the apex. Local DNS snapshots are ignored and must not be published.
+No DNS, nameserver, email, plan or payment changes were made for this research release. Porkbun remains registrar, authoritative DNS and email provider. Preserve apex A 216.198.79.1 and www CNAME 6c1ebdf435fa4ed5.vercel-dns-017.com. (TTL 600), nameservers, wildcard parking, MX, SPF, DKIM, DMARC and ACME TXT records. The www domain retains its 308 redirect to the apex.
 
-Michael previously confirmed actual send and receive delivery in both directions after the original domain connection. This release makes no email changes. No paid service, upgrade or monitoring job has been added; existing domain/mailbox renewals remain unchanged.
+Michael previously confirmed actual send and receive delivery in both directions. No paid services, upgrades or recurring monitoring were added. Existing domain/mailbox renewals are unchanged.
 
-## Operations and rollback
+## Operations, editorial policy and rollback
 
-Use README.md for local checks and deployment. Production main publishes through the existing scoped GitHub integration; other branches create protected noindex previews. Production uses the purchased-domain canonical URLs, public sitemap and index/follow. No custom secrets, live Python service or model API are needed.
+Read AGENTS.md and README.md before changes. Keep all synthetic labels, limitations and pending independent-review statements accurate. The standing public editorial policy remains in force. Do not restore superseded content or publish private records, credentials, local environments or audit artifacts.
 
-Only clean releases under this content policy are eligible for rollback. Do not restore earlier exports, removed artifacts or obsolete deployments. After history cleanup, re-clone instead of merging an old clone. For a code defect, revert to a clean release and rebuild with VERCEL_ENV=production. Domain configuration and email records should remain untouched during code rollback.
+Production main publishes through the existing scoped GitHub integration; other branches create protected noindex previews. No custom secrets, live Python service or model API are required. Rebuild in the production environment before promoting a preview, because indexing is environment-dependent.
 
-Browser evidence: [desktop homepage](docs/verification/commercial/desktop-home.png), [interactive result](docs/verification/commercial/desktop-explorer.png), [mobile homepage](docs/verification/commercial/mobile-home.png). Mobile images were captured from the identical local production build.
+The clean pre-extension release is portfolio commit 7d94eea7753b42b95a7b92ed75946aae39fad8a2. If necessary, revert the extension commit and deploy a fresh production build; this returns the additional studies to their prior planned status. Reverting the website need not delete the independent study repositories. Do not reset DNS or email to roll back code. Never roll back to the older removed-content releases. Re-clone if working from a clone predating the history reset.
 
-## Public wording update
-
-Public case-study copy, study documentation and the source download now focus on research and review status without development-tool credits. Methods, seeds, data and evaluation results are unchanged; the protocol documentation hash and download manifest were refreshed. The linked study repository contains the same reviewed documentation as the downloadable archive.
-
-## Repository history reset
-
-At Michael's request, earlier commits were removed from the portfolio and flagship study branch histories. Both now start with a current-source snapshot; the obsolete portfolio feature branch was deleted. Updates used exact expected-reference leases. The study README and provenance notes now describe the snapshot rather than claiming preserved commit ordering. The downloadable study archive and manifest point to the new study root. Re-clone before further work; old clones must not be merged or pushed back. Provider-retained objects and outside copies are a separate limitation, as recorded in docs/REMOVAL_AUDIT.md.
+Historical-copy limitations and earlier provider-deletion requests are tracked separately in docs/REMOVAL_AUDIT.md. This release makes no universal-erasure claim about old provider-retained commits or deployments.
