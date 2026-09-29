@@ -21,9 +21,9 @@ export function ResearchMenu() {
     onKeyDown={event => { if (event.key === "Escape" && open) { setOpen(false); trigger.current?.focus(); } }}>
     <button ref={trigger} type="button" aria-expanded={open} aria-controls="research-industries" onClick={() => setOpen(previous => !previous)}>Research <span aria-hidden="true">⌄</span></button>
     <ul id="research-industries" className="research-dropdown" hidden={!open}>
-      <li><Link href="/research#commercial" onClick={() => setOpen(false)}><strong>Commercial</strong><span>Four evaluated studies</span></Link></li>
-      <li><Link href="/research#sports" onClick={() => setOpen(false)}><strong>Sports analytics</strong><span>Future collection</span></Link></li>
-      <li><Link href="/research#other-industries" onClick={() => setOpen(false)}><strong>Other industries</strong><span>Future collection</span></Link></li>
+      <li><Link href="/research" onClick={() => setOpen(false)}><strong>Published research</strong><span>Findings, evidence and source</span></Link></li>
+      <li><Link href="/research?status=all&industry=Sports%20analytics%20and%20baseball" onClick={() => setOpen(false)}><strong>Sports analytics</strong><span>Baseball research agenda</span></Link></li>
+      <li><Link href="/research?status=agenda" onClick={() => setOpen(false)}><strong>Research agenda</strong><span>60 studies across 20 industries</span></Link></li>
       <li className="research-all"><Link href="/research" onClick={() => setOpen(false)}>Browse research →</Link></li>
     </ul>
   </div>;

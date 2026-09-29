@@ -1,11 +1,9 @@
-# Source provenance
+# Research and website provenance
 
-The portfolio continues the user's supplied design and earlier standard Next.js migration. The commercial revision was authorized on September 28, 2026. Old exports are not authoritative content sources and must not be used to restore retired material.
+The website retains the established visual design and standard Next.js runtime. Professional background is limited to supplied information; research findings are not client achievements.
 
-The marketing study is new, original synthetic research developed for Michael P. Gibb's portfolio. Its repository contains a current-source snapshot of the protocol, implementation and evaluation. Earlier commit history is not retained. The generated result JSON records configuration, seeds, Python version, data hashes and code-input hashes. The frontend copies those evaluated results and distributes a tracked-source ZIP identified by exact commit and SHA-256 in public/downloads/manifest.json.
+The 60-study catalog is a projection of defined research questions, methods and source references. Planned entries contain no results. Evaluated artifacts originate in [michael-gibb-research](https://github.com/mpgibb/michael-gibb-research), with code revisions, frozen configurations, dataset release/checksums and software versions. S28 uses the full UCI Bank Marketing additional dataset; see its DATA.md, PROTOCOL.md and REPORT.md for source attribution, features, splits and limitations.
 
-No real client data, commercial outcome, employer metric or third-party dataset was used. User-supplied professional background is retained without adding unverified achievements. Independent technical review remains pending.
+The four original commercial demonstrations use documented synthetic generators in independent repositories. Their exact source revisions and ZIP checksums remain in `public/downloads/manifest.json`. Aggregate results in `lib/` match the downloadable files. The frontend never invents research results or converts hypothetical economics into realized outcomes.
 
-The two user-supplied source ZIPs were sanitized in place to remove retired project material, including nested archives, while preserving unrelated files. They now include a current-source notice and remain historical references, not release inputs. Exact before/after archive hashes are recorded in the local ignored audit.
-
-The three additional commercial studies use original documented synthetic generators. Each independent repository records its evaluation protocol before implementation results, includes NumPy/SciPy lockfiles and targeted correctness tests, and publishes detailed data, predictions/decisions and source hashes. Reports retain every evaluated scenario. Their exact source commits and archive hashes are in the shared download manifest. No original customer, employer or CRM records are used.
+Independent technical review remains pending. Only permitted aggregate artifacts and reviewed source are published.

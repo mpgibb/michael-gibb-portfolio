@@ -1,63 +1,39 @@
 # Project status
 
-Updated September 29, 2026. All four commercial studies now have completed synthetic evaluations, dedicated case-study pages, executive summaries, reproducible source and downloads. Independent technical review remains pending. Sports analytics and Other industries are future collections.
+Updated September 29, 2026. Research-program milestone: one evaluated public-data study (S28), 59 planned studies across the full 60-study catalog, and four separately labeled synthetic demonstrations. Independent technical review is pending.
 
-## Release and ownership
+## Published content and research
 
-- Canonical website: https://michaelpgibb.com
-- Research collection: https://michaelpgibb.com/research
-- Portfolio source: https://github.com/mpgibb/michael-gibb-portfolio
+- Canonical site: https://michaelpgibb.com
+- Research catalog: https://michaelpgibb.com/research
+- S28 case: https://michaelpgibb.com/research/s28-sales-contact-prioritization-before-the-call-begins
+- Website source: https://github.com/mpgibb/michael-gibb-portfolio
+- Program source: https://github.com/mpgibb/michael-gibb-research
 - Vercel project: https://vercel.com/mike-gibb/michael-gibb-portfolio
-- Current build/deployed commit: inspect the project’s Deployments page and GitHub checks on main.
-- Hosting remains the existing Hobby plan, standard Next.js 16.3.6, Node 24 and pnpm 11.19.0.
-- Contact: mike@michaelpgibb.com ; https://www.linkedin.com/in/mp-gibb/ . No approved résumé has been supplied.
 
-## Completed commercial research
+S28 evaluates 41,188 UCI Bank Marketing records with a chronological 70% development / 10% calibration / 20% final split. At 20% final contact capacity the history rule identifies 934 subscriptions versus 843 for the development-selected logistic model. The primary log-loss difference is +0.0822 (95% interval 0.0470–0.1177), favoring the simpler rule. This is historical response prediction among observed contacts, not a causal effect or realized profit.
 
-| Source | Published study revision | Correctness tests |
-|---|---|---:|
-| [marketing-incrementality](https://github.com/mpgibb/marketing-incrementality) | `4ed728e` | 7 |
-| [revenue-forecasting](https://github.com/mpgibb/revenue-forecasting) | `076e305` | 9 |
-| [customer-value](https://github.com/mpgibb/customer-value) | `5d9400b` | 9 |
-| [operational-planning](https://github.com/mpgibb/operational-planning) | `c0fd557` | 10 |
+Executed analysis revision: `da76dd823b1b242cd90fc0280f93926d2bd575ba`; research release with reports and checks: `5cb444d`. Run: `S28-da76dd82-74adfc57`. The result JSON contains source/data hashes and all prespecified comparisons. No future study is claimed evaluated. The catalog separates execution/publication status; only S28 receives a full program case-study route.
 
-The source ZIPs are exact tracked-file archives of these commits. Full revisions and SHA-256 hashes are recorded in public/downloads/manifest.json. Results JSON copies in lib and public/downloads match each study’s generated summary.
+Original demonstration revisions remain marketing `4ed728e`, revenue `076e305`, customer value `5d9400b`, operations `c0fd557`; full revisions and archive hashes are in the download manifest. These synthetic evaluations remain separate from the 60-study program.
 
-- **Marketing:** original 6,000-customer randomized synthetic study remains unchanged. Added an executive summary explaining the $2.16 estimated net contribution at a $6 assumed cost, with a $0.36–$3.95 interval and fixed-treatment limitations.
-- **Revenue:** generated 5,760 opportunities per scenario; evaluated twelve held-out forecast origins, three horizons and three scenarios. Stable 12-week WAPE is 6.5% for the detailed model, 6.0% for the pooled model and 19.6% for fixed weights. All detailed-model 95% ranges miss after the abrupt slowdown. Baselines, probability calibration and negative results are visible.
-- **Customers:** generated 9,720 customers in 54 cohorts, with a maturity gap before 2,160 final randomized customers. Survival/value prediction improves over segment means, but the learned policy’s estimated net effect at $35/contact is −$0.04 per eligible customer (95% interval −$7.06 to $6.98). No profitable rollout is claimed. No-effect and response-shift scenarios remain visible.
-- **Operations:** completed a constrained weekly staffing study over 52 held-out weeks. The stochastic policy costs $59,028 less than the buffer rule in the stable simulation, serving 99.38% versus 99.83% of demand. Surge savings have an interval including zero. A cross-platform reproduction check exposed floating-point tie sensitivity; integer micro-dollar comparisons and a regression test now make schedule selection deterministic. No seed, holdout or business-cost tuning was performed after outcomes.
+## Verification
 
-Each new repository includes a protocol recorded before evaluation, fixed seeds/configuration, original data generator, data dictionary, full report, model/evaluator, tests, CI and source/data hashes. Predictions and decisions use only information available at their declared cutoffs. Oracle results are evaluator-only benchmarks.
+- Research: 15 focused checks pass with warnings treated as errors. Independent recomputation from private held-out predictions agrees with all 24 published model metrics. Data partitions, response counts, frontier accounting, calibration bins and selection provenance pass.
+- Website: lint, TypeScript and optimized build pass. Seven public routes, 59 unavailable unpublished routes, canonical/contact metadata, all four existing source ZIP checksums, matching S28 aggregate export, emitted CSS, robots and sitemap pass locally.
+- Browser: desktop plus 390px and 320px checks; catalog industry/method/decision/search filters, empty state, reset, query navigation and keyboard menu pass. Model/capacity controls change saved counts; assumed economic extremes and reset produce correct arithmetic. No horizontal document overflow at tested widths.
+- Deployment: verify this release's GitHub checks and Vercel production status before treating the milestone as live. The domain's deployed revision is available in the Vercel Deployments view. Public smoke verification is recorded after promotion.
 
-## Website and verification
+A local browser tab opened during a rebuild briefly encountered an obsolete chunk; restarting the local server and reloading resolved it. Production verification must use a fresh tab and check actual deployed CSS as well as HTML.
 
-The Research dropdown provides Commercial, Sports analytics and Other industries. The latter two explicitly contain no completed studies yet. The industry collection page is public and included in the production sitemap. Every commercial case study begins with an executive summary, followed by decision, implication, evidence, data, methodology, limitations and source.
+## Remaining work and boundaries
 
-Local lint, TypeScript, production build and HTTP smoke checks passed. The smoke suite covers six public pages, metadata/canonicals, contact links, section order, four ZIP checksums, four result downloads, robots/sitemap and unavailable routes. Fresh extracted copies of all four archives passed 35 total correctness tests and reproduced every stored data/result file exactly. The new study repositories passed their independent GitHub reproduction checks, including the corrected operations release.
+59 program studies have no executed result yet. Continue the specified initial sequence (S02, S04, S58, S60, S43), then every remaining ready design. Source inspection must establish access, license, feature timing, grain and a valid evaluation. Some designs require reviewed labels or bounded inference resources; no unavailable prerequisite is represented as completed evidence.
 
-Browser checks cover the industry dropdown, pointer and keyboard operation, Escape dismissal, industry navigation, all four executive summaries, scenario and horizon controls, and mobile layouts at 320px and 390px. No horizontal page overflow or material console warnings/errors was found. Local builds remain noindex; production uses the purchased-domain canonical and public indexing. Run the public smoke command below after each deployment; CI and deployment status identify the deployed revision.
+The catalog uses server rendering so initial HTML includes the published work; case studies and results are static. Training and raw data remain outside deployment. No unrestricted model API, paid infrastructure or scheduled job is configured.
 
-The first extension deployment served an older stylesheet alongside the new pages. A fresh production redeployment with “Use existing Build Cache” unchecked restored the correct styling. The smoke suite now fetches the published stylesheet and checks its research-menu, collection and executive-summary rules; this check reproduced the failure and passed after the clean rebuild. Public page/download/indexing checks, valid HTTPS and path/query-preserving HTTP/www redirects also passed. If this cache mismatch recurs, redeploy the current reviewed source without the existing build cache and rerun both HTTP and visual checks.
+## Deployment and rollback
 
-```bash
-pnpm check
-pnpm test:smoke --start
-TEST_BASE_URL=https://michaelpgibb.com EXPECT_INDEXABLE=true pnpm test:smoke
-```
+GitHub main remains the production branch; feature branches produce previews. Existing Next.js/Vercel settings, Hobby plan, contact, domain and Porkbun email remain unchanged. No DNS edits or new recurring costs were introduced. Preview/local indexing is disabled; production public pages are indexable.
 
-## Domain, email and costs
-
-No DNS, nameserver, email, plan or payment changes were made for this research release. Porkbun remains registrar, authoritative DNS and email provider. Preserve apex A 216.198.79.1 and www CNAME 6c1ebdf435fa4ed5.vercel-dns-017.com. (TTL 600), nameservers, wildcard parking, MX, SPF, DKIM, DMARC and ACME TXT records. The www domain retains its 308 redirect to the apex.
-
-Michael previously confirmed actual send and receive delivery in both directions. No paid services, upgrades or recurring monitoring were added. Existing domain/mailbox renewals are unchanged.
-
-## Operations, editorial policy and rollback
-
-Read AGENTS.md and README.md before changes. Keep all synthetic labels, limitations and pending independent-review statements accurate. The standing public editorial policy remains in force. Do not restore superseded content or publish private records, credentials, local environments or audit artifacts.
-
-Production main publishes through the existing scoped GitHub integration; other branches create protected noindex previews. No custom secrets, live Python service or model API are required. Rebuild in the production environment before promoting a preview, because indexing is environment-dependent.
-
-The clean pre-extension release is portfolio commit 7d94eea7753b42b95a7b92ed75946aae39fad8a2. If necessary, revert the extension commit and deploy a fresh production build; this returns the additional studies to their prior planned status. Reverting the website need not delete the independent study repositories. Do not reset DNS or email to roll back code. Never roll back to the older removed-content releases. Re-clone if working from a clone predating the history reset.
-
-Historical-copy limitations and earlier provider-deletion requests are tracked separately in docs/REMOVAL_AUDIT.md. This release makes no universal-erasure claim about old provider-retained commits or deployments.
+Use an ordinary Git revert or restore a previously verified production deployment. The prior verified baseline is `fa788a35541563c2c7354d2e7cc43d24f07f8dcb`. Verify content, artifact versions and indexing after rollback. If cached CSS is stale, redeploy the reviewed commit without the existing build cache, then rerun the public smoke suite. Preserve domain/email configuration.

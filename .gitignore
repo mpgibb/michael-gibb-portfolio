@@ -52,3 +52,5 @@ next-env.d.ts
 /playwright-report/
 *.tsbuildinfo
 !.env.example
+
+/AGENTS.md

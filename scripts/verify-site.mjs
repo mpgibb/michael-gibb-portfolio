@@ -2,6 +2,12 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { setTimeout } from "node:timers/promises";
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+const catalog = JSON.parse(readFileSync(new URL("../lib/program-catalog.json", import.meta.url), "utf8"));
+const published = catalog.filter(study => study.publicationStatus === "published");
+const agenda = catalog.filter(study => study.publicationStatus !== "published");
+assert.equal(catalog.length, 60);
+assert.equal(new Set(catalog.map(study => study.industry)).size, 20);
 const base = process.env.TEST_BASE_URL ?? "http://127.0.0.1:3101";
 const indexable = process.env.EXPECT_INDEXABLE === "true";
 const canonicalOrigin = process.env.EXPECT_CANONICAL_ORIGIN ?? "https://michaelpgibb.com";
@@ -19,7 +25,7 @@ try {
   }
   const titles = new Set();
   const checkedStyles = new Set();
-  for (const path of ["/", "/research", ...names.map(name=>`/projects/${name}`)]) {
+  for (const path of ["/", "/research", ...names.map(name=>`/projects/${name}`), ...published.map(study=>`/research/${study.slug}`)]) {
     const response = await fetch(new URL(path,base));
     assert.equal(response.status,200,path);
     const html = await response.text();
@@ -31,7 +37,7 @@ try {
       const stylesheet = await fetch(new URL(href.replaceAll('&amp;', '&'), base));
       assert.equal(stylesheet.status, 200, `Stylesheet: ${href}`);
       const css = await stylesheet.text();
-      for (const selector of ['.research-menu', '.research-dropdown', '.collection-grid', '.executive-summary']) {
+      for (const selector of ['.research-menu', '.research-dropdown', '.collection-grid', '.executive-summary', '.catalog-filters', '.program-explorer']) {
         assert(css.includes(selector), `Published stylesheet is missing ${selector}`);
       }
       checkedStyles.add(href);
@@ -58,9 +64,20 @@ try {
       assert.match(html,slug===names[0] ? /data-testid="incrementality-explorer"/ : /data-testid="commercial-evidence"/);
       assert(html.includes(`https://github.com/mpgibb/${slug}`));
       assert(html.includes(`/downloads/${slug}.zip`));
+    } else if (path.startsWith("/research/")) {
+      let last=-1;
+      for(const id of ["decision","implication","evidence","data","method","code"]) {const position=html.indexOf(`id="${id}"`); assert(position>last,`Program section order: ${id}`); last=position;}
+      assert.match(html,/Evaluated public-data study/);
+      assert.match(html,/data-testid="contact-priority-evidence"/);
+      assert.match(html,/application\/ld\+json/);
+      assert.match(html,/934/); assert.match(html,/843/); assert.match(html,/0.0822/);
+      assert(html.includes('/downloads/research/S28.json'));
     } else if (path === "/research") {
-      for(const id of ["commercial","sports","other-industries"]) assert(html.includes(`id="${id}"`));
-      assert.match(html,/Future collection/);
+      assert.match(html,/data-testid="research-catalog"/);
+      assert.match(html,/Research agenda/);
+      assert.match(html,/20/);
+      for(const study of published) assert(html.includes(`/research/${study.slug}`));
+      for(const study of agenda) assert(!html.includes(`href="/research/${study.slug}"`));
       for(const name of names) assert(html.includes(`/projects/${name}`));
     } else {
       assert.match(html,/growth and better business decisions/);
@@ -68,7 +85,21 @@ try {
     }
     console.log(`PASS ${path}: metadata, contact, status, section order and indexing`);
   }
-  assert.equal(titles.size,6);
+  assert.equal(titles.size,6+published.length);
+  for (const study of published) {
+    const response = await fetch(new URL(`/downloads/research/${study.resultFile}`,base)); assert.equal(response.status,200);
+    const bytes=Buffer.from(await response.arrayBuffer());
+    const expected=readFileSync(new URL(`../lib/program-results/${study.resultFile}`,import.meta.url));
+    assert.equal(createHash('sha256').update(bytes).digest('hex'),createHash('sha256').update(expected).digest('hex'));
+    const result=JSON.parse(bytes); assert.equal(result.study_id,study.id); assert.match(result.code_version,/^[a-f0-9]{40}$/);
+    assert.equal(study.executionStatus,'evaluated'); assert(study.codeUrl);
+    console.log(`PASS ${study.id}: published result matches validated local artifact`);
+  }
+  for (const study of agenda) {
+    const response=await fetch(new URL(`/research/${study.slug}`,base),{redirect:'manual'});
+    assert.equal(response.status,404,`Unpublished study ${study.id}`);
+  }
+  console.log(`PASS ${agenda.length} unpublished study routes return 404`);
   const manifest=await (await fetch(new URL('/downloads/manifest.json',base))).json();
   assert.equal(manifest.length,4);
   for(const item of manifest) {
@@ -98,7 +129,9 @@ try {
   const robots=await(await fetch(new URL('/robots.txt',base))).text();
   assert.match(robots,indexable ? /Allow: \// : /Disallow: \//);
   const sitemap=await(await fetch(new URL('/sitemap.xml',base))).text();
-  assert.equal((sitemap.match(/<loc>/g)??[]).length,indexable?6:0);
+  assert.equal((sitemap.match(/<loc>/g)??[]).length,indexable?6+published.length:0);
   if(indexable) {assert(robots.includes(`Sitemap: ${canonicalOrigin}/sitemap.xml`));for(const name of names) assert(sitemap.includes(`${canonicalOrigin}/projects/${name}`));}
+  for(const study of agenda) assert(!sitemap.includes(`/research/${study.slug}`));
+  if(indexable) for(const study of published) assert(sitemap.includes(`${canonicalOrigin}/research/${study.slug}`));
   console.log('PASS published stylesheets, results, favicon, robots, sitemap and removed URLs');
 } finally {server?.kill('SIGTERM');}

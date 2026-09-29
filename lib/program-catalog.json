@@ -1,0 +1,1737 @@
+[
+  {
+    "id": "S01",
+    "title": "Customer value and promotion concentration",
+    "slug": "s01-customer-value-and-promotion-concentration",
+    "industry": "Retail and e-commerce",
+    "question": "A retail marketing director must decide which customer segments deserve limited campaign capacity. Test whether forward-looking customer value identifies future high-value households better than recent spending alone, while detecting dependence on discounts.",
+    "methods": [
+      "Optimization & simulation",
+      "Predictive modeling"
+    ],
+    "methodSummary": "Hierarchical count/spend models; gradient boosting; customer value",
+    "decisionType": "Targeting & customer value",
+    "design": "Create household-month snapshots from transactions, baskets and available promotion records. Predict next-quarter purchasing and net sales using only prior history. Model transaction frequency and basket value separately; compare a hierarchical count/spend model with gradient boosting. Track discounted and full-price purchasing as separate outcomes.",
+    "theory": "Customer lifetime value is discounted expected future contribution, not historical revenue. Partial pooling stabilizes estimates for sparse households; a two-part model separates purchase incidence from conditional value. Apply assumed margins only in an explicitly labeled scenario layer.",
+    "evaluation": "Use rolling quarterly holdouts and household-clustered uncertainty. Compare against recency-frequency-monetary scoring and last-quarter sales. Report forecast error, calibration by value decile, top-budget value capture, and sensitivity to returns and discount accounting.",
+    "limitations": "The frequent-shopper panel is selective. Promotion exposure is observational: the project cannot establish incremental sales caused by a coupon or prove retention ROI.",
+    "dataset": {
+      "name": "dunnhumby — The Complete Journey",
+      "publisher": "dunnhumby",
+      "url": "https://www.dunnhumby.com/source-files/",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S02",
+    "title": "Inventory planning with coherent demand uncertainty",
+    "slug": "s02-inventory-planning-with-coherent-demand-uncertainty",
+    "industry": "Retail and e-commerce",
+    "question": "A merchandise planner must balance excess inventory against missed sales across stores and categories. Ask whether coherent probabilistic forecasts produce more reliable replenishment decisions than independent point forecasts.",
+    "methods": [
+      "Forecasting",
+      "Optimization & simulation"
+    ],
+    "methodSummary": "Hierarchical quantile forecasting; newsvendor; stochastic optimization",
+    "decisionType": "Capacity & operations",
+    "design": "Forecast 28-day product-store sales from lagged sales, calendar information and prices known at the forecast origin. Compare seasonal baselines and global gradient-boosted quantile models. Enforce consistency across store/category totals and evaluate multiple historical origins.",
+    "theory": "Hierarchical forecasting respects aggregation identities. The newsvendor rule chooses a demand quantile based on the ratio of underage to total underage-plus-overage cost. Scenario optimization extends this rule to budget and storage constraints; forecast accuracy and decision quality are separate objectives.",
+    "evaluation": "Report weighted scaled error, quantile loss and interval coverage by aggregation level. Compare simple order-up-to policies against forecast-driven policies in an explicit inventory simulator. Sweep lead times, holding costs and lost-sales assumptions; report regret against a hindsight benchmark only inside that simulator.",
+    "limitations": "Recorded sales are not unconstrained demand. True stock availability and economic costs are missing; stockout reduction and dollar savings must remain simulation results.",
+    "dataset": {
+      "name": "M5 Walmart sales",
+      "publisher": "M5 competition organizers / Walmart",
+      "url": "https://github.com/Mcompetitions/M5-methods",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S03",
+    "title": "When does a customer become worth winning back?",
+    "slug": "s03-when-does-a-customer-become-worth-winning-back",
+    "industry": "Retail and e-commerce",
+    "question": "An e-commerce team needs to distinguish temporarily inactive buyers from customers unlikely to return. Estimate future transaction counts and revenue distributions to support the timing and prioritization of win-back campaigns.",
+    "methods": [
+      "Survival analysis",
+      "Predictive modeling"
+    ],
+    "methodSummary": "BG/NBD; Gamma-Gamma; count/spend challenger",
+    "decisionType": "Targeting & customer value",
+    "design": "Clean cancellations, returns and missing identifiers under documented rules. Fit BG/NBD purchase-frequency models and a Gamma-Gamma spend model on eligible positive purchases; compare with a flexible count/spend model when assumptions fail. Use successive purchase-history cutoffs and future observation windows.",
+    "theory": "BG/NBD combines heterogeneous purchase rates with an unobserved dropout process. Gamma-Gamma pools transaction values across customers and assumes an appropriate separation of spend and purchase frequency. A posterior probability of activity is model-based uncertainty, not an observed churn label.",
+    "evaluation": "Compare against simple recency rules and RFM segments. Evaluate held-out transaction-count error, aggregate revenue bias, calibration by recency/frequency cohort and interval coverage. Test whether frequency and spend independence is plausible; publish the challenger if it performs better.",
+    "limitations": "The data contain no randomized win-back intervention. Long-term value extrapolation is assumption-sensitive and concerns an older single retailer; do not present revenue as profit.",
+    "dataset": {
+      "name": "Online Retail II",
+      "publisher": "UCI / original retailer data donor",
+      "url": "https://archive.ics.uci.edu/dataset/502/online+retail+ii",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S04",
+    "title": "Incremental advertising under a fixed contact budget",
+    "slug": "s04-incremental-advertising-under-a-fixed-contact-budget",
+    "industry": "Advertising and marketing technology",
+    "question": "A marketing leader wants to reach people whose behavior changes because of advertising. Test whether treatment-effect targeting outperforms response-probability targeting at the same contact capacity.",
+    "methods": [
+      "Causal inference",
+      "Optimization & simulation"
+    ],
+    "methodSummary": "Potential outcomes; doubly robust learning; causal forest",
+    "decisionType": "Targeting & customer value",
+    "design": "Pin Criteo's corrected uplift release and audit assignment, sampling and eligible features. Estimate conditional treatment effects with a cross-fitted doubly robust learner and an honest causal forest. Use assigned treatment for intention-to-treat analysis; exclude realized exposure as a post-treatment predictor.",
+    "theory": "Potential outcomes define the effect as E[Y(1)-Y(0)|X]. Random assignment supports identification within the documented benchmark design; overlap and sampling mechanisms still matter. Policy evaluation must use outcomes on untouched data, not the sum of the model's own selected uplift predictions.",
+    "evaluation": "Reserve an independent evaluation split. Compare random allocation, treat-all/treat-none and response targeting using treatment-control policy contrasts or doubly robust policy value, with confidence intervals and uplift calibration. Show budget-specific uncertainty rather than AUROC alone.",
+    "limitations": "The original release had leakage; privacy subsampling prevents recovery of original advertiser economics. Confirm identification for the chosen release and label all effects as benchmark-population estimates, never advertiser ROI.",
+    "dataset": {
+      "name": "Criteo Uplift",
+      "publisher": "Criteo AI Lab",
+      "url": "https://ailab.criteo.com/criteo-uplift-prediction-dataset/",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S05",
+    "title": "How fragile is multi-touch attribution?",
+    "slug": "s05-how-fragile-is-multi-touch-attribution",
+    "industry": "Advertising and marketing technology",
+    "question": "A growth team wants to understand how campaign-credit rules change with attribution windows and incomplete journeys. Study whether sequence-aware conversion forecasts improve prediction and whether channel/touch credit is stable enough to inform further experiments.",
+    "methods": [
+      "Survival analysis",
+      "Predictive modeling"
+    ],
+    "methodSummary": "Discrete-time hazards; sequence learning; attribution sensitivity",
+    "decisionType": "Targeting & customer value",
+    "design": "Reconstruct eligible user journeys from timestamped impressions and clicks. Compare last-touch and time-decay summaries with a discrete-time conversion-hazard model and a compact sequence model. Apply the same observation and conversion windows across methods; use only available anonymized touch identifiers.",
+    "theory": "Survival analysis handles time until conversion and right censoring. Markov-removal or Shapley-style attribution distributes a model's predicted value across observed inputs; it does not identify the causal effect of removing an advertising channel.",
+    "evaluation": "Use chronological cutoffs, a gap for delayed conversions and user-grouped sensitivity checks. Report log loss, calibration, time-to-conversion error where identifiable, and credit-rank stability under window changes, touch deletion and identity fragmentation. Compare to a no-history baseline.",
+    "limitations": "Thirty days of observational, anonymized advertising records do not reveal causal channel lift. Do not convert attribution credit into verified incremental ROAS or invent absent spend fields.",
+    "dataset": {
+      "name": "Criteo Attribution Modeling for Bidding",
+      "publisher": "Criteo AI Lab",
+      "url": "https://ailab.criteo.com/criteo-attribution-modeling-bidding-dataset/",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S06",
+    "title": "The accuracy–latency frontier in ad prediction",
+    "slug": "s06-the-accuracylatency-frontier-in-ad-prediction",
+    "industry": "Advertising and marketing technology",
+    "question": "An advertising platform must score high-volume traffic within a serving budget. Determine which model delivers the best calibrated click predictions per unit of memory, latency and training cost.",
+    "methods": [
+      "Predictive modeling",
+      "Reliability evaluation"
+    ],
+    "methodSummary": "Sparse logistic regression; factorization machines; Pareto analysis",
+    "decisionType": "Risk & reliability",
+    "design": "Use a documented chronological subset first, then a larger scale tier. Compare hashed logistic regression, a factorization machine and one nonlinear interaction model. Keep feature transformations identical where possible; handle unseen categories and changing feature frequencies explicitly.",
+    "theory": "Logistic loss is a proper scoring rule for probability estimation. Factorization machines approximate sparse pairwise interactions through low-rank representations. Pareto optimization recognizes that no single model necessarily dominates accuracy, memory footprint and serving latency.",
+    "evaluation": "Hold out later daily files. Measure log loss, precision-recall performance, calibration, peak memory, throughput and p50/p95 latency under a fixed hardware and batch-size protocol. Compare sample-size scaling and ablate interaction features; include cold-start and drift slices.",
+    "limitations": "Click labels do not measure incremental sales or advertising profit. Report measured benchmark compute costs separately from extrapolated production costs; do not download or train on the full terabyte by default.",
+    "dataset": {
+      "name": "Criteo 1TB Click Logs",
+      "publisher": "Criteo AI Lab",
+      "url": "https://ailab.criteo.com/download-criteo-1tb-click-logs-dataset/",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S07",
+    "title": "Subscription renewal risk with actionable lead time",
+    "slug": "s07-subscription-renewal-risk-with-actionable-lead-time",
+    "industry": "Software and SaaS",
+    "question": "A subscription business needs enough advance warning to act on likely non-renewals. Test how much predictive value comes from usage deterioration versus payment/renewal history at realistic intervention cutoffs.",
+    "methods": [
+      "Survival analysis",
+      "Optimization & simulation",
+      "Predictive modeling"
+    ],
+    "methodSummary": "Temporal landmarking; calibrated boosting; discrete-time hazards",
+    "decisionType": "Targeting & customer value",
+    "design": "Build member snapshots before expected subscription expiry and reproduce the official churn definition. Compare an elastic-net logistic baseline with gradient boosting and, where complete renewal episodes permit, a discrete-time hazard model. Exclude transactions or usage recorded after each prediction cutoff.",
+    "theory": "A hazard models conditional non-renewal risk among subscriptions still at risk. Temporal landmarking aligns the available information with the intervention date. Expected-loss ranking combines risk and an explicitly assumed economic exposure, but risk alone does not identify persuadable customers.",
+    "evaluation": "Use month-based holdouts with label-maturation gaps. Report log loss, calibration, precision/recall at fixed contact capacity and performance by tenure and plan. Compare several warning horizons and remove payment/usage feature families in ablations.",
+    "limitations": "KKBox is a consumer music service, not a B2B account-revenue dataset. Saved subscribers and retention ROI require an intervention experiment; observed churn prediction cannot establish them.",
+    "dataset": {
+      "name": "KKBox Churn Prediction Challenge",
+      "publisher": "KKBOX / WSDM / Kaggle",
+      "url": "https://www.kaggle.com/competitions/kkbox-churn-prediction-challenge/data",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S08",
+    "title": "Does relational learning justify its complexity?",
+    "slug": "s08-does-relational-learning-justify-its-complexity",
+    "industry": "Software and SaaS",
+    "question": "A product analytics leader must choose between engineered SQL features and relational machine learning. Ask whether learning across users, posts and interactions improves future engagement prediction enough to justify maintenance and serving complexity.",
+    "methods": [
+      "Predictive modeling",
+      "Reliability evaluation"
+    ],
+    "methodSummary": "Relational inductive bias; temporal heterogeneous graphs; boosting",
+    "decisionType": "Markets & allocation",
+    "design": "Select a documented rel-stack engagement task and preserve its official prediction horizon and temporal splits. Compare a transparent SQL aggregation plus boosted-tree baseline with a heterogeneous graph model. Restrict every neighbor, edge and aggregate to information available at the task reference time.",
+    "theory": "Relational inductive bias exploits dependencies across linked entities; message passing shares information through the database graph. This differs from treating each customer row as independent. Temporal causality in feature construction is essential even though the task itself is predictive.",
+    "evaluation": "Report the official benchmark metric plus probability calibration, resource usage and performance on users with sparse history. Ablate relation types and compare against identical-budget SQL baselines. Audit neighborhood timestamps to expose graph leakage.",
+    "limitations": "Q&A engagement is a product-usage proxy. It does not establish paid SaaS revenue, conversion or the causal effect of a customer-success action.",
+    "dataset": {
+      "name": "RelBench rel-stack",
+      "publisher": "Stanford / Kumo.AI; Stack Exchange source data",
+      "url": "https://star-project.stanford.edu/relbench/",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S09",
+    "title": "Developer ecosystem health beyond star counts",
+    "slug": "s09-developer-ecosystem-health-beyond-star-counts",
+    "industry": "Software and SaaS",
+    "question": "A developer-platform or open-source program leader needs to distinguish brief attention from durable participation. Predict repeat contribution and contributor concentration from early public activity patterns.",
+    "methods": [
+      "Survival analysis",
+      "Statistical inference"
+    ],
+    "methodSummary": "Survival analysis; cohort effects; hierarchical shrinkage",
+    "decisionType": "Markets & allocation",
+    "design": "Construct repository and contributor cohorts from documented public event types. Define a qualifying contribution and a future return window in advance; exclude obvious automation in a sensitivity analysis. Model time to the next qualifying contribution with survival models and repository-level partial pooling.",
+    "theory": "Survival analysis handles contributors whose return has not yet been observed. Cohort analysis separates tenure from calendar effects; hierarchical estimates avoid overreacting to tiny repositories. Concentration metrics describe dependency on a small contributor base without pretending to measure employee productivity.",
+    "evaluation": "Train on earlier cohorts and evaluate later cohorts, with a repository-held-out stress test. Compare against stars, recent event count and simple recency. Report return-risk calibration, time-dependent prediction error and sensitivity to bot rules and archive coverage.",
+    "limitations": "Public GitHub activity excludes private work and paid usage. It cannot establish software sales, organization-wide productivity or the causal effect of community initiatives.",
+    "dataset": {
+      "name": "GH Archive",
+      "publisher": "GH Archive project",
+      "url": "https://www.gharchive.org/",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S10",
+    "title": "Delivery sequencing that combines optimization and driver experience",
+    "slug": "s10-delivery-sequencing-that-combines-optimization-and-driver-experience",
+    "industry": "Logistics and supply chain",
+    "question": "A last-mile operator needs feasible routes that balance travel efficiency with practical delivery order. Test whether learning from historical high-quality routes improves a constraint-based routing baseline.",
+    "methods": [
+      "Optimization & simulation",
+      "Reliability evaluation"
+    ],
+    "methodSummary": "Constrained routing; learning-to-rank; inverse-optimization ideas",
+    "decisionType": "Capacity & operations",
+    "design": "Use the provided travel-time matrix, stop/package features and documented constraints. Compare nearest-neighbor and classical local-search baselines with learned sequence preferences inside a constrained routing solver. Preserve an untouched route-level benchmark split and use station holdouts as a transfer test where feasible.",
+    "theory": "Vehicle routing is combinatorial optimization under feasibility constraints. Learning-to-rank or inverse-optimization ideas encode preferences implicit in expert sequences; imitation and physical travel minimization are different objectives and should be reported separately.",
+    "evaluation": "Use the official sequence-quality metric, constraint-violation counts, supplied travel-time totals and computation time. Ablate learned preferences and test travel-time perturbations. Show when a shorter route deviates from expert order rather than treating historical behavior as a globally optimal solution.",
+    "limitations": "Locations are obfuscated and route labels do not measure realized wage or fuel savings. Show geographic displays as schematic when appropriate and keep cost conversions explicitly assumed.",
+    "dataset": {
+      "name": "Amazon Last Mile Routing Research Challenge",
+      "publisher": "Amazon / MIT Center for Transportation and Logistics",
+      "url": "https://registry.opendata.aws/amazon-last-mile-challenges/",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S11",
+    "title": "Delivery promises and early exception prioritization",
+    "slug": "s11-delivery-promises-and-early-exception-prioritization",
+    "industry": "Logistics and supply chain",
+    "question": "An e-commerce operations team needs to identify orders likely to miss their delivery promise early enough to respond. Estimate both lateness probability and a delivery-time distribution at order approval.",
+    "methods": [
+      "Survival analysis",
+      "Optimization & simulation",
+      "Predictive modeling"
+    ],
+    "methodSummary": "Quantile boosting; survival/competing events; capacity-aware triage",
+    "decisionType": "Capacity & operations",
+    "design": "Join orders, items, seller information and coarse origin/destination geography with explicit grain checks. Use only fields available at approval; compare quantile boosting with a censoring-aware time-to-delivery model. Separate cancellation from delivery rather than treating undelivered orders as on-time.",
+    "theory": "Quantile prediction represents asymmetric delivery risk. Survival or competing-event models distinguish delivery from unresolved/canceled orders when timestamps support it. Decision theory converts calibrated risk into a service queue under a chosen cost of late versus unnecessary alerts.",
+    "evaluation": "Use chronological order holdouts and seller-held-out checks. Compare against the promised date and historical lane medians. Report interval coverage, late-order precision/recall at queue capacity and regional calibration; treat later reviews as outcomes, never predictors.",
+    "limitations": "The data do not show the causal effect of proactive contact or expedited shipping. Respect the dataset's noncommercial/share-alike terms and avoid publishing raw customer records.",
+    "dataset": {
+      "name": "Brazilian E-Commerce Public Dataset by Olist",
+      "publisher": "Olist",
+      "url": "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S12",
+    "title": "Regional freight resilience under capacity shocks",
+    "slug": "s12-regional-freight-resilience-under-capacity-shocks",
+    "industry": "Logistics and supply chain",
+    "question": "A supply-chain planning leader must understand dependence on particular corridors, modes and regions. Identify where a disruption concentrates exposure and compare hypothetical diversification plans.",
+    "methods": [
+      "Optimization & simulation"
+    ],
+    "methodSummary": "Network flows; robust optimization; CVaR stress analysis",
+    "decisionType": "Capacity & operations",
+    "design": "Build a commodity-specific origin-destination flow network from a pinned FAF release. Distinguish estimated base-year flows from projections. Formulate an interregional transportation problem with explicitly assumed modal capacities, transfer penalties and demand scenarios; add physical infrastructure data only as a separately documented extension.",
+    "theory": "Network flow conservation links regional supply and demand. Robust optimization minimizes losses across a defined uncertainty set; CVaR emphasizes severe modeled scenarios. This produces conditional planning recommendations rather than predictions of an unobserved real disruption.",
+    "evaluation": "Compare current shares, proportional diversion and optimized diversification under the same scenarios. Verify conservation and feasibility; report unserved tonnage, concentration and scenario cost. Test rank stability across releases and commodity definitions; validate projections against later observations only where comparable vintages exist.",
+    "limitations": "FAF is an estimated aggregate flow system, not shipment traces or a physical road network. Capacity, rerouting feasibility and costs cannot be inferred from tonnage alone.",
+    "dataset": {
+      "name": "Freight Analysis Framework",
+      "publisher": "BTS / FHWA",
+      "url": "https://www.bts.gov/faf",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S13",
+    "title": "Reliable quality screening with many sensors and few failures",
+    "slug": "s13-reliable-quality-screening-with-many-sensors-and-few-failures",
+    "industry": "Manufacturing",
+    "question": "A manufacturing quality leader must identify high-risk units without flooding inspection capacity. Test whether a stable, compact sensor model can match a more complex classifier while controlling missed failures.",
+    "methods": [
+      "Predictive modeling",
+      "Statistical inference",
+      "Reliability evaluation"
+    ],
+    "methodSummary": "Elastic net; PCA process monitoring; stability selection",
+    "decisionType": "Risk & reliability",
+    "design": "Audit SECOM timestamps, missingness and duplicated/near-constant measurements. Compare elastic-net logistic regression, a PCA-based process-monitoring baseline and boosted trees. Fit imputation, scaling and feature selection entirely within training folds; include missingness indicators only when available before inspection.",
+    "theory": "Regularization controls variance when predictors outnumber useful failure observations. Latent-factor methods model correlated process variation; stability selection asks whether selected signals persist under resampling. Cost-sensitive decision theory separates failure detection from the chosen inspection threshold.",
+    "evaluation": "Use time-ordered evaluation where timestamp coverage supports it, otherwise nested stratified validation with the limitation stated. Report precision-recall performance, recall at fixed inspection capacity, calibration and feature-selection stability. Quantify wide uncertainty due to the small failure count.",
+    "limitations": "Anonymous sensors prevent engineering root-cause claims. A correlated measurement is not a proven process fault, and this small historical sample does not validate deployment in a modern plant.",
+    "dataset": {
+      "name": "SECOM",
+      "publisher": "UCI / manufacturing-process data donor",
+      "url": "https://archive.ics.uci.edu/dataset/179/secom",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S14",
+    "title": "Maintenance warnings without an alarm flood",
+    "slug": "s14-maintenance-warnings-without-an-alarm-flood",
+    "industry": "Manufacturing",
+    "question": "A maintenance team needs warnings early enough to schedule work, with few false alarms. Compare interpretable vibration change detection against an unsupervised anomaly model across independent bearing experiments.",
+    "methods": [
+      "Statistical inference",
+      "Reliability evaluation"
+    ],
+    "methodSummary": "Spectral features; control charts; change-point detection",
+    "decisionType": "Risk & reliability",
+    "design": "Extract spectral-band energy, envelope features and robust distribution summaries from vibration windows. Define an early-run reference period explicitly rather than assuming verified healthy labels. Compare robust control charts/change-point methods with a compact anomaly detector and enforce an alarm-persistence rule.",
+    "theory": "Statistical process control detects departures from a reference distribution. Change-point models distinguish sustained regime shifts from transient noise; sequential thresholds trade detection delay against average false-alarm frequency. Overlapping windows are dependent measurements, not independent test subjects.",
+    "evaluation": "Keep complete experiments or bearings together and show leave-run-out results wherever the small number of runs allows. Report time before documented failure, false alarms per operating hour and sensitivity to window length. Bootstrap by run only when meaningful; emphasize per-run results over spurious narrow intervals.",
+    "limitations": "A few laboratory failures cannot establish fleet-wide reliability. The onset of degradation is not fully labeled; maintenance savings and the effect of a repair policy require explicit simulation or prospective data.",
+    "dataset": {
+      "name": "IMS Bearings",
+      "publisher": "University of Cincinnati IMS / NASA",
+      "url": "https://data.nasa.gov/dataset/ims-bearings",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S15",
+    "title": "Remaining useful life with decisions that acknowledge uncertainty",
+    "slug": "s15-remaining-useful-life-with-decisions-that-acknowledge-uncertainty",
+    "industry": "Manufacturing",
+    "question": "A fleet planner must choose when to replace an asset when failure timing is uncertain. Test whether calibrated remaining-life distributions improve a simulated replacement policy relative to point estimates.",
+    "methods": [
+      "Forecasting",
+      "Optimization & simulation",
+      "Predictive modeling",
+      "Reliability evaluation"
+    ],
+    "methodSummary": "Degradation modeling; quantile sequences; asymmetric decision loss",
+    "decisionType": "Capacity & operations",
+    "design": "Use engine-level C-MAPSS train/test partitions and preserve operating-condition subsets. Compare an engineered degradation-index baseline, boosted quantile regression and one sequence model. Make remaining-life label capping and sensor normalization explicit, including ablations.",
+    "theory": "Reliability theory treats failure time as a random variable; conditional remaining life changes as new measurements arrive. Asymmetric loss reflects the different costs of early replacement and unexpected failure. Prediction intervals may be calibrated empirically, but dependent degradation sequences require more care than exchangeable conformal examples.",
+    "evaluation": "Report engine-level RUL error, the benchmark's asymmetric score and interval coverage by operating condition and life stage. Test an unseen-condition subset. Simulate replacement using only sequentially available measurements and compare fixed-age, point-estimate and uncertainty-aware rules.",
+    "limitations": "C-MAPSS is simulator-generated. Both asset behavior and the policy economics must be labeled as simulation; no real fleet savings or safety validation are established.",
+    "dataset": {
+      "name": "C-MAPSS turbofan degradation",
+      "publisher": "NASA",
+      "url": "https://www.nasa.gov/intelligent-systems-division/discovery-and-systems-health/pcoe/pcoe-data-set-repository/",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S16",
+    "title": "Planning for concentrated healthcare expenditure",
+    "slug": "s16-planning-for-concentrated-healthcare-expenditure",
+    "industry": "Healthcare delivery",
+    "question": "A healthcare planning team needs to anticipate next-year utilization and spending concentration. Determine whether baseline utilization plus access indicators predicts future expenditure better than demographics alone, without treating high spending as synonymous with clinical need.",
+    "methods": [
+      "Predictive modeling",
+      "Statistical inference"
+    ],
+    "methodSummary": "Two-part models; complex survey inference; longitudinal prediction",
+    "decisionType": "Markets & allocation",
+    "design": "Use eligible two-year MEPS panel records and the matching longitudinal weights. Predict second-year total expenditure and utilization from first-year information. Compare a two-part expenditure model with a flexible challenger; preserve survey strata and clusters in inference and analyze loss to follow-up.",
+    "theory": "A hurdle model separates the probability of any spending from the skewed positive amount. Design-based survey inference accounts for unequal selection and clustering. Longitudinal prediction helps planning, whereas causal effects of insurance or care programs need additional identification assumptions.",
+    "evaluation": "Hold out later panels where comparable definitions exist. Compare weighted mean, demographic and prior-spending baselines. Report weighted error, top-risk-group calibration, expenditure concentration captured and subgroup uncertainty; bootstrap or linearize according to the survey design.",
+    "limitations": "These are population planning estimates, not individual care recommendations. MEPS is not hospital operational telemetry; predicted cost must not be presented as a measure of treatment value or unmet clinical need.",
+    "dataset": {
+      "name": "Medical Expenditure Panel Survey (MEPS)",
+      "publisher": "AHRQ",
+      "url": "https://www.meps.ahrq.gov/mepsweb/data_stats/download_data_files.jsp",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S17",
+    "title": "Emergency-department waiting-time inequality and uncertainty",
+    "slug": "s17-emergency-department-waiting-time-inequality-and-uncertainty",
+    "industry": "Healthcare delivery",
+    "question": "A healthcare operations leader wants to know which visit groups experience the longest waits and how stable those patterns are. Estimate adjusted waiting-time distributions, not just a systemwide average.",
+    "methods": [
+      "Statistical inference"
+    ],
+    "methodSummary": "Survey-weighted quantiles; standardization; tail-risk analysis",
+    "decisionType": "Capacity & operations",
+    "design": "Select NHAMCS emergency-department years with comparable waiting-time, arrival and triage fields after codebook review. Use survey-weighted distributional or quantile models and a long-wait indicator model. Audit missing, capped and special-code values and distinguish visits that were never seen where identifiable.",
+    "theory": "Quantile modeling reveals tail behavior hidden by averages. Standardization compares groups under a common measured case mix; design-based variance respects the sampled-visit structure. Adjustment does not remove unmeasured operational differences or identify causal effects.",
+    "evaluation": "Compare weighted empirical quantiles with adjusted estimates and leave-year-out predictions. Report uncertainty, effective sample sizes, weighted calibration and sensitivity to missing waits. Suppress unreliable fine-grained cells instead of producing precise-looking rankings.",
+    "limitations": "NHAMCS is a sampled visit survey ending in 2022, not a complete hospital arrival/service log. It cannot directly calibrate a particular hospital's queue or prove staffing changes reduce waits.",
+    "dataset": {
+      "name": "NHAMCS emergency department public-use files",
+      "publisher": "CDC / NCHS",
+      "url": "https://www.cdc.gov/nchs/nhamcs/about/",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S18",
+    "title": "Medicare service concentration and regional market coverage",
+    "slug": "s18-medicare-service-concentration-and-regional-market-coverage",
+    "industry": "Healthcare delivery",
+    "question": "A healthcare strategy team needs to understand service mix and dependence on a small number of providers. Identify regional concentrations and changing specialty/service patterns that merit a closer market assessment.",
+    "methods": [
+      "Statistical inference"
+    ],
+    "methodSummary": "Concentration analysis; matrix factorization; multilevel trends",
+    "decisionType": "Markets & allocation",
+    "design": "Construct provider-service-year panels from the public CMS aggregates. Harmonize procedure codes and geographic definitions; distinguish provider location from beneficiary residence. Use service-mix factorization or clustering plus multilevel trend models. Add compatible Medicare enrollment denominators only as an explicitly sourced extension.",
+    "theory": "Concentration measures summarize how observed service volume is distributed across providers. Matrix factorization reveals recurring service portfolios; shrinkage stabilizes small-area trends. Ecological inference warns against translating aggregate utilization into individual access or clinical quality.",
+    "evaluation": "Test cluster stability across years and alternative volume definitions. Compare trend forecasts against last-year values, using later years as holdouts. Report suppression-related missingness and sensitivity to geographic boundaries and provider identifiers.",
+    "limitations": "Original Medicare Part B is only part of the market. Provider location does not prove patient access, service volume is not clinical quality, and concentration alone does not establish market power.",
+    "dataset": {
+      "name": "Medicare Physician & Other Practitioners",
+      "publisher": "CMS",
+      "url": "https://data.cms.gov/provider-summary-by-type-of-service/medicare-physician-other-practitioners",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S19",
+    "title": "Compound selection when laboratory tests are expensive",
+    "slug": "s19-compound-selection-when-laboratory-tests-are-expensive",
+    "industry": "Pharmaceuticals and biotechnology",
+    "question": "A discovery team must choose which compounds to test next under a limited assay budget. Evaluate whether uncertainty-aware selection finds active compounds more efficiently than random screening or choosing the largest predicted activity.",
+    "methods": [
+      "Predictive modeling",
+      "Reliability evaluation"
+    ],
+    "methodSummary": "Molecular representations; uncertainty estimation; active learning",
+    "decisionType": "Markets & allocation",
+    "design": "Choose a well-populated ChEMBL target and a compatible endpoint. Harmonize units, assay types and duplicate compound measurements before defining the label. Compare molecular-fingerprint models with one graph-based challenger. Run retrospective active-learning rounds by revealing withheld assay labels only after a selection.",
+    "theory": "Chemical structure provides an inductive bias for activity prediction. Bayesian/ensemble uncertainty supports an exploration-versus-exploitation tradeoff. Active learning selects informative measurements; it must distinguish epistemic model uncertainty from noisy or incompatible assays.",
+    "evaluation": "Use scaffold-separated and, when feasible, publication-time holdouts. Compare random, greedy and uncertainty/diversity acquisition under identical label budgets. Report hit rate, enrichment, calibration and chemical diversity; repeat acquisition trials with multiple seeds.",
+    "limitations": "This is retrospective selection within a measured compound pool. It does not establish clinical efficacy, safety, prospective laboratory hit rates or discovery of a new drug.",
+    "dataset": {
+      "name": "ChEMBL",
+      "publisher": "EMBL-EBI",
+      "url": "https://www.ebi.ac.uk/chembl/",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S20",
+    "title": "Trial completion risk from information available at registration",
+    "slug": "s20-trial-completion-risk-from-information-available-at-registration",
+    "industry": "Pharmaceuticals and biotechnology",
+    "question": "A clinical-development operations team must anticipate prolonged or unsuccessful trial execution. Study whether registration-time design and enrollment characteristics predict completion timing and early termination.",
+    "methods": [
+      "Survival analysis"
+    ],
+    "methodSummary": "Competing risks; survival calibration; historical snapshot design",
+    "decisionType": "Risk & reliability",
+    "design": "Define a cohort by registration period and study type. Reconstruct fields as recorded at registration using accessible record history or dated snapshots; do not use later actual enrollment or revised completion dates as baseline predictors. Fit competing-event models for completion and termination, retaining ongoing trials as censored.",
+    "theory": "Competing-risks analysis recognizes that termination prevents the intended completion event. Survival likelihoods handle incomplete follow-up; informative reporting delays and amendments can bias both event times and predictors. This is an operations forecast, not an efficacy comparison.",
+    "evaluation": "Use later registration cohorts as holdouts, allowing adequate follow-up. Compare simple phase/design strata with regularized survival models. Report horizon-specific calibration, censoring-adjusted Brier scores, event counts and sensitivity to status-reporting lag.",
+    "limitations": "Current registry records alone cannot support a leakage-free registration-time forecast. If history cannot be recovered, deliver a retrospective association study and label it accordingly; registry completion is not scientific success.",
+    "dataset": {
+      "name": "ClinicalTrials.gov study records",
+      "publisher": "NIH / National Library of Medicine",
+      "url": "https://clinicaltrials.gov/data-api/api",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S21",
+    "title": "Does molecular data add stable prognostic information?",
+    "slug": "s21-does-molecular-data-add-stable-prognostic-information",
+    "industry": "Pharmaceuticals and biotechnology",
+    "question": "A translational research team must decide whether a complex molecular signature adds information beyond a simpler clinical baseline. Test this increment under rigorous leakage and batch-effect controls in one cancer cohort.",
+    "methods": [
+      "Survival analysis",
+      "Predictive modeling",
+      "Statistical inference"
+    ],
+    "methodSummary": "Penalized Cox models; pathway aggregation; multi-omic integration",
+    "decisionType": "Risk & reliability",
+    "design": "Select only open TCGA clinical and processed molecular files with usable outcome definitions. Start with a clinical Cox model, add a prespecified pathway-level representation and compare with penalized multi-omic survival modeling. Perform normalization and feature selection inside training folds and keep all samples from a patient together.",
+    "theory": "Penalized proportional-hazards models address high dimensionality while pathway aggregation reduces degrees of freedom. Right censoring requires survival-aware scoring. Batch effects can masquerade as biological signal; incremental predictive value must be assessed against a clinical-only baseline.",
+    "evaluation": "Use nested patient-level validation and a collection-site holdout if feasible. Report time-specific calibration, concordance, integrated Brier score and feature stability. Test proportional-hazards assumptions and clinical-variable missingness; identify external validation as a future requirement.",
+    "limitations": "Retrospective prognostic association does not identify treatment benefit. Open TCGA cohorts do not establish clinical utility or readiness for patient care; controlled-access files are outside this project's scope.",
+    "dataset": {
+      "name": "TCGA open-access data through GDC",
+      "publisher": "National Cancer Institute",
+      "url": "https://gdc.cancer.gov/access-data/data-access-processes-and-tools",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S22",
+    "title": "Pitcher development signals that survive the next season",
+    "slug": "s22-pitcher-development-signals-that-survive-the-next-season",
+    "industry": "Sports analytics and baseball",
+    "question": "A player-development group needs to distinguish durable pitch quality from small-sample outcomes. Test whether pitch characteristics and context improve forecasts of future swing-and-miss and contact quality beyond recent results.",
+    "methods": [
+      "Forecasting",
+      "Predictive modeling",
+      "Statistical inference"
+    ],
+    "methodSummary": "Hierarchical shrinkage; staged probabilities; temporal transfer",
+    "decisionType": "Markets & allocation",
+    "design": "Create pitcher/pitch-type season histories from Statcast with explicit tracking-era and field-availability checks. Model swing, miss and contact outcomes in stages, using count, handedness and pitch characteristics available at the relevant stage. Pool sparse pitcher/pitch-type estimates hierarchically and forecast a later season.",
+    "theory": "Partial pooling reduces overreaction to small samples; multistage probability models respect the sequence from pitch to swing to contact. Measurement drift can change apparent skill. Changes in modeled pitch mix are conditional scenarios, not identified effects of coaching intervention.",
+    "evaluation": "Use season-forward holdouts and pitcher-level uncertainty. Compare with prior-season rates and league/pitch-type averages. Report calibration, log loss for binary outcomes, contact-quality error and rank stability across pitch-count thresholds and tracking eras.",
+    "limitations": "Observed pitch selection depends on opponent and situation. The study cannot prove that changing pitch mix improves performance, and outcome-stage variables must not leak into pre-pitch forecasts.",
+    "dataset": {
+      "name": "Statcast / Baseball Savant",
+      "publisher": "Major League Baseball",
+      "url": "https://baseballsavant.mlb.com/csv-docs",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S23",
+    "title": "Baseball strategy as a risk-sensitive decision problem",
+    "slug": "s23-baseball-strategy-as-a-risk-sensitive-decision-problem",
+    "industry": "Sports analytics and baseball",
+    "question": "A baseball strategy analyst wants to quantify when a stolen-base attempt or other base-running choice is worth the risk. Estimate the break-even success probability under different base-out states and scoring environments.",
+    "methods": [
+      "Optimization & simulation",
+      "Statistical inference"
+    ],
+    "methodSummary": "Markov reward processes; expected utility; partial pooling",
+    "decisionType": "Markets & allocation",
+    "design": "Parse Retrosheet events into validated base-out transitions and inning runs. Estimate era-specific run-expectancy tables with shrinkage for sparse states. For a stolen-base decision, compare expected runs after success, failure and no attempt using documented transition assumptions.",
+    "theory": "An absorbing Markov reward process links state transitions to expected remaining runs. Expected utility gives a break-even action threshold; risk-sensitive extensions examine the distribution of runs rather than the mean alone. Counterfactual transitions require assumptions about what would happen after each action.",
+    "evaluation": "Hold out seasons and check run-expectancy calibration and transition validity. Compare pooled and era-specific tables, bootstrap by game, and test rare-state sensitivity. Validate the transition engine with known game-state identities and explicitly distinguish predictive checks from causal policy evaluation.",
+    "limitations": "Managers select attempts non-randomly, and observed non-attempts are not randomized controls. Historical decision replay cannot by itself establish that a new strategy would cause more wins.",
+    "dataset": {
+      "name": "Retrosheet play-by-play",
+      "publisher": "Retrosheet",
+      "url": "https://www.retrosheet.org/eventfile.htm",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S24",
+    "title": "Roster allocation under aging and performance uncertainty",
+    "slug": "s24-roster-allocation-under-aging-and-performance-uncertainty",
+    "industry": "Sports analytics and baseball",
+    "question": "A roster planner must allocate a fixed budget across players with uncertain future production. Test whether modeling aging, playing time and downside risk changes a roster relative to ranking last season's statistics.",
+    "methods": [
+      "Forecasting",
+      "Optimization & simulation",
+      "Statistical inference"
+    ],
+    "methodSummary": "Hierarchical aging curves; survivor-bias analysis; portfolio optimization",
+    "decisionType": "Markets & allocation",
+    "design": "Build historical player-season panels with era normalization and a prespecified offensive run-value formula. Forecast playing time and offensive production jointly using hierarchical age curves and flexible challengers. Optimize a simplified roster under position and budget constraints, using documented salary-covered seasons or clearly synthetic costs.",
+    "theory": "Aging curves require separating within-player change from cohort and survivor selection. Bayesian partial pooling stabilizes sparse careers. Portfolio optimization combines expected production with correlated downside scenarios and concentration constraints rather than treating every forecast as certain.",
+    "evaluation": "Use season-forward holdouts and compare against last-season production and age-neutral forecasts. Report production error, interval coverage and roster-performance distributions in historical replay. Stress retirement/selection assumptions and salary coverage; keep hindsight-optimal comparisons confined to the simulation.",
+    "limitations": "Lahman is not a complete current payroll or scouting database. A simplified offensive roster omits defense, injuries and contractual constraints unless explicitly added; it cannot establish current front-office value.",
+    "dataset": {
+      "name": "Lahman Baseball Database",
+      "publisher": "SABR / Sean Lahman and contributors",
+      "url": "https://sabr.org/lahman-database/",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S25",
+    "title": "Daily activity patterns and the limits of wellness segmentation",
+    "slug": "s25-daily-activity-patterns-and-the-limits-of-wellness-segmentation",
+    "industry": "Fitness and wellness",
+    "question": "A wellness analytics team wants to understand whether daily activity rhythms reveal useful population segments beyond total movement. Study how pattern estimates change with wear-time quality and demographic composition.",
+    "methods": [
+      "Statistical inference"
+    ],
+    "methodSummary": "Functional PCA; clustering stability; complex survey inference",
+    "decisionType": "Markets & allocation",
+    "design": "Build participant-level daily curves from NHANES monitor summaries using documented MIMS units, wear/sleep flags and quality checks. Fit functional principal components and a small, stable clustering model. Link same-cycle public demographics and selected examination/laboratory measures by participant ID only as explicitly documented companion files.",
+    "theory": "Functional data analysis models a day's activity as a curve, preserving timing. Survey weights support population-level descriptions; missing wear time can distort both total activity and apparent rhythm. Associations with contemporaneous health measurements are cross-sectional, not evidence that changing activity causes better health.",
+    "evaluation": "Compare rhythm-based segments against total-activity bins. Assess within-person day-to-day reliability, weighted cluster stability and sensitivity to valid-day thresholds. Hold participants together and test transfer between survey cycles; report weighted uncertainty and sample exclusions.",
+    "limitations": "Use thresholds appropriate to MIMS, not legacy accelerometer-count cutoffs. These data do not measure gym retention or validate personalized wellness advice; linked health endpoints require compatible survey weights and eligibility.",
+    "dataset": {
+      "name": "NHANES Physical Activity Monitor",
+      "publisher": "CDC / NCHS",
+      "url": "https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2011/DataFiles/PAXMIN_G.htm",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S26",
+    "title": "Wearable activity recognition that generalizes to a new person",
+    "slug": "s26-wearable-activity-recognition-that-generalizes-to-a-new-person",
+    "industry": "Fitness and wellness",
+    "question": "A wearable-product team must balance activity-recognition quality with the burden of additional sensors. Determine which sensor combination maintains useful recognition on people the model has never seen.",
+    "methods": [
+      "Predictive modeling",
+      "Reliability evaluation"
+    ],
+    "methodSummary": "Temporal CNNs; domain generalization; sensor ablation",
+    "decisionType": "Risk & reliability",
+    "design": "Segment PAMAP2 streams with documented overlap and label-transition rules. Compare handcrafted features plus a tree model with a compact temporal convolutional network. Run sensor-location and heart-rate ablations, keeping every window from a participant inside the same outer validation fold.",
+    "theory": "Temporal representation learning captures movement dynamics; domain generalization asks whether learned patterns transfer across people. Correlated windows can inflate apparent sample size. A multiobjective design balances recognition performance, uncertainty and measured inference requirements.",
+    "evaluation": "Use nested leave-one-participant-out validation. Report macro-F1, class-specific confusion, transition-period errors, calibration and per-participant results. Compare sensor subsets under the same protocol and measure latency/model size on stated hardware.",
+    "limitations": "Nine participants provide limited evidence about real-world users. Measured inference cost does not directly establish battery life, and the model is an activity benchmark rather than a validated medical monitor.",
+    "dataset": {
+      "name": "PAMAP2 Physical Activity Monitoring",
+      "publisher": "UCI / original study researchers",
+      "url": "https://archive.ics.uci.edu/dataset/231/pamap2+physical+activity+monitoring",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S27",
+    "title": "When more wellness sensors do not mean more evidence",
+    "slug": "s27-when-more-wellness-sensors-do-not-mean-more-evidence",
+    "industry": "Fitness and wellness",
+    "question": "A digital-wellness research team must decide whether combining sleep, activity and cardiac features is promising enough to justify a larger study. Test a deliberately small model of next-morning self-reported affect.",
+    "methods": [
+      "Predictive modeling",
+      "Statistical inference"
+    ],
+    "methodSummary": "Bayesian shrinkage; measurement error; incremental predictive value",
+    "decisionType": "Risk & reliability",
+    "design": "Use MMASH's short monitoring period and prespecify only a few interpretable features observed before the morning questionnaire. Compare prior affect and a mean-only baseline with strongly regularized models adding sleep/activity or heart-rate-variability summaries. Keep the outcome timing and signal-quality exclusions explicit.",
+    "theory": "Bayesian shrinkage reduces overfitting when participant count is tiny. Measurement-error reasoning distinguishes noisy sensor estimates from psychological constructs. Repeated readings within a participant do not create independent people, and exploratory associations need replication.",
+    "evaluation": "Use participant-held-out prediction with training-fold preprocessing; report absolute error, interval width and sensitivity to individual participants and priors. Compare modality additions one at a time. Publish an inconclusive or negative result if extra sensors do not improve held-out prediction.",
+    "limitations": "The study contains 22 healthy young adult men monitored for roughly one day. It cannot support longitudinal recovery forecasting, broad consumer claims or clinical diagnosis; wide uncertainty is a central finding to communicate.",
+    "dataset": {
+      "name": "MMASH",
+      "publisher": "PhysioNet / original study researchers",
+      "url": "https://physionet.org/content/mmash/1.0.0/",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S28",
+    "title": "Sales-contact prioritization before the call begins",
+    "slug": "s28-sales-contact-prioritization-before-the-call-begins",
+    "industry": "Banking and fintech",
+    "question": "A sales operations manager has a limited outbound-contact budget. Determine whether calibrated subscription-response models improve the concentration of successful contacts relative to simple recency and prior-contact rules.",
+    "methods": [
+      "Predictive modeling"
+    ],
+    "methodSummary": "Calibrated classification; additive models; expected-value ranking",
+    "decisionType": "Targeting & customer value",
+    "design": "Use the time-ordered Bank Marketing variant and define the prediction point immediately before contact. Exclude call duration and other unavailable post-contact information. Compare regularized logistic regression, an interpretable additive model and gradient boosting; audit campaign-history availability.",
+    "theory": "Probability calibration translates model scores into expected response counts. Under constant contact costs and equal response value, ordering by response probability maximizes expected observed responses within a fixed capacity. Causal incremental sales require a different estimand and a contact/no-contact design.",
+    "evaluation": "Use chronological blocks with nested tuning and compare to random selection and simple business rules. Report log loss, calibration, precision at contact capacity and performance across campaign periods. Repeat evaluation without economically sensitive or weakly justified features.",
+    "limitations": "Only observed campaign contacts are labeled. The study does not prove incremental benefit from contacting a person or support claims about uncontacted prospects; call duration must never be used to inflate pre-call accuracy.",
+    "dataset": {
+      "name": "Bank Marketing",
+      "publisher": "UCI / Portuguese bank study authors",
+      "url": "https://archive.ics.uci.edu/dataset/222/bank+marketing",
+      "selectionRank": 1
+    },
+    "executionStatus": "evaluated",
+    "publicationStatus": "published",
+    "codeUrl": "https://github.com/mpgibb/michael-gibb-research/tree/main/studies/S28",
+    "resultFile": "S28.json",
+    "publishedUrl": "https://michaelpgibb.com/research/s28-sales-contact-prioritization-before-the-call-begins",
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S29",
+    "title": "Mortgage application outcomes across markets and lenders",
+    "slug": "s29-mortgage-application-outcomes-across-markets-and-lenders",
+    "industry": "Banking and fintech",
+    "question": "A lending strategy and model-risk team wants to understand geographic variation in application outcomes and which differences remain after measured application characteristics are considered.",
+    "methods": [
+      "Predictive modeling",
+      "Statistical inference"
+    ],
+    "methodSummary": "Multilevel models; standardization; selection-bias sensitivity",
+    "decisionType": "Markets & allocation",
+    "design": "Create comparable HMDA cohorts by year, loan purpose, product and application disposition. Keep withdrawals and incomplete files distinct from denials. Use multilevel logistic models and standardized outcome comparisons; audit privacy-modified, censored and missing fields before constructing covariates.",
+    "theory": "Partial pooling stabilizes lender and geographic estimates. Standardization compares populations under a common distribution of observed characteristics. Selection into application and omitted underwriting variables mean adjusted group differences remain descriptive rather than identified discrimination effects.",
+    "evaluation": "Hold out later years and selected lenders/regions. Compare raw versus standardized differences with uncertainty, calibration and sensitivity to covariate sets. Avoid ranking tiny cells; evaluate missingness patterns and changes in reporting definitions.",
+    "limitations": "HMDA is not a loan-performance panel and does not contain every underwriting factor. This is an audit and research demonstration, not a legal finding of discrimination or a deployable credit-decision engine.",
+    "dataset": {
+      "name": "HMDA mortgage application data",
+      "publisher": "CFPB / FFIEC",
+      "url": "https://www.consumerfinance.gov/data-research/hmda/",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S30",
+    "title": "Credit-risk decisions when calibration matters more than a leaderboard",
+    "slug": "s30-credit-risk-decisions-when-calibration-matters-more-than-a-leaderboard",
+    "industry": "Banking and fintech",
+    "question": "A risk analytics leader must understand how probability errors affect a hypothetical review policy. Compare interpretable and flexible default models under asymmetric error costs and limited manual-review capacity.",
+    "methods": [
+      "Optimization & simulation",
+      "Predictive modeling"
+    ],
+    "methodSummary": "Proper scoring rules; probability calibration; expected loss",
+    "decisionType": "Risk & reliability",
+    "design": "Use the available repayment, bill and payment history to predict the provided next-month default outcome. Fit logistic and monotone/additive baselines plus boosted trees. Reserve an untouched customer-level test set, calibrate on separate validation data and document feature timing.",
+    "theory": "Expected-loss decisions depend on calibrated probabilities and assumed loss given default, not classification accuracy alone. Proper scoring rules evaluate probability quality. Threshold optimization is conditional on costs, population prevalence and the intervention's meaning.",
+    "evaluation": "Use nested development folds and the fixed test set; do not invent a temporal holdout absent multiple cohorts. Report Brier score, log loss, calibration by risk band, PR performance and decision-cost sensitivity. Analyze subgroup errors without making automatic individual lending decisions.",
+    "limitations": "This is an older Taiwan cohort with no prospective U.S. validation. Default prediction is not fraud detection; assumed exposure and losses must be separated from observed labels and no actual lending policy is validated.",
+    "dataset": {
+      "name": "Default of Credit Card Clients",
+      "publisher": "UCI / original Taiwan study authors",
+      "url": "https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S31",
+    "title": "Insurance pricing: interpretable structure versus nonlinear accuracy",
+    "slug": "s31-insurance-pricing-interpretable-structure-versus-nonlinear-accuracy",
+    "industry": "Insurance",
+    "question": "An insurance analytics team needs accurate expected-loss estimates that remain understandable across policy segments. Test whether a nonlinear model improves frequency-severity predictions while preserving portfolio and segment calibration.",
+    "methods": [
+      "Predictive modeling",
+      "Statistical inference"
+    ],
+    "methodSummary": "Exposure-offset GLMs; frequency-severity; Tweedie models",
+    "decisionType": "Risk & reliability",
+    "design": "Audit policy exposure and claim counts, aggregate severity by policy before joining, and explain inconsistencies. Compare an exposure-offset Poisson/negative-binomial frequency model plus Gamma severity model with Tweedie and boosted challengers. Keep claim-level observations from the same policy together.",
+    "theory": "Expected aggregate loss combines claim frequency and conditional severity under stated dependence assumptions. The log-exposure offset accounts for unequal time at risk. Tweedie compound models accommodate zero claims and continuous positive loss; actuarial calibration checks whether predicted totals match experience.",
+    "evaluation": "Use policy-held-out development/test sets and geographic stress tests where feasible. Report exposure-weighted deviance, total predicted/observed loss, segment calibration and tail sensitivity. Compare uncapped and transparently capped severity analyses; do not claim a time split without reliable policy dates.",
+    "limitations": "Historical French motor data do not validate a current insurance rate filing. Pure premium is expected insured loss, not the final customer price; regulatory and deployment questions are outside the benchmark.",
+    "dataset": {
+      "name": "freMTPL2 frequency and severity",
+      "publisher": "CASdatasets / actuarial research contributors",
+      "url": "https://dutangc.github.io/CASdatasets/reference/freMTPL.html",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S32",
+    "title": "Flood claims and the risk of geographic concentration",
+    "slug": "s32-flood-claims-and-the-risk-of-geographic-concentration",
+    "industry": "Insurance",
+    "question": "An insurer or resilience planner needs to understand tail payments and correlated geographic exposure. Estimate how claim-severity conclusions change when major flood events, coverage limits and portfolio composition are considered.",
+    "methods": [
+      "Optimization & simulation",
+      "Predictive modeling",
+      "Statistical inference"
+    ],
+    "methodSummary": "Hierarchical severity; extreme-value analysis; event-level dependence",
+    "decisionType": "Risk & reliability",
+    "design": "Clean NFIP claim payments and dated event/geography information. Analyze severity conditional on a reported claim using hierarchical models and carefully diagnosed tail models. For incidence or expected loss per insured exposure, explicitly add compatible redacted policy data and define earned-exposure denominators first.",
+    "theory": "Extreme-value methods model the tail above a chosen threshold; event clustering violates independent-claim assumptions. Frequency and severity are different processes. Portfolio stress tests require a stated exposure mix and event-dependence model, not simply a map of claim counts.",
+    "evaluation": "Hold out entire major events or event-years and geographic groups. Compare empirical severity and lognormal/Gamma baselines with tail models. Report tail quantile calibration, threshold sensitivity and event-bootstrap uncertainty; flag unsupported extrapolation beyond observed experience.",
+    "limitations": "Claims alone cannot establish flood probability or claim incidence. Redacted geography, evolving limits and nominal payment amounts complicate comparisons; modeled return periods or portfolio losses need explicit additional assumptions.",
+    "dataset": {
+      "name": "OpenFEMA NFIP Redacted Claims",
+      "publisher": "FEMA",
+      "url": "https://www.fema.gov/openfema-data-page/fima-nfip-redacted-claims-v2",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S33",
+    "title": "Longevity assumptions and long-horizon liability sensitivity",
+    "slug": "s33-longevity-assumptions-and-long-horizon-liability-sensitivity",
+    "industry": "Insurance",
+    "question": "A benefits or insurance planning team must understand how mortality assumptions affect a long-duration payment obligation. Quantify sensitivity to table choice, longevity improvement and discount rates without pretending the tables are individual training records.",
+    "methods": [
+      "Survival analysis",
+      "Optimization & simulation",
+      "Statistical inference"
+    ],
+    "methodSummary": "Life-contingent valuation; survival probabilities; sensitivity analysis",
+    "decisionType": "Risk & reliability",
+    "design": "Select compatible SOA tables with clear population, vintage and select/ultimate or generational definitions. Convert death probabilities into survival curves and expected payment streams. Apply a clearly synthetic cohort of ages and benefits, then compare deterministic and explicitly assumed stochastic improvement scenarios.",
+    "theory": "Life-contingent valuation discounts payments weighted by survival probabilities. Period and cohort mortality describe different objects. Sensitivity and scenario decomposition identify which assumptions drive liability variation; stochastic uncertainty is not estimable from a rate table alone.",
+    "evaluation": "Check survival monotonicity, probability identities and actuarial present values against hand-calculated cases. Compare suitable table vintages and run rate/improvement stress grids. Do not report predictive accuracy without separate death and exposure observations.",
+    "limitations": "This is a transparent scenario engine using published rates and synthetic obligations. It is not a fitted individual mortality model, an audited reserve calculation or a validated forecast of future longevity.",
+    "dataset": {
+      "name": "Mortality and Other Rate Tables (MORT)",
+      "publisher": "Society of Actuaries",
+      "url": "https://mort.soa.org/",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S34",
+    "title": "Electricity reserve planning from probabilistic load forecasts",
+    "slug": "s34-electricity-reserve-planning-from-probabilistic-load-forecasts",
+    "industry": "Energy and utilities",
+    "question": "A utility planning team must balance excess reserve against costly demand shortfalls. Ask whether calibrated upper-tail demand forecasts produce more reliable reserve decisions than a fixed margin above a point forecast.",
+    "methods": [
+      "Forecasting",
+      "Optimization & simulation"
+    ],
+    "methodSummary": "Probabilistic forecasting; chance constraints; asymmetric loss",
+    "decisionType": "Capacity & operations",
+    "design": "Forecast hourly balancing-authority demand at a precisely defined issue time using lagged load, calendar information and only legitimately available inputs. Compare seasonal models and quantile boosting; benchmark against published demand forecasts only when their issue time aligns with the task. Weather forecasts are an optional, separately sourced extension.",
+    "theory": "Conditional quantiles connect directly to asymmetric shortage costs. A chance constraint sets reserve to keep modeled shortfall probability below a target. Correlated hourly errors and data revisions affect aggregate risk; point-forecast improvements do not automatically reduce shortage risk.",
+    "evaluation": "Use rolling seasonal holdouts and an extreme-demand stress period. Report quantile loss, interval coverage, upper-tail exceedances and modeled reserve/shortfall cost relative to fixed margins. Record data vintages; label revised-data backtests when original releases are unavailable.",
+    "limitations": "Demand-only reserve scenarios omit generator outages and full network/security constraints. They are not an operational dispatch plan; do not use realized future weather or mismatched official-forecast timing.",
+    "dataset": {
+      "name": "EIA-930 Hourly Electric Grid Monitor",
+      "publisher": "U.S. Energy Information Administration",
+      "url": "https://www.eia.gov/electricity/gridmonitor/about",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S35",
+    "title": "Demand response: shifting peak load or moving the problem?",
+    "slug": "s35-demand-response-shifting-peak-load-or-moving-the-problem",
+    "industry": "Energy and utilities",
+    "question": "A utility wants to know whether time-varying prices reduce peak usage or merely shift it into adjacent periods. Estimate heterogeneous load changes and rebound patterns under the London tariff trial's documented assignment process.",
+    "methods": [
+      "Causal inference",
+      "Optimization & simulation",
+      "Statistical inference"
+    ],
+    "methodSummary": "Intertemporal substitution; panel effects; conditional DiD/ITT",
+    "decisionType": "Capacity & operations",
+    "design": "Join household half-hourly consumption with the supplied 2013 price-signal calendar. Audit recruitment, group assignment and pre-period comparability before selecting the estimand. Use randomized assignment analysis only if verified; otherwise use household/time panel models and difference-in-differences with explicit identifying assumptions.",
+    "theory": "Intertemporal substitution predicts that customers can move consumption between periods. Difference-in-differences requires credible parallel trends and absence of competing group-specific changes; randomized assignment supports intention-to-treat effects only under the documented design. Rebound affects net energy and peak-reduction conclusions.",
+    "evaluation": "Predefine event windows, peak and adjacent-period outcomes. Compare with flat-tariff households, inspect pre-trends/placebo windows, cluster uncertainty by household and price event as appropriate, and assess heterogeneous effects using held-out households.",
+    "limitations": "A tariff-group label alone does not establish random assignment. If design documentation is insufficient, publish adjusted associations and sensitivity analyses rather than causal savings claims.",
+    "dataset": {
+      "name": "Low Carbon London SmartMeter data",
+      "publisher": "UK Power Networks / London Datastore",
+      "url": "https://data.london.gov.uk/dataset/smartmeter-energy-consumption-data-in-london-households-vqm0d",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S36",
+    "title": "Peak-demand prediction across heterogeneous electricity customers",
+    "slug": "s36-peak-demand-prediction-across-heterogeneous-electricity-customers",
+    "industry": "Energy and utilities",
+    "question": "An energy analytics team needs reliable peak forecasts across many customers with different load shapes. Test whether a shared model transfers useful information without sacrificing performance on unusual customers.",
+    "methods": [
+      "Forecasting"
+    ],
+    "methodSummary": "Global/local forecasting; partial pooling; peak quantiles",
+    "decisionType": "Capacity & operations",
+    "design": "Build timezone-aware quarter-hourly series with explicit missing-value, zero and daylight-saving rules. Compare seasonal naive forecasts, local statistical models and a global quantile model. Cluster load shapes only within training data and evaluate whether cluster-aware models improve peak forecasting.",
+    "theory": "Global forecasting pools information across related series, reducing estimation variance; excessive pooling can create negative transfer. Extreme-load errors matter more for capacity planning than average error. Hierarchical or clustered shrinkage mediates between a single universal model and isolated customer models.",
+    "evaluation": "Use rolling time holdouts plus customer-held-out transfer tests. Report scaled error, peak-window quantile loss, interval coverage and worst-decile customer performance. Compare aggregate forecasts and sensitivity to DST handling and newly active customers.",
+    "limitations": "Customer identities and interventions are largely unknown. This benchmark cannot estimate causal tariff response or infer demographic explanations; capacity lines and operating costs are scenarios unless separately supplied.",
+    "dataset": {
+      "name": "ElectricityLoadDiagrams20112014",
+      "publisher": "UCI / original data donor",
+      "url": "https://archive.ics.uci.edu/dataset/321/electricityloaddiagrams20112014",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S37",
+    "title": "Early warning of airline disruption across an airport network",
+    "slug": "s37-early-warning-of-airline-disruption-across-an-airport-network",
+    "industry": "Airlines and transportation",
+    "question": "An airline operations team must prioritize flights for early disruption review. Test whether recent network conditions add useful warning of severe arrival delays or cancellations beyond schedule and seasonal patterns.",
+    "methods": [
+      "Predictive modeling"
+    ],
+    "methodSummary": "Temporal network features; calibrated classification; event severity",
+    "decisionType": "Capacity & operations",
+    "design": "Define a fixed pre-departure prediction cutoff and create schedule, airport-congestion and lagged completed-flight features. Compare calibrated boosting with a simpler logistic model and a network-aware challenger. Use aircraft rotation features only where the assignment is knowable at the cutoff; exclude the target flight's realized delay causes.",
+    "theory": "Network dependence allows disruptions to propagate through shared airports and resources. Temporal feature availability determines whether a forecast is actionable. Calibrated probabilities support queue prioritization, while causal effects of changing a schedule require an explicit operational model.",
+    "evaluation": "Use rolling month/season holdouts and airport-transfer tests. Report rare-event precision-recall, calibration, warning lead time and severe disruptions captured at a fixed review capacity. Separate cancellation from conditional delay severity and audit publication/schedule revision timing.",
+    "limitations": "Retrospective BTS records may not reconstruct every live schedule or aircraft assignment. Do not present hindsight features as real-time knowledge or simulated schedule changes as proven delay reduction.",
+    "dataset": {
+      "name": "Airline On-Time Performance",
+      "publisher": "Bureau of Transportation Statistics",
+      "url": "https://www.transtats.bts.gov/ONTIME/Index.aspx",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S38",
+    "title": "Fleet positioning under uncertain urban trip demand",
+    "slug": "s38-fleet-positioning-under-uncertain-urban-trip-demand",
+    "industry": "Airlines and transportation",
+    "question": "A mobility operator needs to place a limited fleet where upcoming trips are likely. Compare fixed, historically proportional and forecast-driven allocation under explicit travel and repositioning assumptions.",
+    "methods": [
+      "Forecasting",
+      "Optimization & simulation"
+    ],
+    "methodSummary": "Spatiotemporal forecasting; min-cost flow; stochastic allocation",
+    "decisionType": "Capacity & operations",
+    "design": "Choose one TLC vehicle category and consistent date range. Aggregate completed trips into zone-time demand and estimate travel-time distributions from eligible historical trips. Forecast next-period observed pickups using seasonal and spatially pooled models; feed scenarios into a min-cost-flow allocation model.",
+    "theory": "Spatial forecasting shares information across related zones. Flow conservation and vehicle availability constrain feasible positioning; stochastic optimization trades shortage risk against relocation cost. Observed fulfilled trips are a censored proxy for underlying demand when service is scarce.",
+    "evaluation": "Hold out later weeks and demand-shift periods. Report zone-level scaled error, interval coverage and peak-zone performance. In a clearly specified simulator, compare unmet observed-request proxies, relocation distance and modeled cost across policies; vary travel-time and fleet-size assumptions.",
+    "limitations": "Completed trips omit unserved requests and empty-vehicle movements. Public monthly files also have publication lag. The project is a historical fleet-planning benchmark, not a validated live dispatch system.",
+    "dataset": {
+      "name": "NYC TLC Trip Records",
+      "publisher": "NYC Taxi and Limousine Commission",
+      "url": "https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S39",
+    "title": "Chicago transit planning through structural demand changes",
+    "slug": "s39-chicago-transit-planning-through-structural-demand-changes",
+    "industry": "Airlines and transportation",
+    "question": "A transit planning team needs a forecast that adapts when commuting patterns change. Test whether regime-aware models improve daily bus and rail boarding forecasts over a stable seasonal baseline.",
+    "methods": [
+      "Forecasting"
+    ],
+    "methodSummary": "State-space models; change detection; coherent aggregation",
+    "decisionType": "Capacity & operations",
+    "design": "Use CTA's system-level daily bus, rail and total boarding series. Build calendar/day-type features and compare seasonal naive, dynamic regression and state-space models with change detection. Fit change points using training data only; evaluate known disruption periods as stress tests.",
+    "theory": "State-space models allow trend and seasonal components to evolve. Structural breaks violate assumptions of stable historical relationships. Coherent aggregation keeps bus-plus-rail forecasts consistent with system totals; uncertainty should widen when a regime changes.",
+    "evaluation": "Use rolling 7- and 28-day forecast origins spanning stable and changing demand periods. Report scaled error, interval coverage and recovery after shifts. Compare expanding versus recent-window training and evaluate weekday/weekend performance separately.",
+    "limitations": "This specific dataset contains daily system totals, not station-hour demand or individual trips. Capacity scenarios cannot justify train-by-train staffing or prove service changes caused ridership growth without additional data.",
+    "dataset": {
+      "name": "CTA Daily Boarding Totals",
+      "publisher": "Chicago Transit Authority / City of Chicago",
+      "url": "https://data.cityofchicago.org/Transportation/CTA-Ridership-Daily-Boarding-Totals/6iiy-9s97",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S40",
+    "title": "Hotel cancellation risk and the cost of overbooking",
+    "slug": "s40-hotel-cancellation-risk-and-the-cost-of-overbooking",
+    "industry": "Hospitality and travel",
+    "question": "A hotel revenue manager must balance empty rooms against the cost of accommodating guests elsewhere. Test whether booking-level cancellation probabilities improve a simulated overbooking policy compared with uniform cancellation assumptions.",
+    "methods": [
+      "Optimization & simulation",
+      "Predictive modeling"
+    ],
+    "methodSummary": "Calibrated cancellation models; revenue management; asymmetric loss",
+    "decisionType": "Capacity & operations",
+    "design": "Define a booking-time prediction point and audit whether each field was available then. Exclude final reservation status/date, later booking changes and other post-outcome fields. Compare calibrated logistic/additive models with boosting; aggregate predicted cancellations across arrival dates with dependence sensitivity.",
+    "theory": "Revenue management treats uncertain show-up demand as a capacity decision. Asymmetric loss balances unused inventory against displacement penalties. Shared arrival-date shocks make independent booking outcomes an imperfect assumption; calibration matters when probabilities are summed.",
+    "evaluation": "Use time-based arrival holdouts and a hotel-transfer stress test. Report cancellation calibration, log loss and arrival-date prediction error. Compare fixed-rule and model-based overbooking in a simulator with explicit room capacity, room-night logic, rates and displacement costs.",
+    "limitations": "Two hotels do not establish universal performance. Original booking-time versions of some fields may be unavailable; label that limitation. Capacity and counterfactual overbooking revenue are simulated, not measured business improvement.",
+    "dataset": {
+      "name": "Hotel Booking Demand datasets",
+      "publisher": "Antonio, de Almeida and Nunes / Data in Brief",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6297060/",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S41",
+    "title": "Short-term rental positioning without invented occupancy",
+    "slug": "s41-short-term-rental-positioning-without-invented-occupancy",
+    "industry": "Hospitality and travel",
+    "question": "A hospitality market analyst wants to understand which listing features and neighborhoods are associated with asking-price differences. Build a reliable comparison tool that distinguishes a listing's advertised position from actual booking performance.",
+    "methods": [
+      "Predictive modeling",
+      "Statistical inference"
+    ],
+    "methodSummary": "Hedonic models; spatial dependence; quantile regression",
+    "decisionType": "Markets & allocation",
+    "design": "Choose a city and reproducible snapshot set; normalize currency, minimum-stay rules and listing types. Fit a spatial hedonic model and a quantile-boosting challenger to advertised nightly prices. Group repeated listings across splits and use coarse location features with spatial-block validation.",
+    "theory": "Hedonic pricing decomposes observed price differences into associations with attributes. Spatial dependence makes neighboring listings less independent; quantile models reveal market segments hidden by average-price estimates. Selection into listing and strategic pricing prevent causal amenity valuations.",
+    "evaluation": "Compare neighborhood/type medians with model predictions on later snapshots and held-out spatial blocks. Report absolute/log-price error, interval coverage and stability after outlier filtering. Audit calendar availability as a separate recorded field rather than converting it into observed occupancy.",
+    "limitations": "Unavailable calendar nights may be booked or blocked. Do not claim measured occupancy, annual rental yield or causal revenue gains from amenities; location and host details should remain appropriately aggregated.",
+    "dataset": {
+      "name": "Inside Airbnb",
+      "publisher": "Inside Airbnb project",
+      "url": "https://insideairbnb.com/get-the-data/",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S42",
+    "title": "Tourism capacity planning across seasons and regions",
+    "slug": "s42-tourism-capacity-planning-across-seasons-and-regions",
+    "industry": "Hospitality and travel",
+    "question": "A tourism or hospitality strategy team needs to distinguish recurring seasonality from lasting changes in demand mix. Forecast accommodation nights and identify regions or visitor segments with the greatest planning uncertainty.",
+    "methods": [
+      "Forecasting"
+    ],
+    "methodSummary": "Seasonal/state-space models; hierarchical forecasting; pooling",
+    "decisionType": "Capacity & operations",
+    "design": "Select comparable Eurostat monthly nights/arrivals series at a supported geographic level, separating resident and nonresident demand where available. Harmonize coverage and reporting breaks. Compare seasonal baselines, dynamic regression and globally pooled probabilistic forecasts with consistent totals.",
+    "theory": "Seasonal decomposition separates recurring patterns from trend; hierarchical forecasting respects geographic and visitor-segment aggregation. Structural breaks and varying reporting coverage limit transportability. Capacity planning translates forecast distributions into conditional resource scenarios.",
+    "evaluation": "Use rolling forecast origins across normal and disrupted periods. Report scaled error, quantile loss, interval coverage and peak-season bias by region. Compare simple seasonal recovery assumptions with fitted models; include missing-series and definition-change sensitivity.",
+    "limitations": "Aggregate nights are not individual bookings or a hotel's revenue. Match the geography and frequency actually available; do not infer property-level occupancy or staffing needs from incompatible regional totals.",
+    "dataset": {
+      "name": "Eurostat tourism accommodation statistics",
+      "publisher": "Eurostat",
+      "url": "https://ec.europa.eu/eurostat/web/tourism/",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S43",
+    "title": "Chicago-area property valuation with honest geographic uncertainty",
+    "slug": "s43-chicago-area-property-valuation-with-honest-geographic-uncertainty",
+    "industry": "Real estate and property management",
+    "question": "A real-estate analytics team must distinguish predictable property value from uncertainty caused by sparse local comparables. Test whether flexible spatial models improve sale-price estimates without hiding neighborhood-level error.",
+    "methods": [
+      "Predictive modeling",
+      "Statistical inference"
+    ],
+    "methodSummary": "Hedonic/spatial modeling; partial pooling; calibrated intervals",
+    "decisionType": "Markets & allocation",
+    "design": "Join valid Cook County sales to property characteristics using parcel identifiers and information available before sale. Audit non-market transactions, repeat sales and assessment timing. Compare a hedonic regression with boosted/spatial models; calibrate prediction intervals on separate data.",
+    "theory": "Hedonic models explain value through property attributes, while spatial dependence captures location effects. Partial pooling stabilizes sparse areas. Conformal-style intervals need explicit calibration assumptions; spatial and temporal dependence mean empirical local coverage must be examined rather than assumed.",
+    "evaluation": "Use forward sale-date holdouts, spatial blocks and a parcel-unseen stress test. Report median absolute percentage error, log-price error and interval coverage by geography/value tier. Compare to local comparable-sale medians and a carefully timed assessment baseline only if eligible.",
+    "limitations": "This is research on historical sales, not an appraisal. Avoid buyer/seller details, future assessments and unsupported extrapolation to unusual properties; a model interval is not a guarantee of a sale price.",
+    "dataset": {
+      "name": "Cook County Assessor parcel sales and characteristics",
+      "publisher": "Cook County Assessor's Office",
+      "url": "https://datacatalog.cookcountyil.gov/stories/s/Assessor-2025-Open-Data-Refresh/gzdr-q7c4/",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S44",
+    "title": "Housing-market forecasts that acknowledge revisions and turning points",
+    "slug": "s44-housing-market-forecasts-that-acknowledge-revisions-and-turning-points",
+    "industry": "Real estate and property management",
+    "question": "A property strategy team needs to compare regional rent and home-value trajectories without treating estimated indices as executable investment returns. Test whether pooled models detect changing momentum better than simple trend extrapolation.",
+    "methods": [
+      "Forecasting"
+    ],
+    "methodSummary": "Dynamic factors; local trends; real-time/vintage evaluation",
+    "decisionType": "Markets & allocation",
+    "design": "Select stable ZHVI/ZORI regional series with documented methodology and available vintages. Compare local trend/seasonal models with a dynamic-factor or pooled forecasting model. Use lagged regional indicators from the same release; introduce outside macro series only with explicit as-of publication alignment.",
+    "theory": "Dynamic-factor models share common market movements while allowing local deviations. Regime changes challenge stable trend extrapolation. Real-time forecasting is about information available at the issue date; revised historical values can produce optimistic backtests.",
+    "evaluation": "Use rolling 3-, 6- and 12-month horizons. Report scaled error, directional accuracy, interval coverage and performance around turning points. Compare original-vintage and latest-revised backtests where possible; otherwise label the exercise a revised-data retrospective forecast.",
+    "limitations": "Regional indices are modeled aggregates, not individual asset returns, rental cash flows or buy/sell recommendations. Historical revision awareness does not remove uncertainty about future structural changes.",
+    "dataset": {
+      "name": "Zillow Research housing data",
+      "publisher": "Zillow Research",
+      "url": "https://www.zillow.com/research/data/",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S45",
+    "title": "Transparent screening of property redevelopment opportunities",
+    "slug": "s45-transparent-screening-of-property-redevelopment-opportunities",
+    "industry": "Real estate and property management",
+    "question": "A real-estate strategy team needs a defensible way to prioritize parcels for further diligence. Build a transparent screening framework that weighs current use, building characteristics and simple utilization proxies under multiple business preferences.",
+    "methods": [
+      "Optimization & simulation",
+      "Statistical inference"
+    ],
+    "methodSummary": "Multi-criteria decisions; Pareto dominance; robust ranking",
+    "decisionType": "Markets & allocation",
+    "design": "Use PLUTO tax-lot geometry, land use, building age/area and documented zoning-related fields. Validate units and implausible records. Derive a clearly approximate unused-floor-area indicator only where compatible fields permit; use multi-criteria ranking and robust optimization rather than training on an invented redevelopment-profit label.",
+    "theory": "Multi-criteria decision analysis makes preference weights explicit. Pareto dominance identifies parcels that are unattractive across all chosen criteria; robust ranking tests whether priorities survive uncertain inputs and weights. A feasibility proxy is not a legal entitlement or causal outcome.",
+    "evaluation": "Compare simple size/age filters with the multi-criteria shortlist. Report rank stability under weight/input perturbations, missing-data sensitivity and independent spot checks against source attributes. If outcome data are later added, define a separate temporal validation study.",
+    "limitations": "PLUTO is an inventory, not transaction-return or tenant-demand data. Simple floor-area calculations do not certify buildability; project economics, entitlements and parcel-specific constraints require additional evidence.",
+    "dataset": {
+      "name": "PLUTO / MapPLUTO",
+      "publisher": "NYC Department of City Planning",
+      "url": "https://data.cityofnewyork.us/City-Government/Primary-Land-Use-Tax-Lot-Output-PLUTO-/64uk-42ks",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S46",
+    "title": "Balancing retention and expansion in a telecom contact queue",
+    "slug": "s46-balancing-retention-and-expansion-in-a-telecom-contact-queue",
+    "industry": "Telecommunications",
+    "question": "A telecom commercial team must allocate limited contact capacity across churn risk, product appetite and upsell likelihood. Test whether a shared predictive representation improves the three outcomes and clarifies tradeoffs between objectives.",
+    "methods": [
+      "Optimization & simulation",
+      "Predictive modeling"
+    ],
+    "methodSummary": "Multi-task learning; calibrated probabilities; constrained allocation",
+    "decisionType": "Targeting & customer value",
+    "design": "Use the documented Orange KDD Cup targets and a manageable feature subset before scaling. Compare three independent regularized/boosted models with a shared multi-task representation. Audit missingness and anonymized features; calibrate each target separately and retain the official held-out protocol where labels are available.",
+    "theory": "Multi-task learning can borrow signal across related outcomes but may cause negative transfer. Constrained optimization combines calibrated probabilities with explicit objective weights and contact limits. Outcome likelihood is not the incremental effect of offering a particular product or retention incentive.",
+    "evaluation": "Use nested development splits and an untouched customer test; do not invent timestamps. Report target-specific PR metrics, calibration, multi-task gains/losses and capacity-specific outcome capture. Test sensitivity to missing features and assumed value weights.",
+    "limitations": "Anonymous benchmark features limit business explanation. These labels do not identify causal offer response, actual revenue or a production-ready next-best-action policy; synthetic value assumptions must be clearly labeled.",
+    "dataset": {
+      "name": "Orange KDD Cup 2009",
+      "publisher": "Orange / ACM SIGKDD",
+      "url": "https://www.kdd.org/kdd-cup/view/kdd-cup-2009/Data",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S47",
+    "title": "Service-friction signals and a three-month churn planning window",
+    "slug": "s47-service-friction-signals-and-a-three-month-churn-planning-window",
+    "industry": "Telecommunications",
+    "question": "A telecom service leader wants to understand whether call failures, complaints and usage patterns identify customers at risk before departure. Test stable, interpretable signals and the limits of translating them into an intervention plan.",
+    "methods": [
+      "Predictive modeling"
+    ],
+    "methodSummary": "Additive models; calibration; causal diagrams; feature stability",
+    "decisionType": "Targeting & customer value",
+    "design": "Respect the dataset's first-nine-month feature period and end-of-month-12 churn label. Compare regularized logistic/additive models with boosting. Audit status and calculated customer-value fields for circular or late information and report ablations excluding them; avoid treating row order as calendar time.",
+    "theory": "Additive models expose nonlinear associations without requiring a black-box explanation layer. Partial dependence or accumulated local effects summarize model behavior, not causal effects. A causal diagram makes competing explanations for complaints, usage decline and churn explicit.",
+    "evaluation": "Use nested stratified development and a fixed customer test. Report PR performance, calibration, recall at service capacity and bootstrap stability of feature effects. Compare a simple complaints/recency-style rule with the learned models and assess dependence on derived fields.",
+    "limitations": "A small single-company sample cannot establish that fixing call failures causes retention. There are no repeated time cohorts for a genuine out-of-time validation; inferred customer value is not verified profit.",
+    "dataset": {
+      "name": "Iranian Churn",
+      "publisher": "UCI / original telecom study authors",
+      "url": "https://archive.ics.uci.edu/dataset/563/iranian+churn+dataset",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S48",
+    "title": "Urban telecom activity and resilient capacity scenarios",
+    "slug": "s48-urban-telecom-activity-and-resilient-capacity-scenarios",
+    "industry": "Telecommunications",
+    "question": "A network planning team wants to locate predictable activity peaks and unusual surges. Test whether spatial models improve short-horizon cell-grid activity forecasts and identify where a hypothetical capacity budget would be most exposed.",
+    "methods": [
+      "Forecasting",
+      "Predictive modeling"
+    ],
+    "methodSummary": "Spatiotemporal models; graph regularization; residual anomalies",
+    "decisionType": "Capacity & operations",
+    "design": "Build time-aligned Milan grid series for the released activity measures. Compare seasonal baselines, spatially pooled models and a graph-temporal challenger. Define adjacency from the documented grid and preserve separate activity types; treat normalization and missing intervals explicitly.",
+    "theory": "Spatiotemporal dependence allows neighboring regions to share predictive information. Graph regularization encodes geographic proximity, while anomaly detection separates forecast residuals from ordinary daily seasonality. Resource allocation requires a mapping from activity proxies to capacity that the dataset does not supply.",
+    "evaluation": "Use blocked future-day/week holdouts and selected spatial blocks. Report scaled error, peak-period quantile loss and false alerts under a defined threshold. Test the short observation period's sensitivity to unusual days and compare any allocation policies only under common simulated assumptions.",
+    "limitations": "Normalized grid activity is not subscriber count, bytes, tower load or dropped-call experience. The short historical period cannot validate a physical network expansion plan or annual seasonality.",
+    "dataset": {
+      "name": "Telecom Italia Milan activity",
+      "publisher": "Telecom Italia / original Scientific Data authors",
+      "url": "https://doi.org/10.7910/DVN/EGZHFV",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S49",
+    "title": "Personalization beyond popularity: accuracy, diversity and cold start",
+    "slug": "s49-personalization-beyond-popularity-accuracy-diversity-and-cold-start",
+    "industry": "Media and entertainment",
+    "question": "A media product team wants useful recommendations without showing everyone the same popular titles. Test how much ranking quality must be traded for catalog coverage, diversity and performance on users with little observed history.",
+    "methods": [
+      "Text & recommendation"
+    ],
+    "methodSummary": "Matrix factorization; multiobjective ranking; selection-bias analysis",
+    "decisionType": "Product & service quality",
+    "design": "Create global chronological train/validation/test periods from MovieLens ratings. Compare popularity and neighborhood baselines with matrix factorization and a diversity-aware reranker. Define relevance from observed ratings and document candidate construction; use short-history cohorts based only on information available at the cutoff.",
+    "theory": "Low-rank factorization represents latent user-item preferences. Multiobjective ranking balances estimated relevance with diversity or popularity exposure. Ratings are missing non-randomly: an unrated movie is not a known dislike, and ranking metrics depend strongly on the evaluation candidate set.",
+    "evaluation": "Report NDCG/Recall under a fixed documented protocol, rating error where appropriate, catalog coverage, novelty and user-history subgroup results. Compare full eligible-catalog and sampled-candidate sensitivity where computationally feasible; keep future interactions out of popularity statistics.",
+    "limitations": "Offline ratings do not demonstrate watch time, subscription retention or causal engagement lift. Respect MovieLens's research-use terms; the publisher requires permission for commercial use, so public demo contents must be checked before release.",
+    "dataset": {
+      "name": "MovieLens 32M",
+      "publisher": "University of Minnesota GroupLens",
+      "url": "https://grouplens.org/datasets/movielens/32m/",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S50",
+    "title": "News recommendation when freshness and relevance compete",
+    "slug": "s50-news-recommendation-when-freshness-and-relevance-compete",
+    "industry": "Media and entertainment",
+    "question": "A news product team needs to surface relevant articles as interests and the news cycle change. Test whether content-aware user-history models improve ranking, especially for newly encountered articles, without excessively narrowing topic exposure.",
+    "methods": [
+      "Text & recommendation"
+    ],
+    "methodSummary": "Semantic encoders; sequential preferences; diversity-aware reranking",
+    "decisionType": "Product & service quality",
+    "design": "Use MIND's impression candidates, observed clicks and preceding user histories. Compare popularity/content-similarity baselines with a news-encoder and user-history model. Preserve supplied temporal boundaries and evaluate only candidates available in each impression; begin with MIND-small before scaling.",
+    "theory": "Representation learning transfers semantic information to articles with little interaction history. Sequential preference models account for recency, while diversity-aware reranking trades relevance against topic concentration. Clicks are conditioned on the logging system's exposure; missing propensities prevent automatically unbiased off-policy evaluation.",
+    "evaluation": "Measure impression-level NDCG, MRR and calibration plus cold-article performance and topic coverage. Compare history lengths and diversity penalties, using user-clustered uncertainty where appropriate. Do not equate a non-click on an exposed candidate with dislike of every unexposed article.",
+    "limitations": "The benchmark cannot establish live CTR lift, reader welfare or subscriber revenue. Use only licensed text fields and approved display content; do not imply unrestricted redistribution of full news articles.",
+    "dataset": {
+      "name": "MIND — Microsoft News Dataset",
+      "publisher": "Microsoft Research",
+      "url": "https://msnews.github.io/",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S51",
+    "title": "Customer-review intelligence that anticipates emerging product issues",
+    "slug": "s51-customer-review-intelligence-that-anticipates-emerging-product-issues",
+    "industry": "Media and entertainment",
+    "question": "A media merchandising or product team needs to detect recurring customer concerns before they dominate a category. Test whether prior-period review themes predict a later increase in negative-review share better than star-rating trends alone.",
+    "methods": [
+      "Text & recommendation"
+    ],
+    "methodSummary": "Topic models; structured NLP; hierarchical rates; temporal validation",
+    "decisionType": "Product & service quality",
+    "design": "Choose a reproducible Books, Movies/TV or Digital Music subset. Extract a restrained theme taxonomy using interpretable topic models and a structured language-model challenger. Build item/category-period summaries from reviews already available; reserve later review periods for evaluation and group related products where identifiable.",
+    "theory": "Latent-topic models summarize co-occurring language; measurement validation is needed before treating extracted themes as business concepts. Hierarchical binomial models shrink noisy negative-review rates. Review submission is a selected behavior, so review sentiment does not estimate satisfaction among all buyers.",
+    "evaluation": "Compare rating-only and theme-augmented temporal forecasts. Report calibration/error for later negative-review share, topic stability and extraction precision on an independently adjudicated sample. Without adjudication, label extraction quality as unverified and publish only benchmark-label performance.",
+    "limitations": "Reviews do not reveal complete sales, exposure or the causal effect of a product change. Avoid full-text redistribution and never treat an LLM's fluent theme explanation as independent evidence.",
+    "dataset": {
+      "name": "Amazon Reviews 2023 — media subsets",
+      "publisher": "UC San Diego McAuley Lab",
+      "url": "https://amazon-reviews-2023.github.io/",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S52",
+    "title": "Crop-yield uncertainty for procurement planning",
+    "slug": "s52-crop-yield-uncertainty-for-procurement-planning",
+    "industry": "Agriculture and food production",
+    "question": "A food procurement team needs to anticipate regional supply variability before harvest. Test whether spatially pooled yield forecasts improve uncertainty estimates and hypothetical sourcing allocations over trend-only planning.",
+    "methods": [
+      "Forecasting",
+      "Optimization & simulation",
+      "Predictive modeling"
+    ],
+    "methodSummary": "Hierarchical spatial models; trend forecasts; stochastic procurement",
+    "decisionType": "Capacity & operations",
+    "design": "Select one major crop and comparable NASS county/state yield series. Define a pre-harvest forecast issue date and use only information published by then. Start with historical trend and lagged yield; treat dated NOAA weather and available acreage estimates as separately documented enhancements, not assumed fields in Quick Stats.",
+    "theory": "Hierarchical spatial models share information across similar regions while permitting local trends. Yield and harvested acreage jointly determine production, so yield forecasting alone is not supply forecasting. Stochastic procurement allocates across regional scenarios under explicit demand, price and sourcing assumptions.",
+    "evaluation": "Use year-forward and region-held-out tests. Compare trend, historical-average and pooled models using yield error, interval coverage and adverse-year performance. Audit suppressed/revised estimates. Evaluate procurement regret only in a simulator whose prices, capacity and demand are clearly specified.",
+    "limitations": "Public aggregate estimates are not farm-level treatment data. Do not use final acreage, realized future weather or revised releases as if available before harvest, or claim causal effects of agronomic practices.",
+    "dataset": {
+      "name": "USDA NASS Quick Stats",
+      "publisher": "USDA National Agricultural Statistics Service",
+      "url": "https://data.nass.usda.gov/Quick_Stats/",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S53",
+    "title": "Crop-rotation forecasting without spatial leakage",
+    "slug": "s53-crop-rotation-forecasting-without-spatial-leakage",
+    "industry": "Agriculture and food production",
+    "question": "An agricultural planning team wants to anticipate regional crop-mix changes and identify where transitions are difficult to forecast. Test whether multi-year rotation history improves next-year crop classification and aggregate acreage estimates.",
+    "methods": [
+      "Forecasting",
+      "Predictive modeling"
+    ],
+    "methodSummary": "Markov transitions; spatial-temporal classification; error propagation",
+    "decisionType": "Markets & allocation",
+    "design": "Use past-year Cropland Data Layers to predict the next year's crop class on a fixed, compatible grid. Compare persistence and transition-matrix baselines with a spatial-temporal classifier. Harmonize changing resolution, class definitions and alignment; never use the target-year crop map as an input feature.",
+    "theory": "Markov transition models express dependence on prior crop states; longer histories can capture rotation patterns. Spatial autocorrelation makes neighboring pixels pseudo-replicates. Classification error in the source maps propagates into apparent transition rates and acreage uncertainty.",
+    "evaluation": "Hold out future years and large geographic blocks, not random adjacent pixels. Report class-balanced accuracy, transition-specific confusion and county-level acreage error, with uncertainty clustered spatially. Test sensitivity to map resolution and documented label accuracy.",
+    "limitations": "CDL labels are themselves remotely sensed estimates, not perfect field ground truth. This study does not estimate farm profit, yield or the causal benefit of crop rotation; nominal pixel count overstates independent evidence.",
+    "dataset": {
+      "name": "USDA Cropland Data Layer",
+      "publisher": "USDA National Agricultural Statistics Service",
+      "url": "https://www.nass.usda.gov/Research_and_Science/Cropland/Release/",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S54",
+    "title": "Food-supply dependence and trade disruption resilience",
+    "slug": "s54-food-supply-dependence-and-trade-disruption-resilience",
+    "industry": "Agriculture and food production",
+    "question": "A food business or strategy team needs to understand dependence on a small set of supplying countries. Identify concentrated commodity networks and compare conditional sourcing-diversification strategies under production or trade shocks.",
+    "methods": [
+      "Optimization & simulation",
+      "Statistical inference"
+    ],
+    "methodSummary": "Material-balance networks; concentration; robust optimization",
+    "decisionType": "Capacity & operations",
+    "design": "Select compatible FAOSTAT production, trade and food-balance modules for one commodity group. Harmonize physical units, reporting years and product definitions; use bilateral trade tables only where available. Construct supply-dependence indicators and a constrained trade-reallocation scenario model.",
+    "theory": "Material balance constrains the movement of supply through a network. Concentration and dependency describe vulnerability, while robust optimization compares sourcing portfolios across a stated shock set. Prices, substitution and behavioral responses are not identified by accounting identities alone.",
+    "evaluation": "Compare concentration-only rankings with network-based exposure. Verify mass-balance compatibility and stress alternative shock magnitudes, substitution limits and data-revision treatments. Compare indicators around historical disruptions descriptively, without claiming the model causally explains observed price changes.",
+    "limitations": "Country-level annual flows do not reveal a particular company's contracts, inventory or margin. Reallocation capacity and substitution are scenarios; the tool cannot claim realized savings or precise future food prices.",
+    "dataset": {
+      "name": "FAOSTAT",
+      "publisher": "UN Food and Agriculture Organization",
+      "url": "https://www.fao.org/faostat/",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S55",
+    "title": "Permit-process duration and project planning risk",
+    "slug": "s55-permit-process-duration-and-project-planning-risk",
+    "industry": "Construction and infrastructure",
+    "question": "A construction planning team needs realistic administrative lead times before committing downstream resources. Estimate the distribution of time from a documented filing milestone to a documented permit milestone and identify where uncertainty is greatest.",
+    "methods": [
+      "Survival analysis",
+      "Statistical inference"
+    ],
+    "methodSummary": "Survival/AFT models; multistate processes; hierarchical pooling",
+    "decisionType": "Capacity & operations",
+    "design": "Choose a consistent DOB system and application cohort with reliable milestone dates. Separate application, job and permit identifiers, amendments and withdrawals. Fit hierarchical accelerated-failure-time or survival models using information known at the starting milestone; retain unresolved applications as censored where follow-up is observable.",
+    "theory": "Survival models account for incomplete administrative processes; multistate reasoning distinguishes approval, withdrawal and resubmission when histories permit. Partial pooling stabilizes estimates for sparse project categories. Administrative elapsed time is different from physical construction duration.",
+    "evaluation": "Hold out later filing cohorts and compare with category-level historical medians. Report horizon-specific calibration, censoring-adjusted error and interval coverage. Audit missing dates, system migrations and whether the apparent endpoint is original issuance or a later revision.",
+    "limitations": "Permit dates do not identify construction completion, total project cost or the causal effect of an expediting service. If milestone history is unavailable, narrow the question to the reliably observed administrative interval.",
+    "dataset": {
+      "name": "NYC DOB applications and permits",
+      "publisher": "NYC Department of Buildings",
+      "url": "https://www.nyc.gov/site/buildings/dob/building-applications-permits.page",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S56",
+    "title": "Construction-market outlook for commercial capacity planning",
+    "slug": "s56-construction-market-outlook-for-commercial-capacity-planning",
+    "industry": "Construction and infrastructure",
+    "question": "A contractor or construction-services business needs to anticipate shifts in demand across market segments. Test whether pooled sector forecasts improve planning over simple extrapolation of the latest spending growth.",
+    "methods": [
+      "Forecasting"
+    ],
+    "methodSummary": "Dynamic factors; coherent sector forecasts; nominal/real decomposition",
+    "decisionType": "Capacity & operations",
+    "design": "Build consistent monthly Census construction-spending series by supported category. Distinguish seasonally adjusted annual rates from unadjusted monthly values and avoid summing incompatible units. Compare local trends, dynamic-factor models and coherent sector forecasts. Add appropriate public price indices only as an explicit real-spending extension.",
+    "theory": "Common-factor models separate shared construction cycles from sector-specific movement. Aggregation constraints preserve interpretable totals. Nominal spending mixes price and volume changes; a real-activity interpretation requires a suitable deflator and publication-vintage discipline.",
+    "evaluation": "Use rolling multi-month horizons with seasonal/trend baselines. Report scaled error, turning-point performance, interval coverage and revision sensitivity. Translate forecasts into a hypothetical staffing/capacity scenario only after specifying a business's market share and productivity assumptions.",
+    "limitations": "Aggregate spending cannot measure individual project overruns, backlog or contractor profitability. Forecasting a sector does not establish the demand a particular firm will win.",
+    "dataset": {
+      "name": "Construction Spending / Value Put in Place",
+      "publisher": "U.S. Census Bureau",
+      "url": "https://www.census.gov/construction/c30/historical_data.html",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S57",
+    "title": "Turning severe-injury narratives into a prevention taxonomy",
+    "slug": "s57-turning-severe-injury-narratives-into-a-prevention-taxonomy",
+    "industry": "Construction and infrastructure",
+    "question": "A construction safety team needs a consistent view of recurring hazard mechanisms across incident reports. Test whether structured text extraction can organize reported incidents accurately enough to support expert review and training priorities.",
+    "methods": [
+      "Text & recommendation",
+      "Reliability evaluation"
+    ],
+    "methodSummary": "Structured NLP; measurement validation; selective classification",
+    "decisionType": "Risk & reliability",
+    "design": "Filter the OSHA records to the documented construction industry codes and eligible jurisdiction/time coverage. Build a prespecified mechanism/activity taxonomy. Compare keyword and TF-IDF baselines with a structured language-model classifier; retain supporting text spans and an abstention option for ambiguous cases.",
+    "theory": "Measurement theory treats the taxonomy as an operational definition that requires validation. Selective classification trades coverage for lower error among accepted labels. Observed report counts reflect exposure and reporting processes as well as hazard, so they are not automatically injury rates.",
+    "evaluation": "Create a de-identified, independently adjudicated evaluation sample with clear labeling rules; report agreement, class-specific precision/recall and error-versus-review-volume curves. Use later periods for drift checks. Without expert labels, treat the model as an unvalidated organizing aid.",
+    "limitations": "Coverage excludes important jurisdictions and the severe-injury report system is not a complete fatality census. Counts lack matching worker-hour denominators; do not rank employers by safety or claim a prevention intervention reduced injuries.",
+    "dataset": {
+      "name": "OSHA Severe Injury Reports — construction subset",
+      "publisher": "U.S. Occupational Safety and Health Administration",
+      "url": "https://www.osha.gov/severe-injury-reports",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S58",
+    "title": "Where business workflows accumulate delay",
+    "slug": "s58-where-business-workflows-accumulate-delay",
+    "industry": "Professional services and enterprise AI",
+    "question": "An operations leader needs to know which process paths predict long completion times and where limited review capacity might help. Study bottlenecks and remaining-time uncertainty in a real loan-application workflow.",
+    "methods": [
+      "Survival analysis",
+      "Optimization & simulation"
+    ],
+    "methodSummary": "Process mining; survival/sequence models; queueing scenarios",
+    "decisionType": "Capacity & operations",
+    "design": "Parse BPI 2017 events with application/offer relationships and lifecycle semantics intact. Discover common paths and loops, then predict remaining completion time from event prefixes using an interpretable baseline and a sequence/survival challenger. Keep all related offers and prefixes within the same application split.",
+    "theory": "Process mining represents workflow structure; survival models handle unfinished cases and varying process age. Queueing theory distinguishes arrival load, service capacity and waiting, but event-to-event elapsed time does not automatically identify active service time. Simulation requires explicit assumptions for unobserved service mechanisms.",
+    "evaluation": "Use later application cohorts with appropriate censoring. Compare prefix-age and current-stage medians with learned forecasts; report remaining-time error, calibration and late-case capture at review capacity. Check discovered paths against logs and evaluate staffing scenarios separately from observed prediction quality.",
+    "limitations": "Observed delays do not prove employee inefficiency or the causal effect of automation. Missing service-time/resource detail limits staffing simulation; business savings cannot be inferred from elapsed time alone.",
+    "dataset": {
+      "name": "BPI Challenge 2017",
+      "publisher": "4TU.ResearchData / contributing financial institution",
+      "url": "https://figshare.com/articles/dataset/BPI_Challenge_2017/12696884",
+      "selectionRank": 1
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S59",
+    "title": "Complaint triage with evidence and a human-review threshold",
+    "slug": "s59-complaint-triage-with-evidence-and-a-human-review-threshold",
+    "industry": "Professional services and enterprise AI",
+    "question": "A customer-operations team needs consistent routing of complaints while recognizing uncertain or emerging issues. Compare a simple text classifier with an evidence-grounded language-model workflow under a fixed human-review budget.",
+    "methods": [
+      "Text & recommendation",
+      "Reliability evaluation"
+    ],
+    "methodSummary": "Selective classification; hierarchical labels; evidence attribution; drift",
+    "decisionType": "Product & service quality",
+    "design": "Use eligible public CFPB narratives and harmonized product/issue labels. Predict intake categories from narrative text only; exclude recorded outcome and routing fields from inputs. Add structured issue extraction with cited spans and an abstention rule. Treat historical category labels as imperfect supervision and document publication selection.",
+    "theory": "Selective prediction balances automatic coverage against error. Hierarchical classification reflects related complaint categories; concept drift changes vocabulary and taxonomy over time. Evidence attribution tests whether an explanation is supported by the source, which is different from whether the routing label is correct.",
+    "evaluation": "Hold out later periods and a company-transfer slice. Compare TF-IDF/logistic and language-model approaches using macro-F1, rare-issue recall, calibration, coverage-risk curves, latency and cost. Audit factual support on an independently reviewed sample; separate weak-label accuracy from adjudicated quality.",
+    "limitations": "Complaints are selected reports, not verified facts or a customer-base denominator. Do not infer company misconduct or rank complaint rates without exposure; no live customer data or automated external action is needed.",
+    "dataset": {
+      "name": "Consumer Complaint Database",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/data-research/consumer-complaints/",
+      "selectionRank": 2
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  },
+  {
+    "id": "S60",
+    "title": "Can an AI service agent complete the task reliably?",
+    "slug": "s60-can-an-ai-service-agent-complete-the-task-reliably",
+    "industry": "Professional services and enterprise AI",
+    "question": "An enterprise AI leader must choose an agent design based on reliable task completion, policy adherence and cost. Test whether explicit state tracking, tool validation and escalation improve repeated task success over a basic tool-calling agent.",
+    "methods": [
+      "Reliability evaluation"
+    ],
+    "methodSummary": "Sequential decisions; state invariants; selective automation; pass^k",
+    "decisionType": "Risk & reliability",
+    "design": "Pin the original tau-bench repository, environment, task split, model versions and user-simulator configuration. Compare a baseline agent with one intervention at a time: structured task state, validated tool arguments, policy checks or escalation. Run repeated trials on identical task sets; isolate all tools in the benchmark's simulated environment.",
+    "theory": "Sequential decision-making compounds errors across tool calls. State machines and invariants constrain invalid transitions; selective automation trades completion coverage against escalation. The benchmark's pass^k measures consistency across repeated trials, unlike pass@k, which rewards at least one success.",
+    "evaluation": "Reserve tasks for final evaluation and use matched trial seeds where possible. Report goal-state success, pass^k, policy violations, unnecessary tool calls, escalation, latency and cost with task-clustered uncertainty. Validate final database state rather than relying only on an LLM judge's impression.",
+    "limitations": "Simulated customer-service tasks do not establish real customer satisfaction or labor savings. Escalation is not autonomous completion; pin benchmark versions and distinguish synthetic stress tasks from the official evaluation.",
+    "dataset": {
+      "name": "tau-bench",
+      "publisher": "Sierra Research",
+      "url": "https://github.com/sierra-research/tau-bench",
+      "selectionRank": 3
+    },
+    "executionStatus": "planned",
+    "publicationStatus": "unpublished",
+    "codeUrl": null,
+    "resultFile": null,
+    "publishedUrl": null,
+    "updated": "2026-09-29"
+  }
+]
