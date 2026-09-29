@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/lib/projects";
 import results from "@/lib/marketing-results.json";
-import { Header, Footer } from "@/components/portfolio";
+import { Footer } from "@/components/portfolio";
 import { FlagshipEvidence } from "@/components/flagship-evidence";
 import { CommercialEvidence } from "@/components/commercial-evidence";
 
@@ -21,7 +21,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   if (!p) notFound();
   const flagship = p.slug === "marketing-incrementality";
   const executive = p.executive;
-  return <><Header /><main tabIndex={-1} id="main">
+  return <><main tabIndex={-1} id="main">
     <section className="project-hero"><div className="shell"><Link className="back-link" href="/research#commercial">← Commercial research</Link><p className="eyebrow">{p.category}</p><h1>{p.title}</h1><p className="project-question">{p.question}</p><div className="project-hero-foot"><span className="status-light">{p.status}</span><a className="button-light" href="#executive-summary">Executive summary ↓</a></div></div></section>
     <div className="shell case-layout"><CaseContents demonstration />
     <article className="case-body">

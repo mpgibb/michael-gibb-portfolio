@@ -5,7 +5,6 @@ export const signalConfig = {
   cycleSeconds: 24,
   initialSeconds: 5,
   framesPerSecond: 30,
-  staticBelowWidth: 360,
   compactMaxWidth: 1199,
   mobileMaxWidth: 600,
   ambientPoints: 48,
@@ -30,6 +29,12 @@ const profiles = [
   [0.65, 0.56, 0.27, 0.43, 0.46],
   [0.27, 0.42, 0.67, 0.56, 0.3],
 ];
+// Shallower sweeps leave both signals visible in a narrow, tall hero.
+const mobileProfiles = [
+  [0.62, 0.57, 0.46, 0.29, 0.23],
+  [0.24, 0.31, 0.43, 0.57, 0.65],
+  profiles[2],
+];
 const unit = (value: number) => value - Math.floor(value);
 const seed = (i: number) => unit(Math.sin(i * 127.1 + 311.7) * 43758.5453);
 const mix = (a: number, b: number, amount: number) => a + (b - a) * amount;
@@ -38,7 +43,7 @@ export function signalDensity(width: number) {
   const mobile = width <= signalConfig.mobileMaxWidth;
   const compact = width <= signalConfig.compactMaxWidth;
   return {
-    curves: width < signalConfig.staticBelowWidth ? 1 : compact ? 2 : 3,
+    curves: compact ? 2 : 3,
     ambient: mobile ? signalConfig.mobileAmbientPoints : compact ? signalConfig.compactAmbientPoints : signalConfig.ambientPoints,
     selected: mobile ? signalConfig.mobileSelectedPointsPerCurve : compact ? signalConfig.compactSelectedPointsPerCurve : signalConfig.selectedPointsPerCurve,
   };
@@ -49,7 +54,8 @@ export function signalCurve(seconds: number, index: number, width: number, heigh
   const phase = 2 * Math.PI * (seconds / signalConfig.cycleSeconds + signalConfig.curvePhases[index]);
   const over = signalConfig.overscanFraction;
   const xs = [-over, 0.2, 0.53, 0.86, 1 + over];
-  const knots = profiles[index].map((y, i) => ({
+  const profile = width <= signalConfig.mobileMaxWidth ? mobileProfiles[index] : profiles[index];
+  const knots = profile.map((y, i) => ({
     x: xs[i] * width,
     y: height * (y + signalConfig.curveAmplitude * Math.sin(phase + i * 0.47) + 0.025 * Math.cos(phase - i * 0.31)),
   }));

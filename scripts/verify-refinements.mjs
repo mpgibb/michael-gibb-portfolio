@@ -24,7 +24,7 @@ for (const width of [320, 360, 390, 768, 1024, 1440]) {
     });
   }
 }
-assert.equal(signalDensity(320).curves, 1);
+assert.equal(signalDensity(320).curves, 2);
 assert.equal(signalDensity(390).curves, 2);
 assert.equal(signalDensity(1440).curves, 3);
 assert.equal(formatCurrency(-.04), "-$0.04");

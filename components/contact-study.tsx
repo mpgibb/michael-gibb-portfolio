@@ -1,7 +1,7 @@
 import { CaseContents } from "@/components/case-contents";
 import { StudyNextSteps } from "@/components/study-next-steps";
 import Link from "next/link";
-import { Header, Footer } from "@/components/portfolio";
+import { Footer } from "@/components/portfolio";
 import { ContactPriorityEvidence } from "@/components/contact-priority-evidence";
 import type { ProgramStudy } from "@/lib/program-registry";
 import { contactResult as result, percent } from "@/lib/program-results";
@@ -13,7 +13,7 @@ export function ContactStudy({ study }: { study: ProgramStudy }) {
   const code = `https://github.com/mpgibb/michael-gibb-research/tree/${result.code_version}/studies/S28`;
   const report = "https://github.com/mpgibb/michael-gibb-research/blob/main/studies/S28/REPORT.md";
   const structured = { "@context": "https://schema.org", "@type": "ScholarlyArticle", headline: study.title, author: { "@type": "Person", name: "Michael P. Gibb, Ph.D." }, url: `${productionOrigin}/research/${study.slug}`, about: "Historical sales-contact response prediction", datePublished: result.evaluated_on, citation: result.data.source_url, isAccessibleForFree: true };
-  return <><Header/><main id="main" tabIndex={-1}>
+  return <><main id="main" tabIndex={-1}>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structured).replace(/</g,"\\u003c") }}/>
     <section className="project-hero program-hero"><div className="shell"><Link className="back-link" href="/research">← Research catalog</Link><p className="eyebrow">S28 / SALES CONTACT PRIORITIZATION</p><h1>Earn the case for a more complex contact model.</h1><p className="project-question">At 20% contact capacity, the simple history rule identifies {selected.responses} recorded subscriptions versus {challenger.responses} for the model selected during development.</p><div className="project-hero-foot"><span className="status-light">Evaluated public-data study</span><a className="button-light" href={code}>Research code ↗</a><a className="button-light" href="#decision">Executive summary ↓</a></div><p className="program-coverage">41,188 records · UCI Bank Marketing · May 2008–November 2010 · 8,238 final-test contacts</p></div></section>
     <div className="shell case-layout"><CaseContents /><article className="case-body">

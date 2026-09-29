@@ -1,0 +1,16 @@
+Chicago skyline reference and artwork credit
+
+The header is a simplified lake view over Monroe Harbor, based on the photograph dated July 2, 2022, at 41.872479, -87.605046. It is not an exact reproduction of every building or a survey of the skyline in 2026. Apparent size and left-to-right placement follow this view; foreground buildings obscure the lower part of 875 North Michigan Avenue.
+
+Photograph: Sea Cow, Chicago Skyline 2022 3.
+Reference crop and exposure adjustment: Nkon21.
+Source: https://commons.wikimedia.org/wiki/File:Chicago_Skyline_2022_3_(cropped).jpg
+Original photograph: https://commons.wikimedia.org/wiki/File:Chicago_Skyline_2022_3.jpg
+License: Creative Commons Attribution-ShareAlike 4.0 International
+https://creativecommons.org/licenses/by-sa/4.0/
+
+Changes for the header: simplified vector rooflines and foreground masses, removal of fine facade detail, white fill, copper curve and four six-point stars. Building proportions use uniform scaling; no building is moved to fit the curve. The adapted skyline artwork is available under CC BY-SA 4.0. This license notice applies to the artwork, not the site's research, name or other content.
+
+Architectural cross-checks:
+https://www.som.com/projects/willis-tower-formerly-sears-tower/
+https://www.som.com/projects/875-north-michigan-avenue-formerly-john-hancock-center/

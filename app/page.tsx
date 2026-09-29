@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Header, Footer } from "@/components/portfolio";
+import { Footer } from "@/components/portfolio";
 import { inventoryResult } from "@/lib/inventory-results";
 import { SignalField } from "@/components/signal-field";
 import { publishedStudies } from "@/lib/program-registry";
@@ -9,11 +9,11 @@ export default function Home() {
   const flagship = publishedStudies.find(study => study.id === "S02")!;
   const base = inventoryResult.metrics.find(row => row.model === "seasonal_28" && row.name === "weighted_scaled_error_28d")!.estimate;
   const advanced = inventoryResult.metrics.find(row => row.model === "quantile_boosting" && row.name === "weighted_scaled_error_28d")!.estimate;
-  return <><Header /><main tabIndex={-1} id="main">
+  return <><main tabIndex={-1} id="main">
     <section className="hero">
       <div className="shell hero-grid">
         <div className="hero-message"><p className="eyebrow">CHICAGO • OPEN TO REMOTE</p>
-          <h1>Analytics and AI leadership for growth and better business decisions.</h1>
+          <h1>Analytics and AI leadership for <span className="hero-emphasis">growth and better business decisions.</span></h1>
           <p className="hero-copy">Statistical rigor. Technical leadership. Commercial impact.</p>
           <div className="hero-actions"><a className="button-light button-primary" href="#work">Explore my work</a><a className="button-light button-secondary" href="#contact">Get in touch</a></div>
         </div>

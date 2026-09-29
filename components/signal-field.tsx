@@ -61,9 +61,9 @@ export function SignalField() {
       if (request !== null) cancelAnimationFrame(request);
       request = null;
       previous = null;
-      const state = reduced.matches ? "reduced" : paused ? "paused" : width < signalConfig.staticBelowWidth ? "narrow-static" : document.hidden ? "tab-hidden" : !inView ? "offscreen" : "running";
+      const state = reduced.matches ? "reduced" : paused ? "paused" : document.hidden ? "tab-hidden" : !inView ? "offscreen" : "running";
       root.dataset.motion = state;
-      if (reduced.matches || width < signalConfig.staticBelowWidth) draw(signalConfig.initialSeconds);
+      if (reduced.matches) draw(signalConfig.initialSeconds);
       else draw(clock.current);
       if (state === "running") request = requestAnimationFrame(tick);
     }

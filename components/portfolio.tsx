@@ -1,10 +1,11 @@
 import Link from "next/link";
+import { PersistentHeader } from "./persistent-header";
 import { SkylineMark } from "./skyline-mark";
 import { SiteNavigation } from "./site-navigation";
 
 export function Header() {
   return (
-    <header className="site-header">
+    <PersistentHeader>
       <div className="shell header-inner">
         <Link className="wordmark" href="/" aria-label="Michael P. Gibb, Ph.D. — Home">
           <SkylineMark />
@@ -14,7 +15,7 @@ export function Header() {
         </Link>
         <SiteNavigation />
       </div>
-    </header>
+    </PersistentHeader>
   );
 }
 export function Footer() {

@@ -54,6 +54,8 @@ try {
     assert.match(html,/href="mailto:mike@michaelpgibb.com"/);
     assert.match(html,/https:\/\/www.linkedin.com\/in\/mp-gibb\//);
     assert.match(html,/id="main"/);assert.match(html,/Skip to content/);
+    assert.equal((html.match(/<header class="site-header"/g) ?? []).length, 1, `One shared header: ${path}`);
+    assert.match(html,/class="wordmark-tagline">Analytics <span>•<\/span> AI <span>•<\/span> Leadership/);
     assert.equal((html.match(/class="chicago-star"/g)??[]).length, 4, `Chicago logo: ${path}`);
     assert.match(html,/aria-label="Open navigation" aria-expanded="false" aria-controls="main-navigation"/);
     assert.match(html,indexable ? /name="robots" content="index, follow"/ : /name="robots" content="noindex, nofollow"/);
@@ -104,7 +106,7 @@ try {
       for(const study of agenda) assert(!html.includes(`href="/research/${study.slug}"`));
       for(const name of names) assert(html.includes(`/projects/${name}`));
     } else {
-      assert.match(html,/growth and better business decisions/);
+      assert.match(html,/Analytics and AI leadership for <span class="hero-emphasis">growth and better business decisions\.<\/span>/);
       assert.match(html,/CHICAGO • OPEN TO REMOTE/);
       assert.match(html,/Statistical rigor\. Technical leadership\. Commercial impact\./);
       assert.match(html,/href="#work">Explore my work/);
