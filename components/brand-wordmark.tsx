@@ -21,7 +21,7 @@ export function BrandWordmark() {
       tagline.style.fontSize = "";
       tagline.style.letterSpacing = "";
       separator.style.letterSpacing = "";
-      const logo = brand.querySelector("svg")!.getBoundingClientRect().width;
+      const logo = brand.querySelector(".skyline-mark")!.getBoundingClientRect().width;
       const available = brand.clientWidth - logo - parseFloat(getComputedStyle(brand).columnGap);
       const natural = width(name);
       if (natural > available && available > 0) name.style.fontSize = `${parseFloat(getComputedStyle(name).fontSize) * available / natural}px`;

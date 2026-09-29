@@ -23,6 +23,11 @@ try {
     }
     assert(ready);
   }
+  const logo = await fetch(new URL('/brand/michael-gibb-skyline-copper-base.svg', base));
+  assert.equal(logo.status, 200);
+  assert.equal(createHash('sha256').update(Buffer.from(await logo.arrayBuffer())).digest('hex'),
+    'fc30bbe6b2bd0789241a97396d0cddb14fe072bbeed8ccd2a4dbf047c47197b0', 'Published logo must match the supplied SVG byte for byte');
+  console.log('PASS exact supplied skyline logo');
   const titles = new Set();
   const checkedStyles = new Set();
   for (const path of ["/", "/research", "/privacy", "/terms", ...names.map(name=>`/projects/${name}`), ...published.map(study=>`/research/${study.slug}`)]) {
@@ -60,7 +65,8 @@ try {
     assert.match(html,/id="main"/);assert.match(html,/Skip to content/);
     assert.equal((html.match(/<header class="site-header"/g) ?? []).length, 1, `One shared header: ${path}`);
     assert.match(html,/class="wordmark-tagline">Analytics <span>•<\/span> AI <span>•<\/span> Leadership/);
-    assert.equal((html.match(/class="chicago-star"/g)??[]).length, 4, `Chicago logo: ${path}`);
+    assert.match(html, /src="\/brand\/michael-gibb-skyline-copper-base\.svg"/, `Approved logo: ${path}`);
+    assert(!html.includes("CHICAGO • OPEN TO REMOTE"), `Removed hero line: ${path}`);
     assert.match(html,/aria-label="Open navigation" aria-expanded="false" aria-controls="main-navigation"/);
     assert.match(html,indexable ? /name="robots" content="index, follow"/ : /name="robots" content="noindex, nofollow"/);
     if(!indexable) assert.match(response.headers.get("x-robots-tag")??"",/noindex/);
@@ -111,7 +117,6 @@ try {
       for(const name of names) assert(html.includes(`/projects/${name}`));
     } else if (path === "/") {
       assert.match(html,/Analytics and AI leadership for <span class="hero-emphasis">growth and better business decisions\.<\/span>/);
-      assert.match(html,/CHICAGO • OPEN TO REMOTE/);
       assert.match(html,/Statistical rigor\. Technical leadership\. Commercial impact\./);
       assert.match(html,/href="\/#work">Explore my work/);
       assert.match(html,/href="\/#contact">Get in touch/);

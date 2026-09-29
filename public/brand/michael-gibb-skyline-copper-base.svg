@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="560" viewBox="0 0 1200 560" fill="none" role="img" aria-labelledby="logo-title logo-desc">
+  <title id="logo-title">Michael P. Gibb skyline and four stars</title>
+  <desc id="logo-desc">A stylized white skyline beneath a copper bell curve, above a copper foundation bar containing four white six-point stars.</desc>
+  <defs>
+    <polygon id="six-point-star" fill="#FFFFFF" points="0,-27 6.75,-11.691 23.383,-13.5 13.5,0 23.383,13.5 6.75,11.691 0,27 -6.75,11.691 -23.383,13.5 -13.5,0 -23.383,-13.5 -6.75,-11.691"/>
+    <mask id="skyline-details" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="450">
+      <rect width="1200" height="450" fill="white"/>
+      <g stroke="black" stroke-width="2" stroke-linejoin="miter">
+        <path d="M747 233 L789 270 L739 309 L795 348 L733 387 L801 433 M784 233 L741 270 L791 309 L735 348 L797 387 L729 433"/>
+        <path d="M684 333 V375 M660 355 L684 375 L705 355" stroke-width="3"/>
+        <path d="M837 295 V443 M844 295 V443 M851 295 V443 M858 295 V443" stroke-width="3"/>
+      </g>
+    </mask>
+  </defs>
+  <g fill="#FFFFFF" mask="url(#skyline-details)">
+    <path d="M20 447 L158 443 H180 V434 H194 V420 H220 V443 H228 V394 H257 V414 H291 V443 H299 V367 H307 V354 H332 V367 H342 V443 H353 V405 H367 V325 H377 V289 H383 V268 H386 L387 221 H389 L391 268 H399 L401 221 H403 L404 268 H407 V289 H415 V325 H424 V443 H435 V357 H459 V443 H469 V292 H480 V223 H491 V168 H500 V117 H507 L510 69 H512 L514 117 H525 L528 69 H530 L532 117 H539 V168 H548 V223 H560 V409 H571 V377 H586 V443 H596 V324 H604 V309 H611 V289 H628 V309 H636 V324 H644 V443 H657 V356 L684 331 L706 353 V366 H714 V443 H725 L741 221 H749 L752 174 H754 L757 221 H774 L777 167 H779 L782 221 H790 L806 400 H817 V443 H829 V285 H838 V278 H857 V285 H867 V443 H880 V408 H897 V443 H909 V376 H918 V365 H943 V376 H950 V443 H963 V426 H974 V417 H997 V426 H1008 V443 H1022 V435 H1044 V443 L1180 447 Z"/>
+  </g>
+  <path d="M20 447 C224 444 310 247 420 126 C480 59 538 30 596 30 C656 30 712 60 777 129 C892 253 973 444 1180 447" stroke="#E3AC79" stroke-width="7" stroke-linecap="round"/>
+  <rect x="20" y="461" width="1160" height="76" fill="#E3AC79"/>
+  <g fill="#FFFFFF">
+    <use xlink:href="#six-point-star" transform="translate(378 499)"/>
+    <use xlink:href="#six-point-star" transform="translate(526 499)"/>
+    <use xlink:href="#six-point-star" transform="translate(674 499)"/>
+    <use xlink:href="#six-point-star" transform="translate(822 499)"/>
+  </g>
+</svg>

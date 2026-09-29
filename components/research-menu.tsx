@@ -9,6 +9,7 @@ export function ResearchMenu({ studies, open, setOpen }: { studies: NavigationSt
   const container = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const search = useRef<HTMLInputElement>(null);
+  const results = useRef<HTMLDivElement>(null);
   const industries = industryNames(studies);
   const matches = studies.filter(study => matchesResearch(query, study.id, studyDescription(study)));
   const foundIndustries = industries.filter(industry => matchesResearch(query, "", industry) || matches.some(study => study.industry === industry));
@@ -22,12 +23,16 @@ export function ResearchMenu({ studies, open, setOpen }: { studies: NavigationSt
     return () => document.removeEventListener("pointerdown", dismiss);
   }, [open, setOpen]);
 
+  useEffect(() => {
+    if (results.current) results.current.scrollTop = 0;
+  }, [query]);
+
   return <div className="research-menu" ref={container}
     onKeyDown={event => { if (event.key === "Escape" && open) { event.stopPropagation(); setOpen(false); trigger.current?.focus(); } }}>
     <button ref={trigger} type="button" aria-expanded={open} aria-controls="research-industries" onClick={() => setOpen(!open)}>Industries <span aria-hidden="true">⌄</span></button>
     <div id="research-industries" className="industry-panel" hidden={!open}>
       <div className="industry-search"><label htmlFor="industry-search">Search industries, topics, or methods</label><input ref={search} id="industry-search" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Try healthcare or forecasting" autoComplete="off" /></div>
-      <div className="industry-results">
+      <div ref={results} className="industry-results" tabIndex={0} role="region" aria-label="Industry and study results">
         <h2>Industries</h2>
         <ul className="industry-list">{foundIndustries.map(industry => {
           const records = studies.filter(study => study.industry === industry);

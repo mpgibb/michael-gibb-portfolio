@@ -14,7 +14,7 @@ export default function Home() {
   return <><main tabIndex={-1} id="main">
     <section className="hero">
       <div className="shell hero-grid">
-        <div className="hero-message"><p className="eyebrow">CHICAGO • OPEN TO REMOTE</p>
+        <div className="hero-message">
           <h1>Analytics and AI leadership for <span className="hero-emphasis">growth and better business decisions.</span></h1>
           <p className="hero-copy">Statistical rigor. Technical leadership. Commercial impact.</p>
           <div className="hero-actions"><SectionLink className="button-light button-primary" href="/#work">Explore my work</SectionLink><SectionLink className="button-light button-secondary" href="/#contact">Get in touch</SectionLink></div>
