@@ -2,6 +2,14 @@
 
 Updated September 29, 2026. Research-program milestone: nine evaluated public-data studies (S28, S02, S04, S58, S43, S13, S31, S03 and S47), 51 agenda studies across the full 60-study catalog, and four separately labeled synthetic demonstrations. Independent technical review is pending.
 
+## Skyline Curve favicon
+
+The supplied white-bordered Skyline Curve assets are installed unchanged as `app/favicon.ico`, `app/icon.svg` and `app/apple-icon.png`. Useful 16px, 32px, 192px and 512px PNG exports are in `public/icons/`. The old `public/favicon.svg` and explicit `metadata.icons` entry were removed. Next.js now generates the sole root icon set inherited by every route. No manifest, service worker or maskable/pinned-tab icon was introduced.
+
+Local lint, TypeScript, optimized build and the full smoke suite pass. All seven served icon assets match the supplied bytes and have the correct image content types; the retired SVG returns 404. The ICO contains exact 16/32/48/64px supplied frames; the Apple image is opaque 180×180; the SVG has no external resources. All fifteen public routes expose the same three icon links. Existing nine result exports, four archives, 51 draft exclusions, contact links, canonicals and indexing checks remain valid. A fresh local browser tab reports no warning/error console entries.
+
+Production deployment and live verification are pending. Real browser-chrome interaction was interrupted by concurrent browser changes, so light/dark tab appearance and a fresh private context are not yet confirmed. Page-only screenshots are not evidence of tab rendering. No optical changes have been made. Rollback is an ordinary revert of the focused icon implementation commit and redeployment; the preceding verified release is `64051e5bedf392962438d1f85159627d025de82e`.
+
 ## Published content and research
 
 - Canonical site: https://michaelpgibb.com
@@ -23,7 +31,7 @@ S02 uses 210 M5 product/store series and four final 28-day windows. Quantile boo
 
 Run `S47-a0ada992-696c3a18` evaluates 624 final telecom records, 561 primary-feature profiles and 94 churn labels. Core boosted log loss is 0.0981 versus additive 0.1576; paired profile-bootstrap difference −0.0595 (95% interval −0.0826 to −0.0347). At 124-record capacity, boosting identifies 90 observed churn outcomes versus additive 85 and simple service rule 57. No prevented churn is claimed. Removing complaint/failure signals worsens forecasts; status/value additions do not establish further gains.
 
-120 research tests and 1,477 independent metric, capacity, bootstrap, calibration and trial-size comparisons pass. Report figures are rendered and inspected. Research release `30724de2b4c0a7260344d1299b20c3d59054eda1` passed GitHub Actions 36611628974. Website lint, TypeScript and a clean optimized build pass. Local checks cover fifteen public routes, nine exact result exports, four archives and 51 unpublished exclusions. Desktop, 390px and 320px checks pass with no material console errors or document overflow. Model/feature changes, zero/full capacity, calibration expansion, association contrasts, feasible/invalid trial assumptions and keyboard reset reproduce saved evidence. Source and generated-output publication checks pass. Production verification remains pending.
+120 research tests and 1,477 independent metric, capacity, bootstrap, calibration and trial-size comparisons pass. Report figures are rendered and inspected. Research release `30724de2b4c0a7260344d1299b20c3d59054eda1` passed GitHub Actions 36611628974. Website lint, TypeScript and a clean optimized build pass. Local checks cover fifteen public routes, nine exact result exports, four archives and 51 unpublished exclusions. Desktop, 390px and 320px checks pass with no material console errors or document overflow. Model/feature changes, zero/full capacity, calibration expansion, association contrasts, feasible/invalid trial assumptions and keyboard reset reproduce saved evidence. Source and generated-output publication checks pass. Production release `64051e5bedf392962438d1f85159627d025de82e` is verified at `https://michael-gibb-portfolio-mb7keavw7-mike-gibb.vercel.app`; GitHub Actions 36612564070 and Vercel deployment 6742412083 succeeded. Public checks pass fifteen routes, nine matching result exports, four archives and 51 unpublished exclusions. Fresh production model/feature and trial controls, keyboard capacity endpoints and reset match saved evidence. The 390px layout has no document overflow and no warning/error console entries were observed.
 
 ## S03 release checks
 

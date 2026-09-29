@@ -10,7 +10,6 @@ export const metadata: Metadata = {
     "Analytics and AI leadership for growth and better business decisions. Marketing effectiveness, revenue forecasting, customer value and operational planning.",
   metadataBase: new URL(productionOrigin),
   robots: { index: isPublicProduction, follow: isPublicProduction },
-  icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
 };
 export default function RootLayout({
   children,

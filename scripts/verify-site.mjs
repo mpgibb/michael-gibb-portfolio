@@ -29,6 +29,10 @@ try {
     const response = await fetch(new URL(path,base));
     assert.equal(response.status,200,path);
     const html = await response.text();
+    const iconTags = [...html.matchAll(/<link\b[^>]*rel="(?:icon|shortcut icon|apple-touch-icon)"[^>]*>/g)].map(match=>match[0]);
+    const iconPaths = iconTags.map(tag=>new URL(tag.match(/href="([^"]+)"/)[1].replaceAll('&amp;', '&'),base).pathname).sort();
+    assert.deepEqual(iconPaths, ['/apple-icon.png','/favicon.ico','/icon.svg'], `Icon metadata: ${path}`);
+    assert(iconTags.some(tag=>tag.includes('rel="apple-touch-icon"')&&tag.includes('sizes="180x180"')));
     const styles = [...html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*>/g)]
       .map(match => match[0].match(/href="([^"]+)"/)?.[1]).filter(Boolean);
     assert(styles.length, `Stylesheet missing: ${path}`);
@@ -139,7 +143,22 @@ try {
     assert([404,410].includes(response.status),`Removed/unknown route ${path}: ${response.status}`);
     assert(!response.headers.get('location'));console.log(`PASS unavailable route ${path}`);
   }
-  assert.match(await(await fetch(new URL('/favicon.svg',base))).text(),/<svg/);
+  const iconAssets = [
+    ['/favicon.ico','app/favicon.ico',/image\/(?:x-icon|vnd\.microsoft\.icon)/],
+    ['/icon.svg','app/icon.svg',/image\/svg\+xml/],
+    ['/apple-icon.png','app/apple-icon.png',/image\/png/],
+    ...[16,32,192,512].map(size=>[`/icons/favicon-${size}x${size}.png`,`public/icons/favicon-${size}x${size}.png`,/image\/png/]),
+  ];
+  for(const [url,file,type] of iconAssets) {
+    const response=await fetch(new URL(url,base),{redirect:'manual'});
+    assert.equal(response.status,200,`Icon URL: ${url}`);
+    assert.match(response.headers.get('content-type')??'',type);
+    const bytes=Buffer.from(await response.arrayBuffer());
+    const expected=readFileSync(new URL(`../${file}`,import.meta.url));
+    assert.deepEqual(bytes,expected,`Icon bytes: ${url}`);
+  }
+  assert.equal((await fetch(new URL('/favicon.svg',base),{redirect:'manual'})).status,404);
+  console.log('PASS seven icon assets: exact bytes, content types, consistent metadata and retired SVG exclusion');
   const robots=await(await fetch(new URL('/robots.txt',base))).text();
   assert.match(robots,indexable ? /Allow: \// : /Disallow: \//);
   const sitemap=await(await fetch(new URL('/sitemap.xml',base))).text();

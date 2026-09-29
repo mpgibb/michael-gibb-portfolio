@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <title>Michael P. Gibb — Skyline Curve</title>
+  <desc>Three white Chicago-inspired towers beneath a copper bell curve on a navy rounded square with a white border.</desc>
+  <rect width="256" height="256" rx="49" fill="#0A192F"/>
+  <rect x="6" y="6" width="244" height="244" rx="43" fill="none" stroke="#FFFFFF" stroke-width="8"/>
+  <path d="M22 189 C54 184 73 145 95 96 C108 67 116 50 130 50 C145 50 156 71 171 103 C194 153 210 184 234 189" fill="none" stroke="#E3AC79" stroke-width="8" stroke-linecap="round"/>
+  <g fill="#FFFFFF">
+    <path d="M64 204 V172 H71 V164 H77 V155 H81 V164 H87 V172 H94 V204 Z"/>
+    <path d="M106 204 V153 H112 V130 H117 V99 H120 V72 H124 V99 H129 V72 H133 V99 H137 V130 H143 V153 H149 V204 Z"/>
+    <path d="M158 204 L164 124 H167 V111 H171 V124 H178 V111 H182 V124 H184 L190 204 Z"/>
+  </g>
+</svg>
