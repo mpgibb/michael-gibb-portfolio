@@ -68,10 +68,13 @@ try {
       let last=-1;
       for(const id of ["decision","implication","evidence","data","method","code"]) {const position=html.indexOf(`id="${id}"`); assert(position>last,`Program section order: ${id}`); last=position;}
       assert.match(html,/Evaluated public-data study/);
-      assert.match(html,/data-testid="contact-priority-evidence"/);
+      const study=published.find(item=>path===`/research/${item.slug}`);
+      assert(study);
+      if(study.id==="S28") assert.match(html,/data-testid="contact-priority-evidence"/);
+      if(study.id==="S02") { assert.match(html,/data-testid="inventory-evidence"/); assert.match(html,/17.4%/); assert.match(html,/7,775.46/); assert.match(html,/0.8049/); }
       assert.match(html,/application\/ld\+json/);
-      assert.match(html,/934/); assert.match(html,/843/); assert.match(html,/0.0822/);
-      assert(html.includes('/downloads/research/S28.json'));
+      if(study.id==="S28") { assert.match(html,/934/); assert.match(html,/843/); assert.match(html,/0.0822/); }
+      assert(html.includes(`/downloads/research/${study.id}.json`));
     } else if (path === "/research") {
       assert.match(html,/data-testid="research-catalog"/);
       assert.match(html,/Research agenda/);

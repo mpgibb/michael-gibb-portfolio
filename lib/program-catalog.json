@@ -50,11 +50,11 @@
       "url": "https://github.com/Mcompetitions/M5-methods",
       "selectionRank": 2
     },
-    "executionStatus": "planned",
-    "publicationStatus": "unpublished",
-    "codeUrl": null,
-    "resultFile": null,
-    "publishedUrl": null,
+    "executionStatus": "evaluated",
+    "publicationStatus": "published",
+    "codeUrl": "https://github.com/mpgibb/michael-gibb-research/tree/main/studies/S02",
+    "resultFile": "S02.json",
+    "publishedUrl": "https://michaelpgibb.com/research/s02-inventory-planning-with-coherent-demand-uncertainty",
     "updated": "2026-09-29"
   },
   {
