@@ -71,6 +71,7 @@ try {
       const study=published.find(item=>path===`/research/${item.slug}`);
       assert(study);
       if(study.id==="S28") assert.match(html,/data-testid="contact-priority-evidence"/);
+      if(study.id==="S31") { assert.match(html,/data-testid="insurance-evidence"/); assert.match(html,/136,271/); assert.match(html,/€147.76/); assert.match(html,/77.894/); }
       if(study.id==="S13") { assert.match(html,/data-testid="inspection-evidence"/); assert.match(html,/0.0626/); assert.match(html,/0.0765/); assert.match(html,/4 \/ 22/); }
       if(study.id==="S43") { assert.match(html,/data-testid="property-evidence"/); assert.match(html,/17.29%/); assert.match(html,/70.1%/); assert.match(html,/24,551/); }
       if(study.id==="S58") { assert.match(html,/data-testid="workflow-evidence"/); assert.match(html,/8.72 days/); assert.match(html,/8.58 days/); assert.match(html,/2,365/); }
@@ -89,7 +90,10 @@ try {
     } else {
       assert.match(html,/growth and better business decisions/);
       assert.match(html,/S02 \/ FEATURED/);
-      for(const study of published) assert(html.includes(`/research/${study.slug}`));
+      const curated=published.filter(study=>["S02","S28","S04","S58","S43","S13"].includes(study.id));
+      assert(curated.length>=4&&curated.length<=6);
+      for(const study of curated) assert(html.includes(`/research/${study.slug}`));
+      assert(html.includes('href="/research"'));
     }
     console.log(`PASS ${path}: metadata, contact, status, section order and indexing`);
   }

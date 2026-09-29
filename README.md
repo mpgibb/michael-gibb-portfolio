@@ -2,7 +2,7 @@
 
 [Live website](https://michaelpgibb.com) · [Research catalog](https://michaelpgibb.com/research) · [Research source](https://github.com/mpgibb/michael-gibb-research)
 
-The portfolio connects commercial analytics, statistics, machine learning and decision science to practical leadership decisions. The research catalog accounts for 60 studies across 20 industries. S28, S02, S04, S58, S43 and S13 have evaluated public-data case studies; 54 studies remain in the research agenda, including S60 with a completed publisher-trajectory baseline. Four earlier evaluated synthetic demonstrations remain separately labeled and do not count toward the 60-study program.
+The portfolio connects commercial analytics, statistics, machine learning and decision science to practical leadership decisions. The research catalog accounts for 60 studies across 20 industries. S28, S02, S04, S58, S43, S13 and S31 have evaluated public-data case studies; 53 studies remain in the research agenda, including S60 with a completed publisher-trajectory baseline. Four earlier evaluated synthetic demonstrations remain separately labeled and do not count toward the 60-study program.
 
 ## Development and checks
 
@@ -24,7 +24,7 @@ The original demonstrations remain in `lib/projects.ts`, `lib/completed-studies.
 
 Existing project: [michael-gibb-portfolio](https://vercel.com/mike-gibb/michael-gibb-portfolio). GitHub `main` deploys production; feature branches deploy previews. Use the Next.js preset, repository root, Node 24, frozen pnpm install and `pnpm build` from `vercel.json`. No custom secrets are required. The canonical origin is https://michaelpgibb.com. `VERCEL_ENV=production` enables public indexing; local/preview builds use noindex headers/metadata, disallow-all robots and an empty sitemap. Rebuild before promoting across environments.
 
-After deployment, run the public smoke suite and inspect desktop/mobile filtering, dropdown keyboard behavior, the S28, S02, S04, S58, S43 and S13 explorers, download/source links and console errors. The smoke suite checks emitted stylesheets as well as HTML because a previous cached build served stale CSS. If that recurs, redeploy the reviewed commit with **Use existing Build Cache** unchecked and verify again.
+After deployment, run the public smoke suite and inspect desktop/mobile filtering, dropdown keyboard behavior, the S28, S02, S04, S58, S43, S13 and S31 explorers, download/source links and console errors. The smoke suite checks emitted stylesheets as well as HTML because a previous cached build served stale CSS. If that recurs, redeploy the reviewed commit with **Use existing Build Cache** unchecked and verify again.
 
 ## Rollback and ownership
 

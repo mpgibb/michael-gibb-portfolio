@@ -893,11 +893,11 @@
       "url": "https://dutangc.github.io/CASdatasets/reference/freMTPL.html",
       "selectionRank": 1
     },
-    "executionStatus": "planned",
-    "publicationStatus": "unpublished",
-    "codeUrl": null,
-    "resultFile": null,
-    "publishedUrl": null,
+    "executionStatus": "evaluated",
+    "publicationStatus": "published",
+    "codeUrl": "https://github.com/mpgibb/michael-gibb-research/tree/main/studies/S31",
+    "resultFile": "S31.json",
+    "publishedUrl": "https://michaelpgibb.com/research/s31-insurance-pricing-interpretable-structure-versus-nonlinear-accuracy",
     "updated": "2026-09-29"
   },
   {
