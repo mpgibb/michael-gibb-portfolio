@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { TelecomStudy } from "@/components/telecom-study";
 import { CustomerReturnStudy } from "@/components/customer-return-study";
 import { InsuranceStudy } from "@/components/insurance-study";
 import { InspectionStudy } from "@/components/inspection-study";
@@ -12,6 +13,7 @@ import { publishedStudies } from "@/lib/program-registry";
 import { productionOrigin } from "@/lib/site";
 
 const descriptions: Record<string, string> = {
+  S47: "A grouped telecom benchmark improves churn prediction with service-friction signals. Explore service capacity, calibration, feature sensitivity and an explicitly unrun recovery experiment.",
   S03: "A rolling customer-return study favors BG/NBD over a boosted challenger, with substantial seasonal calibration shifts. Explore purchase forecasts and assumed contact economics.",
   S31: "A historical insurance benchmark finds inconclusive full-loss model improvement. Explore frequency, severity, calibration, tail sensitivity and assumed expense loadings.",
   S13: "A chronological sensor-screening evaluation finds weak later-month failure detection. Explore inspection budgets, calibration and sensor-selection stability.",
@@ -39,6 +41,7 @@ export default async function ResearchStudy({ params }: { params: Promise<{ slug
   if (study.id === "S02") return <InventoryStudy study={study}/>;
   if (study.id === "S04") return <AdvertisingStudy study={study}/>;
   if (study.id === "S58") return <WorkflowStudy study={study}/>;
+  if (study.id === "S47") return <TelecomStudy study={study}/>;
   if (study.id === "S03") return <CustomerReturnStudy study={study}/>;
   if (study.id === "S31") return <InsuranceStudy study={study}/>;
   if (study.id === "S13") return <InspectionStudy study={study}/>;

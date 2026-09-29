@@ -1354,11 +1354,11 @@
       "url": "https://archive.ics.uci.edu/dataset/563/iranian+churn+dataset",
       "selectionRank": 2
     },
-    "executionStatus": "planned",
-    "publicationStatus": "unpublished",
-    "codeUrl": null,
-    "resultFile": null,
-    "publishedUrl": null,
+    "executionStatus": "evaluated",
+    "publicationStatus": "published",
+    "codeUrl": "https://github.com/mpgibb/michael-gibb-research/tree/main/studies/S47",
+    "resultFile": "S47.json",
+    "publishedUrl": "https://michaelpgibb.com/research/s47-service-friction-signals-and-a-three-month-churn-planning-window",
     "updated": "2026-09-29"
   },
   {

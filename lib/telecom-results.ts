@@ -1,0 +1,13 @@
+import { z } from "zod";
+import saved from "./program-results/S47.json";
+const n=z.number().finite();const count=n.int().nonnegative();const prob=n.min(0).max(1);const difference=z.object({estimate:n,lower:n,upper:n});
+const metric=z.object({model:z.string(),name:z.string(),estimate:n,lower:n,upper:n});
+const capacity=z.object({model:z.string(),capacity:prob,contacts:count,churn_found:count,churn_missed:count,non_churn_contacts:count,recall:prob,precision:prob.nullable(),recall_lower:prob,recall_upper:prob});
+const calibration=z.object({model:z.string(),bin:count,rows:count,profiles:count,events:count,predicted:prob,observed:prob,observed_lower:prob,observed_upper:prob});
+const effect=z.object({feature:z.string(),low_value:n,high_value:n,risk_difference:n,lower:n,upper:n,positive_fraction:prob,replicates:count,reference_rows:count});
+const experiment=z.object({control_churn:prob,absolute_reduction:prob,intervention_churn:prob,per_arm:count,total:count,alpha:prob,power:prob});
+const schema=z.object({study_id:z.literal("S47"),run_id:z.string(),code_version:z.string().regex(/^[a-f0-9]{40}$/),evaluated_on:z.string(),samples:z.object({total:count,test:count,test_profiles:count,test_churn:count,development:count,development_churn:count,calibration:count,calibration_churn:count}),models:z.array(z.object({id:z.string(),label:z.string()})),metrics:z.array(metric),uncertainty:z.string(),limitations:z.array(z.string()),tables:z.object({primary_difference:difference,variant_comparisons:z.array(difference.extend({variant:z.string()})),capacity:z.array(capacity),calibration:z.array(calibration),effects:z.array(effect),experiment_grid:z.array(experiment),experiment_default:experiment,raw_probability_metrics:z.array(z.object({model:z.string(),log_loss:n,predicted_observed_churn_ratio:n})),equal_profile_weight_sensitivity:z.array(z.object({model:z.string(),log_loss:n})),suppressed_segments:z.array(z.object({feature:z.string(),value:n,reason:z.string()}))})});
+export const telecomResult=schema.parse(saved);
+export type TelecomEvidenceTables=Pick<typeof telecomResult.tables,"capacity"|"calibration"|"effects"|"experiment_grid">;
+for(const row of telecomResult.tables.capacity){if(row.contacts!==row.churn_found+row.non_churn_contacts||row.churn_found+row.churn_missed!==telecomResult.samples.test_churn||Math.abs(row.recall-row.churn_found/telecomResult.samples.test_churn)>1e-7)throw new Error("Telecom capacity accounting mismatch");}
+for(const row of telecomResult.tables.experiment_grid){if(row.total!==2*row.per_arm||Math.abs(row.control_churn-row.absolute_reduction-row.intervention_churn)>1e-7)throw new Error("Trial scenario accounting mismatch");}

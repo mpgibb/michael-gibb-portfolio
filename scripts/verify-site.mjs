@@ -71,6 +71,7 @@ try {
       const study=published.find(item=>path===`/research/${item.slug}`);
       assert(study);
       if(study.id==="S28") assert.match(html,/data-testid="contact-priority-evidence"/);
+      if(study.id==="S47") { assert.match(html,/data-testid="telecom-evidence"/); assert.match(html,/90 \/ 94/); assert.match(html,/0.0981/); assert.match(html,/0.1576/); assert.match(html,/4,072/); }
       if(study.id==="S03") { assert.match(html,/data-testid="customer-return-evidence"/); assert.match(html,/14,388/); assert.match(html,/0.990/); assert.match(html,/1.072/); assert.match(html,/0.68 percentage/); }
       if(study.id==="S31") { assert.match(html,/data-testid="insurance-evidence"/); assert.match(html,/136,271/); assert.match(html,/€147.76/); assert.match(html,/77.894/); }
       if(study.id==="S13") { assert.match(html,/data-testid="inspection-evidence"/); assert.match(html,/0.0626/); assert.match(html,/0.0765/); assert.match(html,/4 \/ 22/); }
