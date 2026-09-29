@@ -4,6 +4,7 @@ const indexable = process.env.VERCEL_ENV
   : process.env.INDEXABLE_PRODUCTION === "true";
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  agentRules: false,
   async headers() {
     return [
       {

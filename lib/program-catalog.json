@@ -1240,11 +1240,11 @@
       "url": "https://datacatalog.cookcountyil.gov/stories/s/Assessor-2025-Open-Data-Refresh/gzdr-q7c4/",
       "selectionRank": 1
     },
-    "executionStatus": "planned",
-    "publicationStatus": "unpublished",
-    "codeUrl": null,
-    "resultFile": null,
-    "publishedUrl": null,
+    "executionStatus": "evaluated",
+    "publicationStatus": "published",
+    "codeUrl": "https://github.com/mpgibb/michael-gibb-research/tree/main/studies/S43",
+    "resultFile": "S43.json",
+    "publishedUrl": "https://michaelpgibb.com/research/s43-chicago-area-property-valuation-with-honest-geographic-uncertainty",
     "updated": "2026-09-29"
   },
   {
