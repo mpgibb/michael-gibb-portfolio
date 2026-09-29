@@ -59,6 +59,12 @@ try {
     assert.match(html,indexable ? /name="robots" content="index, follow"/ : /name="robots" content="noindex, nofollow"/);
     if(!indexable) assert.match(response.headers.get("x-robots-tag")??"",/noindex/);
     else assert(!response.headers.get("x-robots-tag")?.includes("noindex"));
+    if(path.startsWith("/projects/") || path.startsWith("/research/")) {
+      assert.equal((html.match(/id="interactive-results"/g) ?? []).length, 1, `Single explorer anchor: ${path}`);
+      assert.match(html, /href="#interactive-results">Explore the interactive results/);
+      assert.match(html, /aria-label="Case study contents"/);
+      assert.match(html, /class="study-next-steps"/);
+    }
     if(path.startsWith("/projects/")) {
       let last=-1;
       for(const id of ["executive-summary","decision","implication","evidence","data","methodology","limitations","code"]) {const position=html.indexOf(`id="${id}"`);assert(position>last,`Section order: ${id}`);last=position;}
@@ -91,6 +97,8 @@ try {
     } else if (path === "/research") {
       assert.match(html,/data-testid="research-catalog"/);
       assert.match(html,/Research agenda/);
+      assert(!html.includes("Original dataset selection position"));
+      assert(!html.includes("of 60</strong>"));
       assert.match(html,/20/);
       for(const study of published) assert(html.includes(`/research/${study.slug}`));
       for(const study of agenda) assert(!html.includes(`href="/research/${study.slug}"`));

@@ -1,8 +1,9 @@
 "use client";
+import { formatCurrency } from "@/lib/format";
 import { useState } from "react";
 import results from "@/lib/marketing-results.json";
 
-const money = (n: number) => `${n < 0 ? "−" : ""}$${Math.abs(n).toFixed(2)}`;
+const money = (value: number, digits = 2) => formatCurrency(value, digits, "USD");
 export function IncrementalityExplorer() {
   const [method, setMethod] = useState<"adjusted" | "unadjusted">("adjusted");
   const [cost, setCost] = useState(6);
@@ -12,7 +13,7 @@ export function IncrementalityExplorer() {
   const high = selected.ci_high - cost;
   const position = (value: number) => 30 + ((value + 8) / 20) * 540;
   const decision = low > 0 ? "The entire interval is above break-even." : high < 0 ? "The entire interval is below break-even." : "The interval crosses break-even; the sign remains uncertain.";
-  return <div className="explorer" data-testid="incrementality-explorer">
+  return <div id="interactive-results" tabIndex={-1} className="explorer" data-testid="incrementality-explorer"><p className="explorer-context">Interactive results · the executive summary above remains the fixed headline comparison.</p>
     <p className="eyebrow">EXPLORE THE DECISION · SYNTHETIC RESULTS</p>
     <h3>How much room is there for campaign cost?</h3>
     <p>Keep the tested campaign fixed. Change the analytical method and the assumed cost to see how the conclusion depends on uncertainty.</p>

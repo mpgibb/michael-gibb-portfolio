@@ -1,12 +1,13 @@
 "use client";
+import { formatCurrency, formatPercent } from "@/lib/format";
 
 import { useState } from "react";
 import revenue from "@/lib/revenue-forecasting-results.json";
 import customer from "@/lib/customer-value-results.json";
 import operations from "@/lib/operational-planning-results.json";
 
-const pct = (n: number, digits = 1) => `${(n * 100).toFixed(digits)}%`;
-const dollars = (n: number, digits = 0) => n.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: digits, maximumFractionDigits: digits });
+const pct = formatPercent;
+const dollars = (value: number, digits = 0) => formatCurrency(value, digits, "USD");
 const names: Record<string, string> = { fixed_stage: "Fixed stage weights", pooled_stage: "Pooled stage model", multistate: "Detailed multistate", none: "No contact", all: "Contact everyone", high_risk: "Highest churn risk", high_value: "Highest customer value", incremental_value: "Learned incremental value", buffer_rule: "20% buffer rule", point_plan: "Point-forecast plan", stochastic_plan: "Stochastic plan", perfect_information: "Perfect-information bound" };
 const scenarioLabels: Record<string, string> = { stable: "Stable process", slowdown: "Sales slowdown", shared_shocks: "Shared market shocks", no_effect: "No treatment effect", response_shift: "Treatment response changes", surge: "Sustained demand surge", volatile: "Higher demand volatility" };
 
@@ -25,7 +26,7 @@ function RevenueEvidence() {
   const selected = revenue.scenarios[scenario];
   const metrics = selected.metrics[horizon];
   const rows = Object.entries(metrics);
-  return <div data-testid="commercial-evidence">
+  return <div id="interactive-results" tabIndex={-1} data-testid="commercial-evidence"><p className="explorer-context">Interactive results · the executive summary above remains the fixed headline comparison.</p>
     <p className="evidence-disclosure">SYNTHETIC PIPELINE · 5,760 OPPORTUNITIES PER SCENARIO · 12 FORECAST DATES</p>
     <div className="evidence-controls"><ScenarioSelect scenarios={revenue.scenarios} value={scenario} onChange={setScenario} id="revenue-scenario" /><label className="evidence-control" htmlFor="revenue-horizon">Forecast horizon<select id="revenue-horizon" value={horizon} onChange={event => setHorizon(event.target.value as typeof horizon)}><option value="4">4 weeks</option><option value="8">8 weeks</option><option value="12">12 weeks</option></select></label></div>
     <div aria-live="polite" aria-atomic="true" className="result-context"><strong>{scenarioLabels[selected.scenario]} · {horizon} weeks</strong><p>{scenario === 0 ? "The detailed model improves on fixed weights, while the simpler timing model remains a strong comparator. Greater complexity is not a uniform advantage." : scenario === 1 ? "Win rates and progression slow from the first held-out date. The historical transition models overpredict revenue; their ranges fail to absorb the process change." : "Deals share unobserved weekly market conditions. Model parameter uncertainty alone does not capture these common shocks."}</p></div>
@@ -44,7 +45,7 @@ function CustomerEvidence() {
   const high = Math.max(0, ...rows.map(([, value]) => value.upper95));
   const span = Math.max(high - low, 1);
   const position = (n: number) => 100 * (n - low) / span;
-  return <div data-testid="commercial-evidence">
+  return <div id="interactive-results" tabIndex={-1} data-testid="commercial-evidence"><p className="explorer-context">Interactive results · the executive summary above remains the fixed headline comparison.</p>
     <p className="evidence-disclosure">SYNTHETIC RANDOMIZED RETENTION · 2,160 FINAL CUSTOMERS · 12 MATURED COHORTS</p>
     <div className="evidence-controls"><ScenarioSelect scenarios={customer.scenarios} value={scenario} onChange={setScenario} id="customer-scenario" /></div>
     <div className="result-context" aria-live="polite" aria-atomic="true"><strong>{scenarioLabels[selected.scenario]} · $35 intervention cost</strong><p>{scenario === 0 ? "The learned targeting policy has no clear positive net effect. Higher prediction accuracy does not by itself justify contacting customers." : scenario === 1 ? "The intervention changes no customer outcomes. Its contact cost still reduces value; even a cautious learned policy can select some unprofitable contacts." : "The intervention-response relationship reverses after training. A previously promising targeting pattern becomes harmful on the final cohorts."}</p></div>
@@ -59,7 +60,7 @@ function OperationsEvidence() {
   const [scenario, setScenario] = useState(0);
   const selected = operations.scenarios[scenario];
   const rows = Object.entries(selected.policies);
-  return <div data-testid="commercial-evidence">
+  return <div id="interactive-results" tabIndex={-1} data-testid="commercial-evidence"><p className="explorer-context">Interactive results · the executive summary above remains the fixed headline comparison.</p>
     <p className="evidence-disclosure">SYNTHETIC SERVICE SITE · 52 HELD-OUT WEEKS · IDENTICAL RESOURCE CONSTRAINTS</p>
     <div className="evidence-controls"><ScenarioSelect scenarios={operations.scenarios} value={scenario} onChange={setScenario} id="operations-scenario" /></div>
     <div className="result-context" aria-live="polite" aria-atomic="true"><strong>{scenarioLabels[selected.scenario]} · cost and service together</strong><p>{scenario === 0 ? "The stochastic plan lowers cost against the buffer rule, with a small reduction in demand served. The perfect-information result is an unattainable lower bound." : scenario === 1 ? "Demand jumps 20% at the first held-out week. Savings against the buffer rule shrink and their interval includes zero; capacity constraints become more binding." : "Weekly shocks and daily noise double during evaluation. Forecasts adapt over time, but uncertainty and the cost of imperfect information increase."}</p></div>

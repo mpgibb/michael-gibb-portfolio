@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { signalConfig, signalFrame, signalPaths } from "@/lib/signal-motion";
+import { signalConfig, signalFrame } from "@/lib/signal-motion";
 
 const initialFrame = signalFrame(signalConfig.initialSeconds);
 
@@ -13,6 +13,9 @@ export function SignalField() {
   useEffect(() => {
     const root = field.current;
     if (!root) return;
+    const svg = root.querySelector("svg")!;
+    let width: number = signalConfig.width;
+    let height: number = signalConfig.height;
     const ambient = [...root.querySelectorAll<SVGCircleElement>(".signal-noise")];
     const groups = [...root.querySelectorAll<SVGGElement>(".signal-group")].map(group => ({
       path: group.querySelector<SVGPathElement>("path")!,
@@ -20,8 +23,6 @@ export function SignalField() {
       marker: group.querySelector<SVGCircleElement>(".signal-marker")!,
     }));
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const visibleSize = window.matchMedia(`(min-width: ${signalConfig.visibleMinWidth}px)`);
-    const compactSize = window.matchMedia(`(max-width: ${signalConfig.compactMaxWidth}px)`);
     let inView = false;
     let request: number | null = null;
     let previous: number | null = null;
@@ -33,16 +34,15 @@ export function SignalField() {
       element.setAttribute("opacity", point.opacity.toFixed(4));
     }
     function draw(seconds: number) {
-      const frame = signalFrame(seconds);
-      const compact = compactSize.matches;
+      const frame = signalFrame(seconds, width, height);
       frame.ambient.forEach((point, i) => {
-        if (!compact || i < signalConfig.compactAmbientPoints) position(ambient[i], point);
+        position(ambient[i], point);
       });
       frame.signals.forEach((signal, i) => {
-        if (compact && i === 2) return;
+        groups[i].path.setAttribute("d", signal.path);
         groups[i].path.setAttribute("opacity", signal.opacity.toFixed(4));
         signal.points.forEach((point, j) => {
-          if (!compact || j < signalConfig.compactSelectedPointsPerCurve) position(groups[i].points[j], point);
+          position(groups[i].points[j], point);
         });
         position(groups[i].marker, signal.marker);
       });
@@ -61,9 +61,9 @@ export function SignalField() {
       if (request !== null) cancelAnimationFrame(request);
       request = null;
       previous = null;
-      const state = reduced.matches ? "reduced" : paused ? "paused" : !visibleSize.matches ? "responsive-hidden" : document.hidden ? "tab-hidden" : !inView ? "offscreen" : "running";
+      const state = reduced.matches ? "reduced" : paused ? "paused" : width < signalConfig.staticBelowWidth ? "narrow-static" : document.hidden ? "tab-hidden" : !inView ? "offscreen" : "running";
       root.dataset.motion = state;
-      if (reduced.matches) draw(signalConfig.initialSeconds);
+      if (reduced.matches || width < signalConfig.staticBelowWidth) draw(signalConfig.initialSeconds);
       else draw(clock.current);
       if (state === "running") request = requestAnimationFrame(tick);
     }
@@ -72,9 +72,16 @@ export function SignalField() {
       sync();
     }, { threshold: 0.05 });
     observer.observe(root);
+    const resize = new ResizeObserver(entries => {
+      const box = entries[0].contentRect;
+      if (!box.width || !box.height) return;
+      width = box.width;
+      height = box.height;
+      svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+      sync();
+    });
+    resize.observe(root);
     reduced.addEventListener("change", sync);
-    visibleSize.addEventListener("change", sync);
-    compactSize.addEventListener("change", sync);
     document.addEventListener("visibilitychange", sync);
     root.dataset.ready = "true";
     sync();
@@ -82,21 +89,17 @@ export function SignalField() {
       if (request !== null) cancelAnimationFrame(request);
       observer.disconnect();
       reduced.removeEventListener("change", sync);
-      visibleSize.removeEventListener("change", sync);
-      compactSize.removeEventListener("change", sync);
+      resize.disconnect();
       document.removeEventListener("visibilitychange", sync);
     };
   }, [paused]);
 
   return <div className="signal-field" ref={field}>
-    <svg viewBox={`0 0 ${signalConfig.width} ${signalConfig.height}`} aria-hidden="true" focusable="false">
-      <g className="signal-guides" fill="none" strokeDasharray="1 9">
-        <path d="M120 398 H685 M200 334 H685 M360 128 V398 M556 75 V398 M672 52 V398" />
-      </g>
-      <g fill="#CBD5E1">{initialFrame.ambient.map((point, i) => <circle key={i} className={`signal-noise${i >= signalConfig.compactAmbientPoints ? " signal-desktop-only" : ""}`} cx={point.x} cy={point.y} r={point.radius} opacity={point.opacity} />)}</g>
-      {initialFrame.signals.map((signal, i) => <g key={i} className={`signal-group${i === 2 ? " signal-desktop-only" : ""}`}>
-        <path d={signalPaths[i]} fill="none" stroke="#E3AC79" strokeWidth={signalConfig.strokeWidth} opacity={signal.opacity} />
-        {signal.points.map((point, j) => <circle key={j} className={`signal-point${j >= signalConfig.compactSelectedPointsPerCurve ? " signal-desktop-only" : ""}`} cx={point.x} cy={point.y} r="1.7" fill="#E3AC79" opacity={point.opacity} />)}
+    <svg viewBox={`0 0 ${signalConfig.width} ${signalConfig.height}`} aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
+      <g fill="#CBD5E1">{initialFrame.ambient.map((point, i) => <circle key={i} className="signal-noise" cx={point.x} cy={point.y} r={point.radius} opacity={point.opacity} />)}</g>
+      {initialFrame.signals.map((signal, i) => <g key={i} className="signal-group">
+        <path d={signal.path} fill="none" stroke="#E3AC79" strokeWidth={signalConfig.strokeWidth} opacity={signal.opacity} />
+        {signal.points.map((point, j) => <circle key={j} className="signal-point" cx={point.x} cy={point.y} r="1.7" fill="#E3AC79" opacity={point.opacity} />)}
         <circle className="signal-marker" cx={signal.marker.x} cy={signal.marker.y} r={signalConfig.markerRadius} fill="#E3AC79" opacity={signal.marker.opacity} />
       </g>)}
     </svg>

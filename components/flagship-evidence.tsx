@@ -1,7 +1,8 @@
+import { formatCurrency, formatPercent } from "@/lib/format";
 import results from "@/lib/marketing-results.json";
 import { IncrementalityExplorer } from "@/components/incrementality-explorer";
-const dollars = (n: number) => `$${n.toFixed(2)}`;
-const percent = (n: number) => `${(n * 100).toFixed(1)}%`;
+const dollars = (value: number, digits = 2) => formatCurrency(value, digits, "USD");
+const percent = formatPercent;
 const scenarioNames: Record<string, string> = { base: "Base process", null: "Zero effect", weak_covariate: "Historical relationship weakens", skewed_noise: "Skewed outcomes" };
 export function FlagshipEvidence() {
   return <>

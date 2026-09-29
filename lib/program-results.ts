@@ -1,3 +1,4 @@
+import { formatPercent } from "./format";
 import { z } from "zod";
 import s28 from "./program-results/S28.json";
 
@@ -24,4 +25,4 @@ for (const row of contactResult.tables.capacity_frontier) {
   if (Math.abs(row.precision * row.selected - row.responses) > .0001 || row.selected !== Math.floor(contactResult.samples.test * row.capacity)) throw new Error("Research decision table count mismatch");
 }
 
-export const percent = (value: number) => `${(value * 100).toFixed(1)}%`;
+export const percent = formatPercent;
