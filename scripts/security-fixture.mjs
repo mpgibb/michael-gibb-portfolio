@@ -3,6 +3,7 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
+import { setTimeout as delay } from 'node:timers/promises';
 
 export const environment = { RESEND_API_KEY: 'test-key-not-a-secret', CONTACT_TO_EMAIL: 'recipient@example.com', CONTACT_FROM_EMAIL: 'sender@example.com', UPSTASH_REDIS_REST_URL: 'https://store.example.com', UPSTASH_REDIS_REST_TOKEN: 'test-store-token', CONTACT_HASH_SECRET: 'test-only-key-of-at-least-thirty-two-characters', VERCEL: '1', VERCEL_ENV: 'production', TURNSTILE_SECRET_KEY: 'unit-test-turnstile-secret', NEXT_PUBLIC_TURNSTILE_SITE_KEY: 'unit-test-site-key', TURNSTILE_ALLOWED_HOSTNAMES: 'portfolio.example.com' };
 export const inquiry = () => ({ name: 'Portfolio Test', email: 'visitor@example.com', company: '', phone: '', topic: 'Other', message: 'A clearly labeled synthetic inquiry.', website: '', requestId: randomUUID(), turnstileToken: randomUUID() });
@@ -10,15 +11,36 @@ export const request = (body, { path = '/api/contact', headers = {} } = {}) => n
 export async function realRedis() {
   const directory = await mkdtemp(join(tmpdir(), 'portfolio-security-'));
   const socket = join(directory, 'redis.sock');
-  const server = spawn('redis-server', ['--port', '0', '--unixsocket', socket, '--unixsocketperm', '700', '--save', '', '--appendonly', 'no'], { stdio: ['ignore', 'pipe', 'pipe'] });
-  await new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => reject(new Error('Redis did not start; install redis-server and redis-cli to run security tests.')), 5000);
-    server.once('error', error => { clearTimeout(timeout); reject(error); });
-    server.stdout.on('data', chunk => { if (chunk.toString().includes('Ready to accept connections')) { clearTimeout(timeout); resolve(); } });
-    server.once('exit', code => { clearTimeout(timeout); if (code) reject(new Error('Redis exited before readiness.')); });
-  });
+  const server = spawn('redis-server', ['--port', '0', '--unixsocket', socket, '--unixsocketperm', '700', '--save', '', '--appendonly', 'no'], { stdio: 'ignore' });
+  let startupError;
+  server.once('error', error => { startupError = error; });
+  const stopped = new Promise(resolve => server.once('close', resolve));
+  const close = async () => {
+    if (server.exitCode === null && server.signalCode === null && server.pid) server.kill();
+    const force = setTimeout(() => server.kill('SIGKILL'), 1000);
+    await stopped;
+    clearTimeout(force);
+    await rm(directory, { recursive: true, force: true });
+  };
+  try {
+    const deadline = Date.now() + 5000;
+    while (true) {
+      if (startupError) throw startupError;
+      if (server.exitCode !== null || server.signalCode !== null) throw new Error('Redis exited before readiness.');
+      try {
+        // Protocol readiness works across Redis versions whose startup log text differs.
+        const pong = execFileSync('redis-cli', ['-s', socket, 'PING'], { encoding: 'utf8', timeout: 250, stdio: ['ignore', 'pipe', 'ignore'] });
+        if (pong.trim() === 'PONG') break;
+      } catch { /* The socket may not exist yet. Retry only within the startup deadline. */ }
+      if (Date.now() >= deadline) throw new Error('Redis did not start; install redis-server and redis-cli to run security tests.');
+      await delay(50);
+    }
+  } catch (error) {
+    await close();
+    throw error;
+  }
   const command = (...values) => JSON.parse(execFileSync('redis-cli', ['-s', socket, '--json', ...values.map(String)], { encoding: 'utf8' }));
-  return { command, close: async () => { const done = new Promise(resolve => server.once('exit', resolve)); server.kill(); await done; await rm(directory, { recursive: true, force: true }); } };
+  return { command, close };
 }
 
 export function service(redis, { action = 'contact_submit', verification = {}, outage, mailStatus = 200, now = Date.now } = {}) {
