@@ -1,5 +1,11 @@
 # Project status
 
+## Visible verification status — September 30, 2026
+
+The shared Turnstile widget now uses `appearance: "always"` after a valid Send/Retry action. Visitors can see Cloudflare's checking/success state even when Managed mode verifies them automatically; Cloudflare still decides whether a checkbox click is necessary. Reading pages does not load a challenge. This changes presentation only: fresh tokens, exact hostname/action checks, shared limits, draft retention and delivery idempotency remain in force.
+
+The local browser fixture displayed the actual official test widget's visible Success state at 320px. Resizing through 375, 390, 430, 1024 and 1440px produced no horizontal overflow, and the console was clean. The fixture used synthetic delivery and sent no real email. Screenshots are retained outside the public repository. Twelve security groups, six contact regressions, lint, TypeScript and the optimized build pass. The local build cache again contained synchronization duplicates; preserving it outside the checkout and rebuilding resolved the generated-cache error. A real production checkbox is adaptive and cannot be promised for every visitor.
+
 ## Managed verification — production activated September 30, 2026
 
 Implementation `a59bbeaf6f9c15d29d600f09fa0a0fe206bdeafd` activated protection at [michaelpgibb.com](https://michaelpgibb.com). Its [Vercel deployment](https://vercel.com/mike-gibb/michael-gibb-portfolio/EGHPwBBYvru33DpEwHHjEnPBYZps) is Ready at `https://michael-gibb-portfolio-ab8uta9c4-mike-gibb.vercel.app`. The owner created the **Michael Gibb Portfolio** Managed widget, with `michaelpgibb.com` and `www.michaelpgibb.com`, pre-clearance off. All three Turnstile settings are saved in Vercel Production; the secret is non-revealable. The six existing delivery/store secrets are unchanged. No DNS, mailbox service, service plan or production-store configuration was changed.

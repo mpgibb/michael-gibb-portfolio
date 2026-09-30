@@ -47,7 +47,7 @@ export function TurnstileVerification({ action, ref }: { action: "contact_submit
       widget = value.render(container.current, {
         sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
         action, theme: "auto", size: container.current.clientWidth < 300 ? "compact" : "flexible",
-        appearance: "interaction-only", execution: "render", retry: "never",
+        appearance: "always", execution: "render", retry: "never",
         "refresh-expired": "manual", "refresh-timeout": "manual", "response-field": false,
         callback: (token: string) => { if (active) { clearTimeout(timer); pending.current?.resolve(token); pending.current = null; } },
         "error-callback": () => { fail(); return true; }, "expired-callback": fail, "timeout-callback": fail,
