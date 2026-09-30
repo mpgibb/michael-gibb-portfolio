@@ -1,14 +1,13 @@
 import { createHmac, randomUUID } from "node:crypto";
-import { isIP } from "node:net";
 import { z } from "zod";
 import { contactRequestSchema, fieldErrors } from "./contact-validation.ts";
+import { boundedJson, requestContext, securityConfiguration, storeCommand as command, verifyTurnstile, type SecurityLogger } from "./request-security.ts";
 
 const configuration = z.object({
   RESEND_API_KEY: z.string().min(10), CONTACT_TO_EMAIL: z.string().email(), CONTACT_FROM_EMAIL: z.string().email(),
   UPSTASH_REDIS_REST_URL: z.string().url().refine(value => value.startsWith("https://")), UPSTASH_REDIS_REST_TOKEN: z.string().min(10), CONTACT_HASH_SECRET: z.string().min(32),
 });
-type Configuration = z.infer<typeof configuration>;
-export const isContactConfigured = (environment: Record<string, string | undefined> = process.env) => environment.VERCEL_ENV !== "preview" && configuration.safeParse(environment).success;
+export const isContactConfigured = (environment: Record<string, string | undefined> = process.env) => environment.VERCEL_ENV !== "preview" && configuration.safeParse(environment).success && !!securityConfiguration(environment);
 const headers = { "Cache-Control": "no-store", "X-Robots-Tag": "noindex" };
 const reply = (status: number, body: object, extra: Record<string, string> = {}) => Response.json(body, { status, headers: { ...headers, ...extra } });
 const unavailable = () => reply(503, { error: "Your message was not confirmed sent. Please wait a moment and try again. Your entries are still here." });
@@ -35,33 +34,7 @@ redis.call('SET', KEYS[4], ARGV[3], 'EX', 86400)
 return {1, token}
 `;
 
-async function command(config: Configuration, values: (string | number)[], transport: typeof fetch) {
-  const response = await transport(config.UPSTASH_REDIS_REST_URL, { method: "POST", headers: { Authorization: `Bearer ${config.UPSTASH_REDIS_REST_TOKEN}`, "Content-Type": "application/json" }, body: JSON.stringify(values), signal: AbortSignal.timeout(5000), cache: "no-store" });
-  if (!response.ok) throw new Error("store_unavailable");
-  const data = await response.json();
-  if (data.error) throw new Error("store_unavailable");
-  return data.result;
-}
-
-async function boundedJson(request: Request) {
-  if (Number(request.headers.get("content-length") ?? 0) > 20000) throw new Error("body_too_large");
-  const reader = request.body?.getReader();
-  if (!reader) throw new Error("empty_body");
-  const chunks: Uint8Array[] = [];
-  let length = 0;
-  try {
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
-      length += value.byteLength;
-      if (length > 20000) { await reader.cancel(); throw new Error("body_too_large"); }
-      chunks.push(value);
-    }
-  } finally { reader.releaseLock(); }
-  return JSON.parse(Buffer.concat(chunks).toString("utf8"));
-}
-
-export function createContactHandler({ environment = process.env, transport = fetch }: { environment?: Record<string, string | undefined>; transport?: typeof fetch } = {}) {
+export function createContactHandler({ environment = process.env, transport = fetch, logger }: { logger?: SecurityLogger; environment?: Record<string, string | undefined>; transport?: typeof fetch } = {}) {
   return async function handleContact(request: Request): Promise<Response> {
     const origin = request.headers.get("origin");
     // No cross-origin submission API. Preview delivery remains disabled even if
@@ -77,12 +50,16 @@ export function createContactHandler({ environment = process.env, transport = fe
     if (parsed.data.website) return reply(400, { error: "The message could not be submitted. Please try again." });
     const config = configuration.safeParse(environment);
     if (!config.success || environment.VERCEL_ENV === "preview") return unavailable();
+    const security = securityConfiguration(environment);
+    if (!security) return unavailable();
+    const context = requestContext(request, environment, security);
+    if (!context) return reply(403, { error: "Reload this page before sending your message." });
+    const verified = await verifyTurnstile({ token: parsed.data.turnstileToken, action: "contact_submit", config: security, context, transport, logger });
+    if (verified) return verified;
     const { name, email, company, phone, topic, message, requestId } = parsed.data;
     const normalized = { name, email, company, phone, topic, message };
     const digest = hash(JSON.stringify(normalized), config.data.CONTACT_HASH_SECRET);
-    const forwarded = request.headers.get(environment.VERCEL ? "x-vercel-forwarded-for" : "x-forwarded-for")?.split(",")[0].trim() ?? "";
-    if (environment.VERCEL && !isIP(forwarded)) return unavailable();
-    const ip = isIP(forwarded) ? forwarded.toLowerCase() : "local";
+    const ip = context.ip;
     const keyPrefix = `portfolio-contact:${environment.VERCEL_ENV ?? "development"}`;
     const recordKey = `${keyPrefix}:message:${digest}`;
     try {

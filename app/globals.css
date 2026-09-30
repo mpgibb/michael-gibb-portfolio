@@ -1129,6 +1129,8 @@ input:focus-visible, summary:focus-visible, [tabindex="0"]:focus-visible { outli
 .contact-introduction h2 { max-width: 430px; }
 .contact-copy { margin-top: 20px; max-width: 390px; }
 .contact-form { min-width: 0; }
+.verification-container { width: 100%; min-width: 0; margin-block: 8px; }
+.verification-container:empty { margin: 0; }
 .contact-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
 .contact-field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; min-width: 0; }
 .contact-field label { font-size: .87rem; font-weight: 600; line-height: 1.5; }
@@ -1141,6 +1143,7 @@ input:focus-visible, summary:focus-visible, [tabindex="0"]:focus-visible { outli
 .contact-submit { display: flex; align-items: center; gap: 20px; }
 .contact-submit button { cursor: pointer; flex: none; font-family: inherit; }
 .contact-submit button:disabled { cursor: default; opacity: .75; }
+.contact-submit button[aria-disabled="true"] { cursor: wait; opacity: .75; }
 .contact-submit p { font-size: .78rem; color: #cbd5e1; line-height: 1.6; }
 .contact-form a { color: var(--light-copper); text-decoration: underline; }
 .contact-status { min-height: 24px; margin-top: 16px; color: #d5e7d6; font-size: .9rem; }

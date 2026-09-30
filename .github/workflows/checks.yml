@@ -13,6 +13,8 @@ jobs:
           node-version-file: .node-version
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: sudo apt-get update && sudo apt-get install -y redis-server
+      - run: pnpm test:security
       - run: pnpm test:contact
       - run: pnpm test:refinements
       - run: pnpm check

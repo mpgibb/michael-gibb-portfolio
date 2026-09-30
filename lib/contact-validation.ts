@@ -12,7 +12,7 @@ export const contactFieldsSchema = z.object({
   topic: z.enum(["", ...contactTopics]),
   message: z.string().trim().min(10, "Please enter at least 10 characters.").max(5000, "Keep the message to 5,000 characters.").refine(value => !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(value), "Remove unsupported control characters."),
 });
-export const contactRequestSchema = contactFieldsSchema.extend({ website: z.string().max(200), requestId: z.string().uuid() }).strict();
+export const contactRequestSchema = contactFieldsSchema.extend({ website: z.string().max(200), requestId: z.string().uuid(), turnstileToken: z.string().max(2048).default("") }).strict();
 export type ContactFields = z.infer<typeof contactFieldsSchema>;
 export type ContactErrors = Partial<Record<keyof ContactFields, string>>;
 export function fieldErrors(error: z.ZodError): ContactErrors {
