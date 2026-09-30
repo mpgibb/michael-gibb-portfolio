@@ -30,6 +30,12 @@ try {
   console.log('PASS exact supplied skyline logo');
   const titles = new Set();
   const checkedStyles = new Set();
+  let publishedCss = "";
+  const checkedFonts = new Set();
+  const suppliedFontHashes = new Set([
+    'b30d1c19712005b21aaf276c80d0ac29398feb1d0f64378fa1f897663d74225c',
+    'abbd5814781ec92f9b5afaca6b6473022eec8d6bcfa2e7363e9f34f5c521024e',
+  ]);
   for (const path of ["/", "/research", "/privacy", "/terms", ...names.map(name=>`/projects/${name}`), ...published.map(study=>`/research/${study.slug}`)]) {
     const response = await fetch(new URL(path,base));
     assert.equal(response.status,200,path);
@@ -46,10 +52,28 @@ try {
       const stylesheet = await fetch(new URL(href.replaceAll('&amp;', '&'), base));
       assert.equal(stylesheet.status, 200, `Stylesheet: ${href}`);
       const css = await stylesheet.text();
-      for (const selector of ['.research-menu', '.industry-panel', '.collection-grid', '.executive-summary', '.catalog-filters', '.program-explorer']) {
-        assert(css.includes(selector), `Published stylesheet is missing ${selector}`);
-      }
+      publishedCss += css;
       checkedStyles.add(href);
+    }
+    for (const selector of ['.research-menu', '.industry-panel', '.collection-grid', '.executive-summary', '.catalog-filters', '.program-explorer']) {
+      assert(publishedCss.includes(selector), `Published stylesheets are missing ${selector}`);
+    }
+    const fonts = [...new Set([
+      ...[...html.matchAll(/<link\b[^>]*as="font"[^>]*>/g)]
+        .map(match => match[0].match(/href="([^"]+)"/)?.[1]).filter(Boolean),
+      ...[...(response.headers.get('link') ?? '').matchAll(/<([^>]+)>;[^,]*as="font"/g)].map(match => match[1]),
+    ])];
+    assert.equal(fonts.length, 2, `Two local masthead fonts: ${path}`);
+    for (const href of fonts) {
+      if (checkedFonts.has(href)) continue;
+      const fontUrl = new URL(href, base);
+      assert.equal(fontUrl.origin, new URL(base).origin, 'Fonts must be self-hosted');
+      const font = await fetch(fontUrl);
+      assert.equal(font.status, 200);
+      assert.match(font.headers.get('content-type') ?? '', /font\/woff2/);
+      const hash = createHash('sha256').update(Buffer.from(await font.arrayBuffer())).digest('hex');
+      assert(suppliedFontHashes.delete(hash), 'Font must match one of the two supplied files');
+      checkedFonts.add(href);
     }
     const title = html.match(/<title>([^<]+)<\/title>/)?.[1];
     assert(title?.includes("Michael P. Gibb")); titles.add(title);
@@ -64,7 +88,9 @@ try {
     assert.match(html,/https:\/\/www.linkedin.com\/in\/mp-gibb\//);
     assert.match(html,/id="main"/);assert.match(html,/Skip to content/);
     assert.equal((html.match(/<header class="site-header"/g) ?? []).length, 1, `One shared header: ${path}`);
-    assert.match(html,/class="wordmark-tagline">Analytics <span>•<\/span> AI <span>•<\/span> Leadership/);
+    assert.match(html, /class="wordmark-tagline">Analytics/);
+    assert.match(html, /class="wordmark-final-phrase">Technology Leadership<\/span>/);
+    assert.equal((html.match(/class="wordmark-dot" aria-hidden="true"/g) ?? []).length, 2);
     assert.match(html, /src="\/brand\/michael-gibb-skyline-copper-base\.svg"/, `Approved logo: ${path}`);
     assert(!html.includes("CHICAGO • OPEN TO REMOTE"), `Removed hero line: ${path}`);
     assert.match(html,/aria-label="Open navigation" aria-expanded="false" aria-controls="main-navigation"/);
@@ -130,6 +156,8 @@ try {
     }
     console.log(`PASS ${path}: metadata, contact, status, section order and indexing`);
   }
+  assert.equal(suppliedFontHashes.size, 0, 'Both approved fonts are served');
+  console.log('PASS two self-hosted masthead fonts match the supplied files');
   for (const industry of [...new Set(catalog.map(study => study.industry))]) {
     const response = await fetch(new URL(`/research?industry=${encodeURIComponent(industry)}&status=all`, base));
     assert.equal(response.status, 200);

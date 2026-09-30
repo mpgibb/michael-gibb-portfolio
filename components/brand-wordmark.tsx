@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef } from "react";
 
-/** Fit real text advances, keeping both typefaces at their natural proportions. */
+/** Match intrinsic text advances using font size alone, with readable reflow. */
 export function BrandWordmark() {
   const group = useRef<HTMLSpanElement>(null);
   useLayoutEffect(() => {
@@ -10,48 +10,84 @@ export function BrandWordmark() {
     if (!element) return;
     const name = element.querySelector<HTMLElement>(".wordmark-name")!;
     const tagline = element.querySelector<HTMLElement>(".wordmark-tagline")!;
-    const separator = tagline.querySelectorAll<HTMLElement>("span")[1];
-    const brand = element.closest<HTMLElement>(".wordmark")!;
     const row = element.closest<HTMLElement>(".header-inner")!;
-    const range = document.createRange();
-    const width = (node: HTMLElement) => { range.selectNodeContents(node); return range.getBoundingClientRect().width; };
     let active = true;
+    let frame = 0;
+    let observedWidth = -1;
+    let observedRootSize = -1;
+    const width = (node: HTMLElement) => node.getBoundingClientRect().width;
     const fit = () => {
+      frame = 0;
+      if (!active || !row.clientWidth) return;
+      delete row.dataset.brandLayout;
       name.style.fontSize = "";
       tagline.style.fontSize = "";
-      tagline.style.letterSpacing = "";
-      separator.style.letterSpacing = "";
-      const logo = brand.querySelector(".skyline-mark")!.getBoundingClientRect().width;
-      const available = brand.clientWidth - logo - parseFloat(getComputedStyle(brand).columnGap);
-      const natural = width(name);
-      if (natural > available && available > 0) name.style.fontSize = `${parseFloat(getComputedStyle(name).fontSize) * available / natural}px`;
-      const target = width(name);
-      // Font size provides almost all of the fit; subpixel tracking corrects rounding.
-      for (let i = 0; i < 3; i++) tagline.style.fontSize = `${parseFloat(getComputedStyle(tagline).fontSize) * target / width(tagline)}px`;
-      const characters = Array.from(tagline.textContent ?? "").length;
-      for (let i = 0; i < 4; i++) {
-        const difference = target - width(tagline);
-        if (Math.abs(difference) < 0.001) break;
-        tagline.style.letterSpacing = `${parseFloat(getComputedStyle(tagline).letterSpacing) + difference / characters}px`;
+      const rootSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+      const namePreferred = parseFloat(getComputedStyle(element).getPropertyValue("--masthead-name-rem")) * rootSize;
+      const taglineMinimum = parseFloat(getComputedStyle(tagline).fontSize);
+      // Rem values retain the user's text-size preference between fitting events.
+      const size = (node: HTMLElement, pixels: number) => { node.style.fontSize = `${pixels / rootSize}rem`; return width(node); };
+      const naturalName = size(name, namePreferred);
+      const minimumWidth = Math.max(size(name, namePreferred * 5 / 6), width(tagline));
+      let available = width(element);
+      if (minimumWidth > available) {
+        row.dataset.brandLayout = "stack-controls";
+        available = width(element);
       }
-      // Browser text runs quantize total tracking differently. One separator's
-      // advance supplies the final fraction of a pixel without changing spaces.
-      for (let i = 0; i < 4; i++) {
-        const difference = target - width(tagline);
-        if (Math.abs(difference) < 0.001) break;
-        separator.style.letterSpacing = `${parseFloat(getComputedStyle(separator).letterSpacing) + difference}px`;
+      if (minimumWidth > available) {
+        // Enlarged text must reflow instead of being fitted back to ordinary size.
+        row.dataset.brandLayout = "reflow";
+        name.style.fontSize = "";
+        tagline.style.fontSize = "";
+        return;
       }
+      const target = Math.min(available, Math.max(naturalName, minimumWidth));
+      const fitWidth = (node: HTMLElement, targetWidth: number, minimum: number, preferred: number) => {
+        let low = minimum;
+        let high = Math.max(preferred, minimum);
+        while (size(node, high) < targetWidth && high < preferred * 4) high *= 1.5;
+        let best = low;
+        let error = Math.abs(size(node, low) - targetWidth);
+        const highError = Math.abs(size(node, high) - targetWidth);
+        if (highError < error) { best = high; error = highError; }
+        for (let i = 0; i < 20; i++) {
+          const middle = (low + high) / 2;
+          const actual = size(node, middle);
+          const difference = Math.abs(actual - targetWidth);
+          if (difference < error) { best = middle; error = difference; }
+          if (actual < targetWidth) low = middle; else high = middle;
+        }
+        return size(node, best);
+      };
+      const nameWidth = fitWidth(name, target, namePreferred * 5 / 6, namePreferred);
+      fitWidth(tagline, nameWidth, taglineMinimum, namePreferred);
     };
+    const schedule = () => { if (active && !frame) frame = requestAnimationFrame(fit); };
     fit();
-    const observer = new ResizeObserver(fit);
+    // The header's assigned inline size does not depend on fitted text widths.
+    const observer = new ResizeObserver(() => {
+      const currentWidth = row.getBoundingClientRect().width;
+      const rootSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+      if (currentWidth !== observedWidth || rootSize !== observedRootSize) {
+        observedWidth = currentWidth;
+        observedRootSize = rootSize;
+        schedule();
+      }
+    });
     observer.observe(row);
-    window.addEventListener("resize", fit);
-    document.fonts.addEventListener("loadingdone", fit);
-    void document.fonts.ready.then(() => { if (active) fit(); });
-    return () => { active = false; observer.disconnect(); window.removeEventListener("resize", fit); document.fonts.removeEventListener("loadingdone", fit); };
+    window.addEventListener("resize", schedule);
+    document.fonts.addEventListener("loadingdone", schedule);
+    void document.fonts.ready.then(schedule);
+    return () => {
+      active = false;
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", schedule);
+      document.fonts.removeEventListener("loadingdone", schedule);
+    };
   }, []);
   return <span className="wordmark-type" ref={group}>
     <span className="wordmark-name">Michael P. Gibb,<span className="wordmark-credential"> Ph.D.</span></span>
-    <span className="wordmark-tagline">Analytics <span>•</span> AI <span>•</span> Leadership</span>
+    <span className="wordmark-tagline">Analytics{" "}<span className="wordmark-dot" aria-hidden="true">•</span>{" "}AI{" "}<span className="wordmark-dot" aria-hidden="true">•</span>{" "}<span className="wordmark-final-phrase">Technology Leadership</span></span>
   </span>;
 }
