@@ -2,7 +2,7 @@
 
 ## Release state
 
-This change is prepared locally against portfolio commit `5fd0dcb5df697c1cff10a8a6f014177c3a64f46f`. It is **not deployed**. The existing production contact form remains unchanged until the real Turnstile widget is configured and a reviewed release is deployed. There is no production bypass flag. Deploying this code without valid configuration disables submissions and shows the existing unavailable/LinkedIn state.
+Contact protection was activated on September 30, 2026 with implementation commit `a59bbeaf6f9c15d29d600f09fa0a0fe206bdeafd`. Vercel reported the production deployment [Ready](https://vercel.com/mike-gibb/michael-gibb-portfolio/EGHPwBBYvru33DpEwHHjEnPBYZps), and the canonical site serves the protected form. Real Managed widget settings are saved in Production. There is no production bypass flag. Missing or invalid configuration disables submissions and shows the existing unavailable/LinkedIn state. See PROJECT_STATUS for subsequent release/test maintenance and live-test evidence.
 
 The current repository has an ordinary contact form but **no visitor assistant, AI provider adapter, analytics/consent system or owner inbox**. The contact integration is implemented. The server session and AI authorization factories are implemented and tested as a foundation; they are not a claim that an assistant or the attached broader analytics program is live. No model credentials, paid inference, analytics account or new production AI endpoint has been introduced. The scope decision about the broader attached program remains outstanding.
 
@@ -51,11 +51,11 @@ These are operational security logs, separate from any future consented behavior
 
 The privacy page describes contact verification, Cloudflare, keyed hashes, expiry and essential security processing. When an assistant is actually exposed, extend it with the 15-minute essential chat cookie and the selected model/context-processing provider; do not publish fictitious data flows in advance.
 
-## Exact activation steps
+## Production configuration and redeployment
 
-1. Sign in to the intended Cloudflare account. The inspected browser is currently at its sign-in page. No Cloudflare account, widget or secret was created during this work.
-2. In **Turnstile → Add widget**, create or reuse a portfolio widget in **Managed** mode. Add only `michaelpgibb.com` and `www.michaelpgibb.com`. Do not add localhost, development hosts, wildcard production access or arbitrary preview domains. Keep pre-clearance off; a Cloudflare clearance cookie is not used as the application's chat credential. No nameserver, hosting or Porkbun DNS changes are required.
-3. Set these variables on the existing Vercel project, scoped to **Production**:
+1. The owner created **Michael Gibb Portfolio** in the intended Cloudflare account. Reuse this widget; do not create duplicates or rotate credentials as routine deployment work.
+2. The existing widget is in **Managed** mode. Its configured hostnames are `michaelpgibb.com` and `www.michaelpgibb.com`. Do not add localhost, development hosts, wildcard production access or arbitrary preview domains. Keep pre-clearance off; a Cloudflare clearance cookie is not used as the application's chat credential. No nameserver, hosting or Porkbun DNS changes are required.
+3. These variables are saved on the existing Vercel project, scoped to **Production**:
 
    | Variable | Value / handling |
    | --- | --- |
@@ -67,7 +67,7 @@ The privacy page describes contact verification, Cloudflare, keyed hashes, expir
 4. Deploy the reviewed code through the existing integration **after** configuration is present. The public key and form availability are evaluated at build time, so changing environment settings requires a new build. Verify public output does not contain the secret or private mailbox addresses.
 5. Verify a real Managed challenge on the canonical production host, including keyboard/mobile behavior, invalid/missing token rejection, and one clearly labeled inquiry. Confirm provider acceptance and delivery separately. Confirm actual inbox receipt with the owner. Test keys and service doubles do not prove production verification or email delivery.
 
-Cloudflare's [widget setup](https://developers.cloudflare.com/turnstile/get-started/), [server validation](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/) and [official testing keys](https://developers.cloudflare.com/turnstile/troubleshooting/testing/) document these integration boundaries. Confirm current plan eligibility in the account before any plan selection; no paid commitment has been made.
+Cloudflare's [widget setup](https://developers.cloudflare.com/turnstile/get-started/), [server validation](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/) and [official testing keys](https://developers.cloudflare.com/turnstile/troubleshooting/testing/) document these integration boundaries. The existing Vercel Hobby project and Cloudflare Free Turnstile allowance are sufficient for this setup; no paid plan selection or commitment was made.
 
 ## Reproduce verification
 
@@ -89,4 +89,4 @@ Chrome responsive checks cover 320, 375, 390, 430, 768, 1024 and 1440px with no 
 
 ## Rollback
 
-Before activation, discard/revert only this reviewed change; the live release has not moved. After activation, prefer disabling contact through its existing unavailable state while diagnosing rather than introducing a verification bypass. If a complete application rollback is necessary, restore the verified pre-change production release `5fd0dcb5df697c1cff10a8a6f014177c3a64f46f` and disclose that it has the former rate/dedup controls but no Turnstile. Keep the existing Redis namespace and delivery receipts so retries cannot lose deduplication state. Do not flush the production store. Preserve all delivery variables, domain/mail DNS and service plans. Unused Turnstile credentials can be revoked only after the deployed build no longer requires them.
+Prefer disabling contact through its existing unavailable state while diagnosing rather than introducing a verification bypass. If a complete application rollback is necessary, restore the verified pre-change production release `5fd0dcb5df697c1cff10a8a6f014177c3a64f46f` and disclose that it has the former rate/dedup controls but no Turnstile. Keep the existing Redis namespace and delivery receipts so retries cannot lose deduplication state. Do not flush the production store. Preserve all delivery variables, domain/mail DNS and service plans. Unused Turnstile credentials can be revoked only after the deployed build no longer requires them.
