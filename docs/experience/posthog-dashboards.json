@@ -1,0 +1,1930 @@
+{
+  "schema": 1,
+  "timezone": "America/Chicago",
+  "retention": {
+    "events_days": 90,
+    "replay_days": 30
+  },
+  "description": "Private dashboards; observed associations do not establish causation. UTC storage; America/Chicago reporting. Events deduplicated by insert ID. Inquiries count application receipt, independently of email acceptance. Funnels: denominator distinct starting sessions/browsers, ordered steps, first valid conversion per aggregate, counts + percent of start; 30-minute same-session or explicitly labeled 7-day browser window. Date range defaults to 30 days; adjust insight filters/date comparison and export in PostHog. Replay/heatmaps opened in PostHog Replay/Heatmaps with the same project and date filters. Limits/consent/blocking reduce analytics totals relative to owner inbox.",
+  "dashboards": [
+    {
+      "name": "A · Traffic and acquisition",
+      "insights": [
+        {
+          "name": "Traffic counts",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "page_view",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsLineGraph",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              }
+            }
+          }
+        },
+        {
+          "name": "Pseudonymous browsers",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "page_view",
+                  "math": "dau"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsLineGraph",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              }
+            }
+          }
+        },
+        {
+          "name": "Sessions / landing / exit",
+          "query": {
+            "kind": "DataTableNode",
+            "source": {
+              "kind": "HogQLQuery",
+              "query": "SELECT properties.session_id AS session, argMin(properties.page_path,timestamp) AS landing, argMax(properties.page_path,timestamp) AS exit, countIf(event='page_view') AS pages FROM events WHERE properties.environment = 'production' AND timestamp >= now() - INTERVAL 30 DAY GROUP BY session ORDER BY pages DESC LIMIT 100"
+            }
+          }
+        },
+        {
+          "name": "source",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "page_view",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "source",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "campaign",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "page_view",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "campaign",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "device",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "page_view",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "device",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "browser",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "page_view",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "browser",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "country",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "page_view",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "country",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "returning",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "page_view",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "returning",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "B · Research performance",
+      "insights": [
+        {
+          "name": "Project views",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "project_view",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "project_id",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Active reading seconds",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "active_reading",
+                  "math": "sum",
+                  "math_property": "seconds"
+                }
+              ],
+              "breakdownFilter": {
+                "breakdown": "project_id",
+                "breakdown_type": "event"
+              },
+              "trendsFilter": {
+                "display": "ActionsTable"
+              }
+            }
+          }
+        },
+        {
+          "name": "Search and zero-result categories",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "search",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "intent",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Zero-result searches",
+          "query": {
+            "kind": "DataTableNode",
+            "source": {
+              "kind": "HogQLQuery",
+              "query": "SELECT properties.intent AS topic, count() AS zero_result_searches FROM events WHERE properties.environment = 'production' AND timestamp >= now() - INTERVAL 30 DAY AND event='search' AND properties.count=0 GROUP BY topic"
+            }
+          }
+        },
+        {
+          "name": "Industry interest",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "filter",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "industry",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Method interest",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "filter",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "method",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Demos used",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "demo_start",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "demo_change",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "demo_run",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "demo_reset",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "project_id",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Associated inquiries",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "inquiry_received",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "project_id",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Evidence / downloads clicked",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "source_click",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "download_click",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "project_id",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "C · Visitor journeys",
+      "insights": [
+        {
+          "name": "Public-page paths",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "PathsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "pathsFilter": {
+                "includeEventTypes": [
+                  "custom_event"
+                ],
+                "startPoint": "page_view",
+                "stepLimit": 5
+              }
+            }
+          }
+        },
+        {
+          "name": "Consented timeline",
+          "query": {
+            "kind": "DataTableNode",
+            "source": {
+              "kind": "HogQLQuery",
+              "query": "SELECT timestamp, properties.session_id AS session, event, properties.page_path AS page, properties.project_id AS project FROM events WHERE properties.environment = 'production' AND timestamp >= now() - INTERVAL 30 DAY ORDER BY timestamp DESC LIMIT 1000"
+            }
+          }
+        },
+        {
+          "name": "Entry / exit pages",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "page_view",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "page_exit",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "page_path",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "D · AI performance",
+      "insights": [
+        {
+          "name": "Adoption and conversation activity",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "assistant_open",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "conversation_start",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "message_submit",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "response_complete",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsLineGraph",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              }
+            }
+          }
+        },
+        {
+          "name": "Intent categories",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "response_complete",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "intent",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Failures and cancellations",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "response_failed",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "response_cancelled",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "category",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Feedback",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "assistant_feedback",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "category",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Evidence links followed",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "assistant_source",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "assistant_recommendation",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "project_id",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Consented operations (estimated cost)",
+          "query": {
+            "kind": "DataTableNode",
+            "source": {
+              "kind": "HogQLQuery",
+              "query": "SELECT toDate(timestamp,'America/Chicago') AS day, count() AS responses, sum(properties.tokens) AS tokens, sum(properties.cost_usd) AS estimated_usd, avg(properties.latency_ms) AS mean_latency_ms, avg(properties.count) AS mean_retrieval_count FROM events WHERE properties.environment = 'production' AND timestamp >= now() - INTERVAL 30 DAY AND event='response_complete' GROUP BY day ORDER BY day"
+            }
+          }
+        },
+        {
+          "name": "Empty evidence",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "response_complete",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "category",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "E · Contact conversion",
+      "insights": [
+        {
+          "name": "Authoritative delivery stages (consented subset)",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "inquiry_received",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "provider_accepted",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "email_delivered",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "email_bounced",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsLineGraph",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              }
+            }
+          }
+        },
+        {
+          "name": "Ordinary / assisted inquiries",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "inquiry_received",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "category",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Validation and delivery failures",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "contact_validation",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "contact_failed",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "category",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Direct contact (no research/assistant interaction in session)",
+          "query": {
+            "kind": "DataTableNode",
+            "source": {
+              "kind": "HogQLQuery",
+              "query": "SELECT count() AS direct_contact_sessions FROM (SELECT properties.session_id AS session, countIf(event='inquiry_received') AS inquiries, countIf(event IN ('research_result','project_view','assistant_open')) AS discovery FROM events WHERE properties.environment = 'production' AND timestamp >= now() - INTERVAL 30 DAY GROUP BY session HAVING inquiries>0 AND discovery=0)"
+            }
+          }
+        },
+        {
+          "name": "source conversion context",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "inquiry_received",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "source",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "device conversion context",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "inquiry_received",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "device",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "project_id conversion context",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "inquiry_received",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "project_id",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Research → project → inquiry · same session",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "FunnelsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "research_result",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "project_view",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "inquiry_received",
+                  "math": "total"
+                }
+              ],
+              "funnelsFilter": {
+                "funnelOrderType": "ordered",
+                "funnelVizType": "steps",
+                "funnelWindowInterval": 30,
+                "funnelWindowIntervalUnit": "minute",
+                "funnelAggregateByHogQL": "properties.session_id",
+                "funnelStepReference": "total",
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "device",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Research → project → inquiry · 7-day browser attribution",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "FunnelsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "research_result",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "project_view",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "inquiry_received",
+                  "math": "total"
+                }
+              ],
+              "funnelsFilter": {
+                "funnelOrderType": "ordered",
+                "funnelVizType": "steps",
+                "funnelWindowInterval": 7,
+                "funnelWindowIntervalUnit": "day",
+                "funnelAggregateByHogQL": "distinct_id",
+                "funnelStepReference": "total",
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "device",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Assistant → interaction → inquiry · same session",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "FunnelsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "assistant_open",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "message_submit",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "inquiry_received",
+                  "math": "total"
+                }
+              ],
+              "funnelsFilter": {
+                "funnelOrderType": "ordered",
+                "funnelVizType": "steps",
+                "funnelWindowInterval": 30,
+                "funnelWindowIntervalUnit": "minute",
+                "funnelAggregateByHogQL": "properties.session_id",
+                "funnelStepReference": "total",
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "device",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Assistant → interaction → inquiry · 7-day browser attribution",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "FunnelsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "assistant_open",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "message_submit",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "inquiry_received",
+                  "math": "total"
+                }
+              ],
+              "funnelsFilter": {
+                "funnelOrderType": "ordered",
+                "funnelVizType": "steps",
+                "funnelWindowInterval": 7,
+                "funnelWindowIntervalUnit": "day",
+                "funnelAggregateByHogQL": "distinct_id",
+                "funnelStepReference": "total",
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "device",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Contact start → attempt → inquiry · same session",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "FunnelsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "contact_start",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "contact_attempt",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "inquiry_received",
+                  "math": "total"
+                }
+              ],
+              "funnelsFilter": {
+                "funnelOrderType": "ordered",
+                "funnelVizType": "steps",
+                "funnelWindowInterval": 30,
+                "funnelWindowIntervalUnit": "minute",
+                "funnelAggregateByHogQL": "properties.session_id",
+                "funnelStepReference": "total",
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "device",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Contact start → attempt → inquiry · 7-day browser attribution",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "FunnelsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "contact_start",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "contact_attempt",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "inquiry_received",
+                  "math": "total"
+                }
+              ],
+              "funnelsFilter": {
+                "funnelOrderType": "ordered",
+                "funnelVizType": "steps",
+                "funnelWindowInterval": 7,
+                "funnelWindowIntervalUnit": "day",
+                "funnelAggregateByHogQL": "distinct_id",
+                "funnelStepReference": "total",
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "device",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Project → demo → inquiry · same session",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "FunnelsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "project_view",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "demo_start",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "inquiry_received",
+                  "math": "total"
+                }
+              ],
+              "funnelsFilter": {
+                "funnelOrderType": "ordered",
+                "funnelVizType": "steps",
+                "funnelWindowInterval": 30,
+                "funnelWindowIntervalUnit": "minute",
+                "funnelAggregateByHogQL": "properties.session_id",
+                "funnelStepReference": "total",
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "device",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        },
+        {
+          "name": "Project → demo → inquiry · 7-day browser attribution",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "FunnelsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "project_view",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "demo_start",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "inquiry_received",
+                  "math": "total"
+                }
+              ],
+              "funnelsFilter": {
+                "funnelOrderType": "ordered",
+                "funnelVizType": "steps",
+                "funnelWindowInterval": 7,
+                "funnelWindowIntervalUnit": "day",
+                "funnelAggregateByHogQL": "distinct_id",
+                "funnelStepReference": "total",
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "device",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "F · Experience quality",
+      "insights": [
+        {
+          "name": "Performance / errors",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "page_performance",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "application_error",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "demo_error",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsLineGraph",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              }
+            }
+          }
+        },
+        {
+          "name": "Rage / dead clicks (replay consent only)",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "$rageclick",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "$dead_click",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsLineGraph",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              }
+            }
+          }
+        },
+        {
+          "name": "Reading and scroll",
+          "query": {
+            "kind": "InsightVizNode",
+            "source": {
+              "kind": "TrendsQuery",
+              "dateRange": {
+                "date_from": "-30d",
+                "date_to": null
+              },
+              "properties": [
+                {
+                  "key": "environment",
+                  "value": [
+                    "production"
+                  ],
+                  "operator": "exact",
+                  "type": "event"
+                }
+              ],
+              "filterTestAccounts": true,
+              "series": [
+                {
+                  "kind": "EventsNode",
+                  "event": "active_reading",
+                  "math": "total"
+                },
+                {
+                  "kind": "EventsNode",
+                  "event": "scroll_depth",
+                  "math": "total"
+                }
+              ],
+              "interval": "day",
+              "trendsFilter": {
+                "display": "ActionsTable",
+                "showLegend": true,
+                "showValuesOnSeries": true
+              },
+              "breakdownFilter": {
+                "breakdown": "page_path",
+                "breakdown_type": "event"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
