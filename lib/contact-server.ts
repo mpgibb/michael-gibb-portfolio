@@ -3,6 +3,9 @@ import { z } from "zod";
 import { contactRequestSchema, fieldErrors } from "./contact-validation.ts";
 import { boundedJson, requestContext, securityConfiguration, storeCommand as command, verifyTurnstile, type SecurityLogger } from "./request-security.ts";
 
+import { serverEvent } from "./experience/analytics-server.ts";
+import { receiveInquiry, updateInquiry } from "./experience/inquiries.ts";
+
 const configuration = z.object({
   RESEND_API_KEY: z.string().min(10), CONTACT_TO_EMAIL: z.string().email(), CONTACT_FROM_EMAIL: z.string().email(),
   UPSTASH_REDIS_REST_URL: z.string().url().refine(value => value.startsWith("https://")), UPSTASH_REDIS_REST_TOKEN: z.string().min(10), CONTACT_HASH_SECRET: z.string().min(32),
@@ -57,7 +60,7 @@ export function createContactHandler({ environment = process.env, transport = fe
     const verified = await verifyTurnstile({ token: parsed.data.turnstileToken, action: "contact_submit", config: security, context, transport, logger });
     if (verified) return verified;
     const { name, email, company, phone, topic, message, requestId } = parsed.data;
-    const normalized = { name, email, company, phone, topic, message };
+    const normalized = { name, email, company, phone, topic, message, origin: parsed.data.origin, projects: parsed.data.projects };
     const digest = hash(JSON.stringify(normalized), config.data.CONTACT_HASH_SECRET);
     const ip = context.ip;
     const keyPrefix = `portfolio-contact:${environment.VERCEL_ENV ?? "development"}`;
@@ -70,14 +73,16 @@ export function createContactHandler({ environment = process.env, transport = fe
       if (state === 4) return reply(409, { error: "The form changed during submission. Please send it again." });
       if (state === 5) return reply(429, { error: "Too many messages have been submitted. Please try again later; your entries are still here." }, { "Retry-After": "3600" });
       if (state !== 1 || typeof token !== "string") throw new Error("invalid_reservation");
+      const inquiryConsent = await receiveInquiry(token, { name, email, company, phone, topic, message }, request, parsed.data.origin, parsed.data.projects, environment, transport);
       const response = await transport("https://api.resend.com/emails", {
         method: "POST", headers: { Authorization: `Bearer ${config.data.RESEND_API_KEY}`, "Content-Type": "application/json", "Idempotency-Key": `portfolio-contact/${token}` },
         body: JSON.stringify({ from: `Michael P. Gibb Portfolio <${config.data.CONTACT_FROM_EMAIL}>`, to: [config.data.CONTACT_TO_EMAIL], reply_to: normalized.email, subject: `Portfolio inquiry: ${topic || "General inquiry"}`, text: [`Full name: ${name}`, `Email address: ${normalized.email}`, `Company / organization: ${company || "Not provided"}`, `Phone number: ${phone || "Not provided"}`, `Discussion: ${topic || "Not specified"}`, "", "Message", "-------", message].join("\n") }),
         signal: AbortSignal.timeout(10000), cache: "no-store",
       });
-      if (!response.ok) return unavailable();
+      if (!response.ok) { await serverEvent("contact_failed", inquiryConsent, { inquiry_id: token, category: "provider" }, undefined, environment, transport); return unavailable(); }
       const result = await response.json();
       if (typeof result.id !== "string" || !result.id) return unavailable();
+      try { await updateInquiry(token, "provider_accepted", result.id, environment, transport); } catch { console.warn("inquiry_status_store_unavailable"); }
       // Provider acceptance is the success boundary. If persisting the receipt
       // fails, the same provider token still deduplicates any later retry.
       try { await command(config.data, ["SET", recordKey, JSON.stringify({ state: "accepted", token }), "EX", 86400], transport); } catch { console.warn("contact_receipt_store_unavailable"); }

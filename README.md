@@ -1,5 +1,12 @@
 # Michael P. Gibb, Ph.D. — Research portfolio
 
+
+## Research assistant and private inquiries
+
+The assistant UI, approved-content retrieval, protected Responses adapter, assisted inquiry preview, encrypted inquiry records, owner-only inbox, consent controls, typed analytics and signed delivery webhooks are implemented. New external integrations remain disabled or fail closed until activated. The existing contact configuration, branding, research and hosting are preserved.
+
+See [implementation and activation guide](docs/experience/README.md), [event dictionary](docs/experience/EVENTS.md), [six dashboard definitions](docs/experience/posthog-dashboards.json) and [current verification status](PROJECT_STATUS.md). The guide includes exact environment names, owner access, retention/deletion, costs, activation gates and rollback. Use `pnpm test:experience` in addition to the existing security/contact/refinement checks. `prebuild` refreshes the public knowledge index. Synthetic test fixtures never send real mail or invoke a paid model.
+
 [Live website](https://michaelpgibb.com) · [Research catalog](https://michaelpgibb.com/research) · [Research source](https://github.com/mpgibb/michael-gibb-research)
 
 The portfolio connects commercial analytics, statistics, machine learning and decision science to practical leadership decisions. The research catalog accounts for 60 studies across 20 industries. S28, S02, S04, S58, S43, S13, S31, S03 and S47 have evaluated public-data case studies; 51 studies remain planned or in development, including S60 with a completed publisher-trajectory baseline. Four earlier evaluated synthetic demonstrations remain separately labeled and do not count toward the 60-study program.

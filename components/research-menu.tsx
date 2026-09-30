@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { track } from "@/lib/experience/analytics-client";
+import { intentOf } from "@/lib/experience/schema";
 import { useEffect, useRef, useState } from "react";
 import { industryNames, industryDestination, matchesResearch, studyDescription, topicStatus, type NavigationStudy } from "@/lib/research-discovery";
 
@@ -15,6 +17,8 @@ export function ResearchMenu({ studies, open, setOpen }: { studies: NavigationSt
   const foundIndustries = industries.filter(industry => matchesResearch(query, "", industry) || matches.some(study => study.industry === industry));
   const published = matches.filter(study => study.publicationStatus === "published");
   const planned = matches.filter(study => study.publicationStatus !== "published");
+  const resultCount = foundIndustries.length + matches.length;
+  useEffect(() => { if (!open || !query.trim()) return; const timer = setTimeout(() => track("search", "header", { intent: intentOf(query), count: resultCount }), 700); return () => clearTimeout(timer); }, [open, query, resultCount]);
   useEffect(() => {
     if (!open) return;
     search.current?.focus();
@@ -37,11 +41,11 @@ export function ResearchMenu({ studies, open, setOpen }: { studies: NavigationSt
         <ul className="industry-list">{foundIndustries.map(industry => {
           const records = studies.filter(study => study.industry === industry);
           const count = records.filter(study => study.publicationStatus === "published").length;
-          return <li key={industry}><Link href={industryDestination(industry)} onClick={() => setOpen(false)}><strong>{industry}</strong><span>{count ? `${count} published · ${records.length - count} planned or developing` : `${records.length} planned or developing topics`}</span></Link></li>;
+          return <li key={industry}><Link href={industryDestination(industry)} onClick={() => { track("filter", "header", { category: "industry", industry }); setOpen(false); }}><strong>{industry}</strong><span>{count ? `${count} published · ${records.length - count} planned or developing` : `${records.length} planned or developing topics`}</span></Link></li>;
         })}</ul>
         {query.trim() && <>
-          {published.length > 0 && <><h2>Published studies</h2><ul className="industry-studies">{published.map(study => <li key={study.id}><Link href={`/research/${study.slug}`} onClick={() => setOpen(false)}><strong>{study.title}</strong><span>{study.id} · {study.industry}</span></Link></li>)}</ul></>}
-          {planned.length > 0 && <><h2>Planned topics &amp; work in progress</h2><ul className="industry-studies">{planned.map(study => <li key={study.id}><Link href={`${industryDestination(study.industry)}#topic-${study.id}`} onClick={() => setOpen(false)}><strong>{study.title}</strong><span>{study.id} · {topicStatus(study)}</span></Link></li>)}</ul></>}
+          {published.length > 0 && <><h2>Published studies</h2><ul className="industry-studies">{published.map((study, index) => <li key={study.id}><Link href={`/research/${study.slug}`} onClick={() => { track("research_result", "header", { project_id: study.id, position: index + 1 }); setOpen(false); }}><strong>{study.title}</strong><span>{study.id} · {study.industry}</span></Link></li>)}</ul></>}
+          {planned.length > 0 && <><h2>Planned topics &amp; work in progress</h2><ul className="industry-studies">{planned.map((study, index) => <li key={study.id}><Link href={`${industryDestination(study.industry)}#topic-${study.id}`} onClick={() => { track("research_result", "header", { project_id: study.id, position: index + 1 }); setOpen(false); }}><strong>{study.title}</strong><span>{study.id} · {topicStatus(study)}</span></Link></li>)}</ul></>}
           {foundIndustries.length + matches.length === 0 && <p className="industry-empty" role="status">No matches. Try a broader topic or clear the search.</p>}
         </>}
       </div>

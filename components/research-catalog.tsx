@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { track } from "@/lib/experience/analytics-client";
+import { intentOf } from "@/lib/experience/schema";
 import { useEffect, useState } from "react";
 import type { ProgramStudy } from "@/lib/program-registry";
 import { businessAreas, inBusinessArea, matchesResearch, industryNames, studyDescription, topicStatus } from "@/lib/research-discovery";
@@ -22,6 +24,7 @@ export function ResearchCatalog({ studies, demonstrations, initialFilters }: { s
   function change(next: Partial<CatalogFilters>, replace = false) {
     const value = validFilters({ ...filters, ...next }, studies);
     setFilters(value);
+    if (!replace) track("filter", "research", { category: "select", industry: value.industry !== "all" ? value.industry : undefined, method: value.method !== "all" ? value.method : undefined });
     const url = new URL(window.location.href);
     for (const key of Object.keys(catalogDefaults) as (keyof CatalogFilters)[]) {
       if (value[key] === catalogDefaults[key]) url.searchParams.delete(key);
@@ -47,6 +50,8 @@ export function ResearchCatalog({ studies, demonstrations, initialFilters }: { s
   const published = matching.filter(study => study.publicationStatus === "published");
   const planned = matching.filter(study => study.publicationStatus !== "published");
   const examples = demonstrations.filter(item => (status === "all" || status === "completed") && industry === "all" && inBusinessArea(area, item.slug, `${item.title} ${item.short}`) && (method === "all" || item.methods.includes(method)) && (decision === "all" || item.decisionType === decision) && matchesResearch(q, item.slug, `${item.title} ${item.short} ${item.category} ${item.methods.join(" ")}`));
+  const resultCount = matching.length + examples.length;
+  useEffect(() => { if (!q) return; const timer = setTimeout(() => track("search", "research", { intent: intentOf(q), count: resultCount }), 700); return () => clearTimeout(timer); }, [q, resultCount]);
   const hiddenTopics = matchingBase.filter(study => study.publicationStatus !== "published").length;
   const reset = () => change(catalogDefaults);
   const renderStudy = (study: ProgramStudy) => <article key={study.id} id={`topic-${study.id}`} data-study-id={study.id}><p className="eyebrow">{study.id} / {study.industry}</p><h4>{study.publicationStatus === "published" ? <Link href={`/research/${study.slug}`}>{study.title}</Link> : study.title}</h4><p>{study.question}</p><p className="project-status">{study.publicationStatus === "published" ? "Evaluated public-data study" : topicStatus(study)}</p>{study.publicationStatus === "published" ? <Link className="text-link" href={`/research/${study.slug}`}>Read the finding and evidence ↗</Link> : null}<details><summary>{study.publicationStatus === "published" ? "Methods & source" : "Proposed design & source"}</summary><p>{study.methodSummary}</p>{study.publicationStatus !== "published" && <><p>{study.design}</p><p><strong>Evaluation:</strong> {study.evaluation}</p><p><strong>Boundary:</strong> {study.limitations}</p></>}<p><a href={study.dataset.url}>{study.dataset.name} ↗</a></p>{study.codeUrl && <p><a href={study.codeUrl}>Research code ↗</a></p>}</details></article>;

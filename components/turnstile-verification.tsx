@@ -24,7 +24,7 @@ function loadTurnstile(): Promise<Turnstile> {
 }
 
 export type VerificationHandle = { verify: () => Promise<string> };
-export function TurnstileVerification({ action, ref }: { action: "contact_submit" | "chat_init"; ref: Ref<VerificationHandle> }) {
+export function TurnstileVerification({ action, ref, compact = false }: { compact?: boolean; action: "contact_submit" | "chat_init"; ref: Ref<VerificationHandle> }) {
   const [attempt, setAttempt] = useState(0);
   const container = useRef<HTMLDivElement>(null);
   const pending = useRef<{ resolve: (token: string) => void; reject: (error: Error) => void } | null>(null);
@@ -46,7 +46,7 @@ export function TurnstileVerification({ action, ref }: { action: "contact_submit
       api = value;
       widget = value.render(container.current, {
         sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
-        action, theme: "auto", size: container.current.clientWidth < 300 ? "compact" : "flexible",
+        action, theme: "auto", size: compact || container.current.clientWidth < 300 ? "compact" : "flexible",
         appearance: "always", execution: "render", retry: "never",
         "refresh-expired": "manual", "refresh-timeout": "manual", "response-field": false,
         callback: (token: string) => { if (active) { clearTimeout(timer); pending.current?.resolve(token); pending.current = null; } },
@@ -54,7 +54,7 @@ export function TurnstileVerification({ action, ref }: { action: "contact_submit
       });
     }).catch(fail);
     return () => { active = false; clearTimeout(timer); if (widget && api) api.remove(widget); };
-  }, [action, attempt]);
+  }, [action, attempt, compact]);
   useEffect(() => () => { pending.current?.reject(new Error("verification_cancelled")); pending.current = null; }, []);
   return <div className="verification-container" ref={container} aria-label="Security verification" />;
 }

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import "./experience.css";
+import { ExperienceShell } from "@/components/experience/shell";
 import { Header, Footer } from "@/components/portfolio";
 import { isPublicProduction, productionOrigin } from "@/lib/site";
 const mastheadSerif = localFont({
@@ -35,6 +37,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        <ExperienceShell />
       </body>
     </html>
   );

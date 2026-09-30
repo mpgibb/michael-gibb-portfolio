@@ -125,3 +125,9 @@ export async function verifyTurnstile({ token, action, config, context, transpor
     return finish("verified", 200);
   } catch { return finish("siteverify_unavailable", 503); }
 }
+
+export function sameOrigin(request: Request, environment: Environment = process.env) {
+  const url = new URL(request.url);
+  const expected = `${environment.VERCEL ? "https:" : url.protocol}//${request.headers.get("host") ?? url.host}`;
+  return request.headers.get("origin") === expected && request.headers.get("sec-fetch-site") !== "cross-site";
+}

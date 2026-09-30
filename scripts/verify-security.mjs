@@ -25,7 +25,7 @@ test('fresh contact verification checks Cloudflare and preserves fixed delivery 
   assert.equal(verification.body.response, data.turnstileToken);
   assert.equal(verification.body.remoteip, '192.0.2.12');
   const keys = redis.command('KEYS', '*');
-  const stored = JSON.stringify(keys.map(key => [key, redis.command('TYPE', key) === 'string' ? redis.command('GET', key) : redis.command('HGETALL', key)]));
+  const stored = JSON.stringify(keys.map(key => [key, redis.command('TYPE', key) === 'string' ? redis.command('GET', key) : redis.command('TYPE', key) === 'zset' ? redis.command('ZRANGE', key, 0, -1) : redis.command('HGETALL', key)]));
   for (const secret of [data.message, data.email, data.name, data.turnstileToken, '192.0.2.12']) assert(!stored.includes(secret));
 });
 

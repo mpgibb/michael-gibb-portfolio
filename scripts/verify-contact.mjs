@@ -14,7 +14,7 @@ function services({ reservation = [1, 'delivery-token'], provider = 200, storeFa
     calls.push({ url, body, headers: options.headers });
     if (url === 'https://store.example.com') {
       if (storeFails || receiptFails && body[0] === 'SET') throw new Error('private upstream detail');
-      return Response.json({ result: body[0] === 'EVAL' ? body[2] === 3 ? 1 : reservation : 'OK' });
+      return Response.json({ result: body[0] === 'EVAL' ? body[2] === 3 || body[2] === 2 ? 1 : reservation : 'OK' });
     }
     assert.equal(url, 'https://api.resend.com/emails');
     return Response.json(providerData, { status: provider });

@@ -1,10 +1,11 @@
+import { projectId } from "./experience/schema.ts";
 import { randomBytes, randomUUID } from "node:crypto";
 import { z } from "zod";
 import { boundedJson, keyedHash, requestContext, securityConfiguration, securityReply, storeCommand, verifyTurnstile, recordSecurity, securityLogger, type Environment, type SecurityConfig, type RequestContext, type SecurityLogger } from "./request-security.ts";
 
 const COOKIE = "__Host-portfolio-chat";
 const sessionSeconds = 900;
-export const chatMessageSchema = z.object({ requestId: z.string().uuid(), message: z.string().trim().min(1).max(2000), projectId: z.string().regex(/^S\d{2}$|^[a-z0-9-]{1,80}$/).optional() }).strict();
+export const chatMessageSchema = z.object({ requestId: z.string().uuid(), message: z.string().trim().min(1).max(2000), mode: z.enum(["executive", "technical"]).default("executive"), projectId: projectId.optional() }).strict();
 const initSchema = z.object({ turnstileToken: z.string().max(2048).default("") }).strict();
 type Dependencies = { environment?: Environment; transport?: typeof fetch; logger?: SecurityLogger; now?: () => number };
 const cookie = (value: string, seconds: number) => `${COOKIE}=${value}; Path=/; Max-Age=${seconds}; Secure; HttpOnly; SameSite=Strict`;

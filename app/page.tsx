@@ -1,3 +1,4 @@
+import { AskButton } from "@/components/experience/entry";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SectionLink } from "@/components/section-link";
@@ -41,7 +42,7 @@ export default function Home() {
       </div>
       <a className="text-link leadership-link" href="https://www.linkedin.com/in/mp-gibb/" target="_blank" rel="noreferrer">Professional background on LinkedIn ↗</a>
     </section>
-    <section className="work-section" id="work" tabIndex={-1}><div className="shell">
+    <section className="work-section" id="work" tabIndex={-1}><div className="shell"><AskButton />
       <div className="work-heading"><div><p className="eyebrow">COMMERCIAL RESEARCH</p><h2>Evidence for the<br />next business decision.</h2></div><p className="section-intro">Evaluated public-data research and four synthetic demonstrations, each with an executive summary, reproducible source and visible limitations. These are portfolio studies, not claims of delivered client results.</p></div>
       <article className="flagship-card"><div><p className="eyebrow">S02 / FEATURED · RETAIL INVENTORY</p><h3><Link href={`/research/${flagship.slug}`}>A better forecast still needs a better inventory decision.</Link></h3><p>Compare recorded retail sales forecasts, coherent uncertainty and the service-versus-cost tradeoff under explicit planning assumptions.</p><p className="project-status">Evaluated public-data study</p><div className="project-links"><Link className="text-link" href={`/research/${flagship.slug}`}>Read the finding & executive summary ↗</Link></div></div>
         <div className="flagship-result"><p className="mono">M5 RETAIL DATA · 210 PRODUCT/STORE SERIES</p><strong>{(100*(1-advanced/base)).toFixed(1)}%</strong><p>Lower final cycle forecast error</p><dl className="forecast-comparison"><div><dt>Seasonal baseline</dt><dd>{base.toFixed(4)}</dd></div><div><dt>Forecast model</dt><dd>{advanced.toFixed(4)}</dd></div></dl><p className="result-interval">Sales-weighted scaled 28-day error · lower is better · four final 28-day windows</p><p className="caption">Recorded sales are not unconstrained demand. Inventory costs are scenario assumptions.</p></div>

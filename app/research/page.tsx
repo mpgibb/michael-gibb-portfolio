@@ -1,3 +1,4 @@
+import { AskButton } from "@/components/experience/entry";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ResearchCatalog, type CatalogFilters } from "@/components/research-catalog";
@@ -18,6 +19,6 @@ export default async function ResearchPage({ searchParams }: { searchParams: Pro
   const demonstrations = projects.map(project => ({ slug: project.slug, title: project.title, short: project.short, category: project.category, methods: project.slug === "marketing-incrementality" ? ["Causal inference"] : project.slug === "customer-value" ? ["Survival analysis", "Causal inference"] : ["Forecasting", "Optimization & simulation"], decisionType: ["marketing-incrementality", "customer-value"].includes(project.slug) ? "Targeting & customer value" : "Capacity & operations" }));
   return <><main id="main" tabIndex={-1}>
     <section className="catalog-hero"><div className="shell"><Link className="back-link" href="/">← Home</Link><p className="eyebrow">RESEARCH BY INDUSTRY</p><h1>Evidence for the decision.</h1><p>Find published research and synthetic demonstrations, with planned and developing topics clearly separated.</p></div></section>
-    <section id="commercial" className="shell research-collections"><ResearchCatalog key={JSON.stringify(initialFilters)} studies={programStudies} demonstrations={demonstrations} initialFilters={initialFilters} /></section>
+    <section id="commercial" className="shell research-collections"><AskButton /><ResearchCatalog key={JSON.stringify(initialFilters)} studies={programStudies} demonstrations={demonstrations} initialFilters={initialFilters} /></section>
   </main></>;
 }

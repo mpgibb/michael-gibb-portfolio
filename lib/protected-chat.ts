@@ -16,11 +16,14 @@ export function createProtectedChatHandler({ execute, maximumTokens, environment
     if (!data.success) return securityReply(400, { error: "Keep your message between 1 and 2,000 characters." });
     const authorization = await authorizeChat(request, data.data, maximumTokens, { environment, transport, logger, now });
     if (authorization instanceof Response) return authorization;
+    let handedOff = false;
     try {
       if (request.signal.aborted) return securityReply(499, { error: "Request cancelled. Your draft is still here." });
-      return await execute(authorization, AbortSignal.any([request.signal, AbortSignal.timeout(60000)]));
+      const response = await execute(authorization, AbortSignal.any([request.signal, AbortSignal.timeout(60000)]));
+      handedOff = true;
+      return response;
     }
     catch { return securityReply(503, { error: "The assistant could not complete that request. Your message is still here." }); }
-    finally { if (releaseOnReturn) await releaseChat(authorization, transport); }
+    finally { if (releaseOnReturn || !handedOff) await releaseChat(authorization, transport); }
   };
 }
