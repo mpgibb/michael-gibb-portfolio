@@ -10,7 +10,21 @@ Local lint, TypeScript, optimized build, refinement checks, six isolated contact
 
 Chrome responsive checks cover 320, 375, 390, 430, 768, 1024 and 1440px on home, catalogue, a public-data study, a synthetic demonstration and both legal pages. Additional checks cover 374/375, 600/601, 1099/1100 and 1199/1200px boundaries, cached refreshes, direct routes and client navigation. Intrinsic and DOM text-range differences stay below 0.11px locally, left edges align, and no ordinary-scale page overflow, clipped branding or menu overlap was found. Mobile tagline sizes are approximately 12.65–14.46px. At 320px the banner is about 109px; at 375/390px it remains 77px. A temporary local 200% root-text stylesheet confirmed header reflow with 48px mobile names and 24px taglines, and reachable navigation; the stylesheet was removed before release. This simulated text scaling is not a claim of testing browser zoom, physical devices or other engines. Existing non-header content can overflow at this artificial 200% root setting; ordinary-scale checks are clean.
 
-The logo home link, dropdown search and independent scrolling, selection closure, keyboard focus, nested Escape behavior and 844 × 390 landscape fit pass. At 320px the study explorer target lands at y=211 below the header and article navigation ending at y=178. No console warnings or errors were observed. Current logo, favicon, hero copy/motion, footer/social icons, research and contact processing/configuration are preserved. No real message is sent for this typography verification. Production deployment checks will be recorded after the main integration completes.
+The logo home link, dropdown search and independent scrolling, selection closure, keyboard focus, nested Escape behavior and 844 × 390 landscape fit pass. At 320px the study explorer target lands at y=211 below the header and article navigation ending at y=178. No console warnings or errors were observed. Current logo, favicon, hero copy/motion, footer/social icons, research and contact processing/configuration are preserved. No real message is sent for this typography verification. Implementation `c897f4567d2c09f26a040a8170bfc9a6d00c40cc` is deployed at `https://michael-gibb-portfolio-fvtqkssb2-mike-gibb.vercel.app` and the canonical public domain. Production deployment `6748410836` succeeded. The full public smoke suite passes, including exact font, logo and favicon hashes. Live font readiness, seven required widths, ten representative-route/width combinations, cached reload, shared home link, menu opening/dismissal and the preserved animation pass. Mobile contact validation focuses the first empty required field; all fields stayed empty and no real message was sent. The sticky header stays at y=0 and footer icons remain 16px. Console inspection is clean.
+
+Production intrinsic-width measurements (CSS pixels; left-edge differences are zero and right-edge differences equal the width difference):
+
+| Viewport | Name | Tagline | Absolute difference |
+| --- | ---: | ---: | ---: |
+| 320 | 209.047 | 208.938 | 0.109 |
+| 375 | 210.547 | 210.516 | 0.031 |
+| 390 | 222.781 | 222.719 | 0.063 |
+| 430 | 238.906 | 238.906 | 0.000 |
+| 768 | 358.359 | 358.438 | 0.078 |
+| 1024 | 358.359 | 358.438 | 0.078 |
+| 1440 | 358.359 | 358.438 | 0.078 |
+
+All rows meet the 0.5px tolerance. Fresh/cached measurements vary by subpixel rounding and remain within tolerance. Production desktop, 390px and 320px header screenshots and machine-readable measurements are retained outside the public repository.
 
 Rollback: revert this masthead release and deploy through the existing main integration, or restore `988810ad7e4c8745590989b4ea6844b44647ea49` at `https://michael-gibb-portfolio-ct9iw61nk-mike-gibb.vercel.app`. Keep production contact secrets, DNS and service plans unchanged. No new recurring cost.
 
