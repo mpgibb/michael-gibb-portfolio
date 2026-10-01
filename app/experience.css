@@ -32,7 +32,11 @@
 .assistant-source-card{display:block;border-top:1px solid #52667a;padding:.7rem 0;text-decoration:none}
 .assistant-source-card strong,.assistant-source-card span{display:block;font-size:.9rem}
 .assistant-source-card span{color:#cad5df;font-size:.8rem}
-.assistant-feedback{display:flex;align-items:center;gap:.5rem;font-size:.8rem}
+.assistant-feedback{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;font-size:.85rem}
+.assistant-feedback button[aria-pressed="true"]{border-color:#e3ac79;background:#e3ac79;color:#0a192f;font-weight:600}
+.assistant-feedback button[aria-disabled="true"]{cursor:default}
+.assistant-feedback .assistant-feedback-status{flex-basis:100%;margin:0;color:#c4cedd;font-size:.85rem}
+.assistant-feedback-status:empty{display:none}
 .assistant-compose textarea{resize:vertical}
 .assistant-compose>button,.experience-actions>button:first-child{background:#e3ac79;color:#102337;border-color:#e3ac79}
 .assistant-disclaimer{font-size:.8rem;color:#ccd7e3}

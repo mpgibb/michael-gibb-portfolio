@@ -41,6 +41,12 @@ export function SiteNavigation({ studies }: { studies: NavigationStudy[] }) {
       <SectionLink href="/#about">Leadership</SectionLink>
       <SectionLink className="nav-contact" href="/#contact">Contact</SectionLink>
     </nav>
+    <a className="header-linkedin" href="https://www.linkedin.com/in/mp-gibb/" target="_blank" rel="noopener noreferrer"
+      aria-label="Connect with Michael on LinkedIn (opens in a new tab)" title="Connect on LinkedIn"
+      onClick={() => { setOpen(false); setIndustriesOpen(false); }}>
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M5.5 3a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5ZM3.5 10h4v11h-4ZM10 10h4v1.5c.7-1.1 1.8-1.8 3.4-1.8 3 0 4.1 1.9 4.1 5V21h-4v-5.6c0-1.5-.4-2.4-1.7-2.4-1.4 0-1.8 1-1.8 2.4V21h-4Z" /></svg>
+      <span>Connect</span>
+    </a>
     <noscript><style>{"@media(max-width:1099px){.site-header .site-navigation nav{display:flex;position:static}.menu-toggle{display:none}}"}</style></noscript>
   </div>;
 }

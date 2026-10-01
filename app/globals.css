@@ -926,7 +926,11 @@ input:focus-visible, summary:focus-visible, [tabindex="0"]:focus-visible { outli
 .wordmark-credential, .wordmark-final-phrase { white-space: nowrap; }
 .wordmark-tagline { font-family: var(--font-masthead-tagline), Arial, sans-serif; font-size: 1rem; color: #c4cedd; line-height: 1.35; letter-spacing: 0; word-spacing: normal; }
 .wordmark-dot { display: inline-block; color: var(--light-copper); font-size: .65em; vertical-align: .13em; margin-inline: .33em; }
-.site-navigation { flex-shrink: 0; }
+.site-navigation { display: flex; align-items: center; gap: 18px; flex-shrink: 0; }
+.header-linkedin { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; gap: 8px; min-width: 44px; min-height: 44px; padding: 9px 14px; border: 1px solid var(--light-copper); border-radius: 4px; background: var(--light-copper); color: var(--navy); font-size: .9rem; font-weight: 600; line-height: 1.4; }
+.header-linkedin svg { width: 19px; height: 19px; flex-shrink: 0; }
+.header-linkedin:hover { background: #f0bf93; color: var(--navy); text-decoration: none; }
+.header-linkedin:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
 .site-header nav { display: flex; align-items: center; gap: 27px; font-size: .9rem; color: #fff; }
 .site-header nav > a, .research-menu > button { min-height: 44px; display: flex; align-items: center; }
 .site-header .nav-contact { padding: 9px 21px; border: 1px solid var(--light-copper); border-radius: 4px; color: var(--light-copper); }
@@ -974,6 +978,9 @@ input:focus-visible, summary:focus-visible, [tabindex="0"]:focus-visible { outli
   :root { --site-header-height: 113px; }
   .header-inner { min-height: 112px; }
   .menu-toggle { display: block; }
+  .site-navigation { gap: 6px; }
+  .header-linkedin { padding: 10px; }
+  .header-linkedin span { display: none; }
   .site-header .site-navigation nav { display: none; position: absolute; z-index: 40; right: 0; top: calc(100% - 1px); width: min(340px, 100%); background: var(--navy); border: 1px solid #475569; padding: 20px; flex-direction: column; align-items: stretch; gap: 7px; box-shadow: 0 14px 28px #0002; max-height: calc(100dvh - var(--site-header-height) - 16px); overflow-y: auto; overscroll-behavior: contain; }
   .site-navigation[data-open="true"] nav { display: flex; }
   .site-header nav > a, .research-menu > button { padding: 9px 12px; width: 100%; }
@@ -1076,6 +1083,8 @@ input:focus-visible, summary:focus-visible, [tabindex="0"]:focus-visible { outli
 .header-inner[data-brand-layout] { flex-wrap: wrap; row-gap: 0; }
 .header-inner[data-brand-layout] .wordmark { flex-basis: 100%; }
 .header-inner[data-brand-layout] .site-navigation { margin-left: auto; }
+.header-inner[data-brand-layout] .header-linkedin { padding-inline: 14px; }
+.header-inner[data-brand-layout] .header-linkedin span { display: inline; }
 .header-inner[data-brand-layout="reflow"] .wordmark { flex-direction: column; align-items: flex-start; }
 .header-inner[data-brand-layout="reflow"] .wordmark-type { flex: none; width: 100%; }
 .header-inner[data-brand-layout="reflow"] .wordmark-name,
