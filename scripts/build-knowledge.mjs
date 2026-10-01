@@ -5,15 +5,22 @@ const read = p => fs.readFileSync(p, 'utf8');
 const catalog = JSON.parse(read('lib/program-catalog.json'));
 const projectSource = read('lib/projects.ts').replace('import completedStudies from "./completed-studies.json";', `const completedStudies = ${read('lib/completed-studies.json')};`);
 const { projects } = await import(`data:text/javascript;base64,${Buffer.from(ts.transpile(projectSource, { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext })).toString('base64')}`);
-function visibleText(file) { const source = ts.createSourceFile(file, read(file), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX); const parts = []; function visit(node) { if (ts.isJsxText(node)) parts.push(node.text.trim()); else if (ts.isJsxExpression(node) && node.expression && ts.isStringLiteral(node.expression)) parts.push(node.expression.text); ts.forEachChild(node, visit); } visit(source); return parts.filter(Boolean).join(' ').replace(/\s+/g, ' '); }
+function visibleText(file) { const source = ts.createSourceFile(file, read(file), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX); const parts = []; function visit(node) { if (ts.isJsxText(node)) parts.push(node.text.trim()); else if (ts.isJsxExpression(node) && node.expression && ts.isStringLiteral(node.expression)) parts.push(node.expression.text); else if (ts.isJsxAttribute(node) && ['headline', 'finding', 'coverage'].includes(node.name.getText(source)) && node.initializer && ts.isStringLiteral(node.initializer)) parts.push(node.initializer.text); ts.forEachChild(node, visit); } visit(source); return parts.filter(Boolean).join(' ').replace(/\s+/g, ' '); }
 const route = read('app/research/[slug]/page.tsx');
 const components = Object.fromEntries([...route.matchAll(/import \{ (\w+) \} from "@\/components\/([a-z-]+)"/g)].map(m => [m[1],m[2]]));
 const views = Object.fromEntries([...route.matchAll(/study\.id === "(S\d{2})"\) return <(\w+)/g)].map(m => [m[1],components[m[2]]]));
 const documents = catalog.filter(s => !['withheld', 'draft'].includes(s.publicationStatus)).map(s => {
   const published = s.publicationStatus === 'published';
-  const body = [s.question, `Status: ${published ? 'Evaluated published study' : 'PLANNED: no published evaluation or findings. The following describes intended work only.'}`, s.methodSummary, s.design, s.evaluation, s.limitations];
-  if (published) { const result = JSON.parse(read(`lib/program-results/${s.resultFile}`)); body.push(visibleText(`components/${views[s.id]}.tsx`), JSON.stringify({ data: result.data, metrics: result.metrics, uncertainty: result.uncertainty, assumptions: result.assumptions, limitations: result.limitations })); }
-  return { id: s.id, title: s.title, publicationStatus: s.publicationStatus, executionStatus: s.executionStatus, updated: s.updated, status: published ? 'Evaluated study' : 'Planned research', url: published ? `https://michaelpgibb.com/research/${s.slug}` : `https://michaelpgibb.com/research?status=agenda#topic-${s.id}`, tags: [s.industry, ...s.methods, s.decisionType], text: body.join('\n') };
+  const body = published ? ['Status: Evaluated published study'] : [s.question, 'Status: PLANNED: no published evaluation or findings. The following describes intended work only.', s.methodSummary, s.design, s.evaluation, s.limitations];
+  let bounds = '';
+  if (published) {
+    const result = JSON.parse(read(`lib/program-results/${s.resultFile}`));
+    const page = visibleText(`components/${views[s.id]}.tsx`);
+    // Published evidence replaces the original proposal, which may describe methods never run.
+    bounds = JSON.stringify({ target: result.target, uncertainty: result.uncertainty, assumptions: result.assumptions, limitations: result.limitations });
+    body.push(page, JSON.stringify({ data: result.data, models: result.models, metrics: result.metrics, primary_difference: result.tables?.primary_difference }));
+  }
+  return { id: s.id, title: s.title, publicationStatus: s.publicationStatus, executionStatus: s.executionStatus, updated: s.updated, status: published ? 'Evaluated study' : 'Planned research', url: published ? `https://michaelpgibb.com/research/${s.slug}` : `https://michaelpgibb.com/research?status=agenda#topic-${s.id}`, tags: [s.industry, ...s.methods, s.decisionType], bounds, text: body.join('\n') };
 });
 for (const p of projects) documents.push({ id: p.slug, title: p.title, status: 'Synthetic demonstration', url: `https://michaelpgibb.com/projects/${p.slug}`, tags: [p.category], text: JSON.stringify({ question: p.question, executive: p.executive, decision: p.decision, method: p.method, data: p.data, evaluation: p.evaluation, assumptions: p.assumptions, limitations: p.limitations }) });
 // Biography uses only text already published in the home page, never career files.

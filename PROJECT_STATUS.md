@@ -1,5 +1,14 @@
 # Project status
 
+## Funded assistant and PostHog activation — October 1, 2026
+
+The owner approved restricted production credentials and the free PostHog one-year event retention policy (30-day replay policy; application inquiries still 90 days). OpenAI Responses-only and PostHog project-scoped person-write credentials are stored as Vercel Production secrets. Analytics and assistant flags are prepared for the next deployment, with the existing $0.50/day application ceiling. Replay remains disabled pending inspection of an actual masked recording. No plan upgrade, DNS or mailbox change was made.
+
+Six private dashboards (46 insights) were created in PostHog project 638719, preserving its starter dashboard. The importer now uses the documented dashboard list filter and keeps insight descriptions within the API limit. The operations chart uses explicit Chicago timezone conversion. The knowledge index now uses completed study evidence instead of original planning methods for published studies, always includes evidence limitations, and resolves explicit study IDs. Real funded-provider checks cover published executive/technical answers, planned-topic honesty and instruction-injection refusal; model answers remain fallible and link their sources.
+
+Local verification passes: security 12 groups, contact 6, experience 12, refinement checks, lint, typecheck, optimized production build and the public smoke suite. Browser-backed activation and deployment results will be recorded below after the production release. Owner OAuth, delivery webhook activation and replay are separate outstanding gates; existing contact delivery remains in place.
+
+
 
 ## Integrated research experience — September 30, 2026
 

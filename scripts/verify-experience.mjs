@@ -18,6 +18,9 @@ async function session(services) { const response = await createChatSessionHandl
 function aiService(mode='success') { const base = service(redis,{action:'chat_init'}); const calls=[]; const transport=async (url,opts) => { if (!url.includes('api.openai.com')) return base.transport(url,opts); calls.push(JSON.parse(opts.body)); if(mode==='failure') return Response.json({}, {status:500}); if(mode==='timeout') throw new DOMException('Synthetic timeout','TimeoutError'); const data=[{type:'response.output_text.delta',delta:'Synthetic test answer grounded in [S04].'}, ...(mode==='incomplete'?[]:[{type:'response.completed',response:{usage:{input_tokens:123,output_tokens:45}}}])]; return new Response(new ReadableStream({start(c){for(const d of data)c.enqueue(encoder.encode(`data: ${JSON.stringify(d)}\n\n`));c.close();}})); };return {transport,calls}; }
 test('index preserves canonical provenance and planned work; public results and biography can be retrieved',()=>{
   const results=retrieve('advertising incrementality findings','S04');assert.equal(results[0].id,'S04');assert.equal(results[0].status,'Evaluated study');assert(results[0].url.startsWith('https://michaelpgibb.com/research/'));assert(results[0].version);
+  assert.equal(retrieve('Explain S02')[0].id,'S02');
+  const inventory=retrieve('forecast','S02')[0].excerpt;assert(inventory.includes('no exact-coverage guarantee'));assert(inventory.includes('No actual stock availability'));assert(inventory.includes('two of the four final windows'));
+  assert(results[0].excerpt.includes('sampling'));
   const planned=retrieve('Explain this topic','S01')[0];assert.equal(planned.status,'Planned research');assert(planned.excerpt.includes('no published evaluation'));
   assert.equal(retrieve('career qualifications')[0].id,'biography');assert.equal(retrieve('zzqxjv').length,0); // checked below using length
 });
