@@ -3,7 +3,9 @@
 
 ## Research assistant and private inquiries
 
-The assistant UI, approved-content retrieval, protected Responses adapter, assisted inquiry preview, encrypted inquiry records, owner-only inbox, consent controls, typed analytics and signed delivery webhooks are implemented. New external integrations remain disabled or fail closed until activated. The existing contact configuration, branding, research and hosting are preserved.
+The assistant UI, approved-content retrieval, protected Responses adapter, assisted inquiry preview, encrypted inquiry records, owner-only inbox, consent controls, typed analytics and signed delivery webhooks are implemented. The funded assistant, consented PostHog analytics, owner GitHub login and signed delivery webhook are active. Sampled replay is configured after captured-payload and playback privacy checks. The existing contact configuration, branding, research and hosting are preserved.
+
+Open the [private owner inbox](https://michaelpgibb.com/owner) using GitHub account `mpgibb`, or the [PostHog dashboards](https://us.posthog.com/project/638719/dashboard).
 
 See [implementation and activation guide](docs/experience/README.md), [event dictionary](docs/experience/EVENTS.md), [six dashboard definitions](docs/experience/posthog-dashboards.json) and [current verification status](PROJECT_STATUS.md). The guide includes exact environment names, owner access, retention/deletion, costs, activation gates and rollback. Use `pnpm test:experience` in addition to the existing security/contact/refinement checks. `prebuild` refreshes the public knowledge index. Synthetic test fixtures never send real mail or invoke a paid model.
 

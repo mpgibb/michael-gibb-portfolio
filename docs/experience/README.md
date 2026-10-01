@@ -1,6 +1,6 @@
 # Research assistant, inquiries and analytics
 
-Implementation date: 2026-09-30. Activation status must be checked against PROJECT_STATUS.md. Feature code existing in a deployment does not establish that OpenAI, PostHog, owner OAuth or delivery webhooks are activated.
+Implemented September 30; activated and provider-tested October 1, 2026. Assistant responses, consented events, owner OAuth and a signed real delivery webhook are verified. Replay payload masking and actual PostHog playback passed with synthetic content; public sampling is enabled in the follow-up release. See PROJECT_STATUS.md for verification limits.
 
 ## Architecture and ownership
 
@@ -8,9 +8,24 @@ Implementation date: 2026-09-30. Activation status must be checked against PROJE
 - `lib/experience/`: public retrieval, Responses streaming adapter, encrypted Redis storage, signed consent, strictly typed events, server capture, signed delivery webhooks, restricted GitHub authentication.
 - `scripts/build-knowledge.mjs`: rebuilds 65 public documents (9 evaluated studies, 4 synthetic demonstrations, 51 planned topics and biography). Uses the actual route-to-component mapping. Removes withdrawn/draft entries; never indexes career files or private recipient configuration. `prebuild` refreshes it; versions hash source content. Changes to extracted public content require review of the generated diff.
 - Contact still uses the existing `/api/contact`, Turnstile, Resend and shared Redis limits. A fresh token is needed for every attempt. Immutable encrypted inquiry receipt is written before the email request. Provider acceptance uses the existing idempotency key. Delivered/bounced comes only from signed webhooks.
-- OpenAI has no tools, browsing, code execution or email operation. Public evidence and visitor input are marked untrusted. The model is not a factual guarantee: production grounded-answer and injection evaluations remain an activation gate. Cards use application-selected canonical links, never generated URLs. Contextual queries prioritize the selected study; planned cards expose no completed findings.
+- OpenAI has no tools, browsing, code execution or email operation. Public evidence and visitor input are marked untrusted. The model is not a factual guarantee: funded-provider grounded-answer and injection evaluations pass their bounded checks, with no guarantee of perfect future wording. Cards use application-selected canonical links, never generated URLs. Contextual queries prioritize the selected study; planned cards expose no completed findings.
 
-## Production activation (one checklist)
+## Live owner links
+
+Sign in to [the owner inbox](https://michaelpgibb.com/owner) with GitHub account `mpgibb`. PostHog requires your existing authenticated account; dashboards are not public.
+
+| Dashboard | Link |
+| --- | --- |
+| Traffic and acquisition | https://us.posthog.com/project/638719/dashboard/2156478 |
+| Research performance | https://us.posthog.com/project/638719/dashboard/2156481 |
+| Visitor journeys | https://us.posthog.com/project/638719/dashboard/2156482 |
+| AI performance | https://us.posthog.com/project/638719/dashboard/2156483 |
+| Contact conversion | https://us.posthog.com/project/638719/dashboard/2156484 |
+| Experience quality | https://us.posthog.com/project/638719/dashboard/2156485 |
+
+All 46 insight queries were exercised against the provider. Acceptance-test profiles use `portfolio_test=true`; filters join current person properties to exclude historical events as well. The controlled test yielded one inquiry, provider acceptance and delivered webhook; those records are verification evidence, not real prospect conversions. PostHog totals exclude them. Refresh cached dashboard results after changing filters. Replay masks all text and private sections while retaining public layout. CSS generated content/resources are stripped; browser and asset rendering can differ from the original page.
+
+## Reproduction and recovery configuration
 
 Keep ordinary contact and its six existing private variables, three Turnstile variables, DNS and mailbox unchanged. The earlier explicitly confirmed destination is `mike@michaelpgibb.com`; the stale alternate-domain address in the brief is not applied. The recipient remains server-only.
 
@@ -24,11 +39,11 @@ Keep ordinary contact and its six existing private variables, three Turnstile va
 
 | Service | Defaults / bounds | Commitment |
 | --- | --- | --- |
-| Responses | `gpt-5-mini`, 2,000 output tokens, 12,000 combined instruction/input bytes, 60-second timeout | API activation requires billing approval |
+| Responses | `gpt-5-mini`, 2,000 output tokens, 12,000 combined instruction/input bytes, 60-second timeout | Funded and approved; usage is charged to existing API credit |
 | Chat security | 15 minutes, 20 messages/session, 3/minute, 30/network/hour, 5 session starts/network/hour | Existing shared Upstash |
 | AI daily caps | `AI_DAILY_REQUEST_LIMIT=100`, `AI_DAILY_TOKEN_LIMIT=200000`, conservative 15,024-token reservation per request; `$0.008` reservation per request, `AI_DAILY_COST_MICRODOLLARS=500000` ($0.50) | Reservations are retained on failure/cancellation; the token cap is usually stricter than the cost cap |
 | Analytics | `ANALYTICS_DAILY_EVENT_LIMIT=1000`, 150 browser events/day, at most 10 events/request, 12 KB body | At most about 30,000 accepted events/month; verify current free eligibility |
-| Replay | Off initially; `REPLAY_SAMPLE_RATE=0.1` maximum, shared cap 10 sessions/day | Verify eligible retention/free allowance before enabling |
+| Replay | Separate opt-in; `REPLAY_SAMPLE_RATE=0.1` maximum, shared cap 10 sessions/day | Existing free plan; 30-day retention |
 | Contact | Existing 5 attempts/network/hour and 90 new inquiries/day | Existing Resend/Porkbun setup |
 | Local records | `INQUIRY_RETENTION_DAYS=90` (max365); journeys30d; aggregate operations30d; chat<=15min | Reuses existing Redis |
 
@@ -46,7 +61,7 @@ Encryption uses AES-256-GCM with an HKDF-separated key derived from the existing
 
 Use the owner inbox for essential application totals. PostHog represents a consented, filtered, volume-limited subset. Declined consent, blockers, unknown referrers, excluded owner/test/bot traffic, expiry and unavailable vendor requests cause differences. Do not reconstruct missing history. An opaque browser identifier is not a person or verified account. No email hashes, employer guesses or automatic identity merging are used.
 
-`posthog-dashboards.json` contains six private dashboards and ordered funnels. `scripts/import-dashboards.mjs` reuses only matching names with the portfolio tag, preserving unrelated dashboards. Run imports only against the intended project. Queries are importable definitions, not evidence of a live configured dashboard. They require live query validation after credentials are provided. PostHog date/device/source/project filters, count tables and exports are available through its authenticated insight interface. The same-session funnels aggregate on `properties.session_id` over30minutes; longer attribution groups by random browser ID over7days. Conversion is counted once per starting aggregate with an ordered sequence. Inquiries denote application receipt; email stages remain separate. Association with assistant use does not show causation.
+`posthog-dashboards.json` contains six private dashboards and ordered funnels. `scripts/import-dashboards.mjs` reuses only matching names with the portfolio tag, preserving unrelated dashboards. Run imports only against the intended project. The imported dashboards and their live query validation are recorded above. Revalidate changed query definitions before deployment. PostHog date/device/source/project filters, count tables and exports are available through its authenticated insight interface. The same-session funnels aggregate on `properties.session_id` over30minutes; longer attribution groups by random browser ID over7days. Conversion is counted once per starting aggregate with an ordered sequence. Inquiries denote application receipt; email stages remain separate. Association with assistant use does not show causation.
 
 ## Verification and rollback
 

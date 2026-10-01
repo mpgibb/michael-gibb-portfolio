@@ -2,13 +2,13 @@
   "schema": 1,
   "timezone": "America/Chicago",
   "retention": {
-    "events_days": 90,
+    "events_days": 365,
     "replay_days": 30
   },
   "description": "Private dashboards; observed associations do not establish causation. UTC storage; America/Chicago reporting. Events deduplicated by insert ID. Inquiries count application receipt, independently of email acceptance. Funnels: denominator distinct starting sessions/browsers, ordered steps, first valid conversion per aggregate, counts + percent of start; 30-minute same-session or explicitly labeled 7-day browser window. Date range defaults to 30 days; adjust insight filters/date comparison and export in PostHog. Replay/heatmaps opened in PostHog Replay/Heatmaps with the same project and date filters. Limits/consent/blocking reduce analytics totals relative to owner inbox.",
   "dashboards": [
     {
-      "name": "A · Traffic and acquisition",
+      "name": "A \u00b7 Traffic and acquisition",
       "insights": [
         {
           "name": "Traffic counts",
@@ -28,6 +28,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -65,6 +69,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -90,7 +98,7 @@
             "kind": "DataTableNode",
             "source": {
               "kind": "HogQLQuery",
-              "query": "SELECT properties.session_id AS session, argMin(properties.page_path,timestamp) AS landing, argMax(properties.page_path,timestamp) AS exit, countIf(event='page_view') AS pages FROM events WHERE properties.environment = 'production' AND timestamp >= now() - INTERVAL 30 DAY GROUP BY session ORDER BY pages DESC LIMIT 100"
+              "query": "SELECT properties.session_id AS session, argMin(properties.page_path,timestamp) AS landing, argMax(properties.page_path,timestamp) AS exit, countIf(event='page_view') AS pages FROM events WHERE properties.environment = 'production' AND coalesce(pdi.person.properties.portfolio_test, false) != true AND timestamp >= now() - INTERVAL 30 DAY GROUP BY session ORDER BY pages DESC LIMIT 100"
             }
           }
         },
@@ -112,6 +120,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -153,6 +165,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -194,6 +210,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -235,6 +255,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -276,6 +300,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -317,6 +345,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -343,7 +375,7 @@
       ]
     },
     {
-      "name": "B · Research performance",
+      "name": "B \u00b7 Research performance",
       "insights": [
         {
           "name": "Project views",
@@ -363,6 +395,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -404,6 +440,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -443,6 +483,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -472,7 +516,7 @@
             "kind": "DataTableNode",
             "source": {
               "kind": "HogQLQuery",
-              "query": "SELECT properties.intent AS topic, count() AS zero_result_searches FROM events WHERE properties.environment = 'production' AND timestamp >= now() - INTERVAL 30 DAY AND event='search' AND properties.count=0 GROUP BY topic"
+              "query": "SELECT properties.intent AS topic, count() AS zero_result_searches FROM events WHERE properties.environment = 'production' AND coalesce(pdi.person.properties.portfolio_test, false) != true AND timestamp >= now() - INTERVAL 30 DAY AND event='search' AND properties.count=0 GROUP BY topic"
             }
           }
         },
@@ -494,6 +538,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -535,6 +583,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -576,6 +628,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -632,6 +688,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -673,6 +733,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -704,7 +768,7 @@
       ]
     },
     {
-      "name": "C · Visitor journeys",
+      "name": "C \u00b7 Visitor journeys",
       "insights": [
         {
           "name": "Public-page paths",
@@ -724,6 +788,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -743,7 +811,7 @@
             "kind": "DataTableNode",
             "source": {
               "kind": "HogQLQuery",
-              "query": "SELECT timestamp, properties.session_id AS session, event, properties.page_path AS page, properties.project_id AS project FROM events WHERE properties.environment = 'production' AND timestamp >= now() - INTERVAL 30 DAY ORDER BY timestamp DESC LIMIT 1000"
+              "query": "SELECT timestamp, properties.session_id AS session, event, properties.page_path AS page, properties.project_id AS project FROM events WHERE properties.environment = 'production' AND coalesce(pdi.person.properties.portfolio_test, false) != true AND timestamp >= now() - INTERVAL 30 DAY ORDER BY timestamp DESC LIMIT 1000"
             }
           }
         },
@@ -765,6 +833,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -796,7 +868,7 @@
       ]
     },
     {
-      "name": "D · AI performance",
+      "name": "D \u00b7 AI performance",
       "insights": [
         {
           "name": "Adoption and conversation activity",
@@ -816,6 +888,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -868,6 +944,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -909,6 +989,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -955,6 +1039,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -996,6 +1084,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1030,7 +1122,7 @@
             "kind": "DataTableNode",
             "source": {
               "kind": "HogQLQuery",
-              "query": "SELECT toDate(toTimeZone(timestamp,'America/Chicago')) AS day, count() AS responses, sum(toFloat(properties.tokens)) AS tokens, sum(toFloat(properties.cost_usd)) AS estimated_usd, avg(toFloat(properties.latency_ms)) AS mean_latency_ms, avg(toFloat(properties.count)) AS mean_retrieval_count FROM events WHERE properties.environment = 'production' AND timestamp >= now() - INTERVAL 30 DAY AND event='response_complete' GROUP BY day ORDER BY day"
+              "query": "SELECT toDate(toTimeZone(timestamp,'America/Chicago')) AS day, count() AS responses, sum(toFloat(properties.tokens)) AS tokens, sum(toFloat(properties.cost_usd)) AS estimated_usd, avg(toFloat(properties.latency_ms)) AS mean_latency_ms, avg(toFloat(properties.count)) AS mean_retrieval_count FROM events WHERE properties.environment = 'production' AND coalesce(pdi.person.properties.portfolio_test, false) != true AND timestamp >= now() - INTERVAL 30 DAY AND event='response_complete' GROUP BY day ORDER BY day"
             }
           }
         },
@@ -1052,6 +1144,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1078,7 +1174,7 @@
       ]
     },
     {
-      "name": "E · Contact conversion",
+      "name": "E \u00b7 Contact conversion",
       "insights": [
         {
           "name": "Authoritative delivery stages (consented subset)",
@@ -1098,6 +1194,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1150,6 +1250,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1191,6 +1295,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1225,7 +1333,7 @@
             "kind": "DataTableNode",
             "source": {
               "kind": "HogQLQuery",
-              "query": "SELECT count() AS direct_contact_sessions FROM (SELECT properties.session_id AS session, countIf(event='inquiry_received') AS inquiries, countIf(event IN ('research_result','project_view','assistant_open')) AS discovery FROM events WHERE properties.environment = 'production' AND timestamp >= now() - INTERVAL 30 DAY GROUP BY session HAVING inquiries>0 AND discovery=0)"
+              "query": "SELECT count() AS direct_contact_sessions FROM (SELECT properties.session_id AS session, countIf(event='inquiry_received') AS inquiries, countIf(event IN ('research_result','project_view','assistant_open')) AS discovery FROM events WHERE properties.environment = 'production' AND coalesce(pdi.person.properties.portfolio_test, false) != true AND timestamp >= now() - INTERVAL 30 DAY GROUP BY session HAVING inquiries>0 AND discovery=0)"
             }
           }
         },
@@ -1247,6 +1355,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1288,6 +1400,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1329,6 +1445,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1353,7 +1473,7 @@
           }
         },
         {
-          "name": "Research → project → inquiry · same session",
+          "name": "Research \u2192 project \u2192 inquiry \u00b7 same session",
           "query": {
             "kind": "InsightVizNode",
             "source": {
@@ -1370,6 +1490,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1407,7 +1531,7 @@
           }
         },
         {
-          "name": "Research → project → inquiry · 7-day browser attribution",
+          "name": "Research \u2192 project \u2192 inquiry \u00b7 7-day browser attribution",
           "query": {
             "kind": "InsightVizNode",
             "source": {
@@ -1424,6 +1548,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1461,7 +1589,7 @@
           }
         },
         {
-          "name": "Assistant → interaction → inquiry · same session",
+          "name": "Assistant \u2192 interaction \u2192 inquiry \u00b7 same session",
           "query": {
             "kind": "InsightVizNode",
             "source": {
@@ -1478,6 +1606,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1515,7 +1647,7 @@
           }
         },
         {
-          "name": "Assistant → interaction → inquiry · 7-day browser attribution",
+          "name": "Assistant \u2192 interaction \u2192 inquiry \u00b7 7-day browser attribution",
           "query": {
             "kind": "InsightVizNode",
             "source": {
@@ -1532,6 +1664,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1569,7 +1705,7 @@
           }
         },
         {
-          "name": "Contact start → attempt → inquiry · same session",
+          "name": "Contact start \u2192 attempt \u2192 inquiry \u00b7 same session",
           "query": {
             "kind": "InsightVizNode",
             "source": {
@@ -1586,6 +1722,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1623,7 +1763,7 @@
           }
         },
         {
-          "name": "Contact start → attempt → inquiry · 7-day browser attribution",
+          "name": "Contact start \u2192 attempt \u2192 inquiry \u00b7 7-day browser attribution",
           "query": {
             "kind": "InsightVizNode",
             "source": {
@@ -1640,6 +1780,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1677,7 +1821,7 @@
           }
         },
         {
-          "name": "Project → demo → inquiry · same session",
+          "name": "Project \u2192 demo \u2192 inquiry \u00b7 same session",
           "query": {
             "kind": "InsightVizNode",
             "source": {
@@ -1694,6 +1838,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1731,7 +1879,7 @@
           }
         },
         {
-          "name": "Project → demo → inquiry · 7-day browser attribution",
+          "name": "Project \u2192 demo \u2192 inquiry \u00b7 7-day browser attribution",
           "query": {
             "kind": "InsightVizNode",
             "source": {
@@ -1748,6 +1896,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1787,7 +1939,7 @@
       ]
     },
     {
-      "name": "F · Experience quality",
+      "name": "F \u00b7 Experience quality",
       "insights": [
         {
           "name": "Performance / errors",
@@ -1807,6 +1959,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1854,6 +2010,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,
@@ -1896,6 +2056,10 @@
                   ],
                   "operator": "exact",
                   "type": "event"
+                },
+                {
+                  "type": "hogql",
+                  "key": "coalesce(pdi.person.properties.portfolio_test, false) != true"
                 }
               ],
               "filterTestAccounts": true,

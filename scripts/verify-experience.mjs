@@ -76,4 +76,11 @@ test('signed delivery webhooks distinguish delivery from acceptance, reject forg
 
 test('replay sanitizer masks dynamic text/attributes and strips URL queries from uncompressed snapshots',async()=>{
   const {cleanReplay}=await import('../lib/experience/replay.ts');const raw={type:2,data:{node:{textContent:'private dynamic chat',attributes:{value:'visitor@example.com','aria-label':'Private Name',href:'https://michaelpgibb.com/research?q=private#email'}}},$current_url:'https://michaelpgibb.com/research?q=private'};const output=JSON.stringify(cleanReplay(raw));for(const privateValue of ['private dynamic chat','visitor@example.com','Private Name','?q=','#email'])assert(!output.includes(privateValue));
+  const structure=cleanReplay({isStyle:true,stylesheetCount:3,$sdk_debug_replay_url_trigger_status:'trigger_disabled',$heatmap_data:{'https://michaelpgibb.com/research?q=private#email':[{x:14,y:20,type:'click'}]}});
+  assert.equal(structure.isStyle,true);assert.equal(structure.stylesheetCount,3);assert.equal(structure.$sdk_debug_replay_url_trigger_status,'trigger_disabled');assert.deepEqual(Object.keys(structure.$heatmap_data),['https://michaelpgibb.com/research']);
+  const {inspectableSnapshots,replayAttribute}=await import('../lib/experience/replay.ts');
+  assert(inspectableSnapshots([{type:2,data:{node:{}}}]));assert(!inspectableSnapshots('compressed'));assert(!inspectableSnapshots([{cv:0,data:{}}]));assert(!inspectableSnapshots([{data:'compressed'}]));
+  assert.equal(replayAttribute('aria-label','PRIVATE'), '***');assert.equal(replayAttribute('class','contact-form'),'contact-form');assert.equal(replayAttribute('href','/research?private=secret#person'),'https://michaelpgibb.com/research');
+  const styled=cleanReplay({isStyle:true,textContent:'body{margin:40px;color:white}p::after{content:"PRIVATE"}div{background:url(https://outside.example/PRIVATE)}'});
+  assert(styled.textContent.includes('margin:40px'));assert(!styled.textContent.includes('PRIVATE'));
 });
