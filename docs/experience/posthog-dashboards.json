@@ -1030,7 +1030,7 @@
             "kind": "DataTableNode",
             "source": {
               "kind": "HogQLQuery",
-              "query": "SELECT toDate(toTimeZone(timestamp,'America/Chicago')) AS day, count() AS responses, sum(properties.tokens) AS tokens, sum(properties.cost_usd) AS estimated_usd, avg(properties.latency_ms) AS mean_latency_ms, avg(properties.count) AS mean_retrieval_count FROM events WHERE properties.environment = 'production' AND timestamp >= now() - INTERVAL 30 DAY AND event='response_complete' GROUP BY day ORDER BY day"
+              "query": "SELECT toDate(toTimeZone(timestamp,'America/Chicago')) AS day, count() AS responses, sum(toFloat(properties.tokens)) AS tokens, sum(toFloat(properties.cost_usd)) AS estimated_usd, avg(toFloat(properties.latency_ms)) AS mean_latency_ms, avg(toFloat(properties.count)) AS mean_retrieval_count FROM events WHERE properties.environment = 'production' AND timestamp >= now() - INTERVAL 30 DAY AND event='response_complete' GROUP BY day ORDER BY day"
             }
           }
         },
