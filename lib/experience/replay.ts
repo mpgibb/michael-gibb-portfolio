@@ -51,7 +51,7 @@ export async function startReplay(consent: Consent, config: { enabled: boolean; 
         if (!["$snapshot", "$$heatmap", "$rageclick", "$dead_click"].includes(event.event)) return null;
         if (event.event === "$snapshot" && !inspectableSnapshots(event.properties.$snapshot_data)) return null;
         const permitted = Object.fromEntries(Object.entries(event.properties).filter(([key]) => replayProperties.has(key)));
-        event.properties = { ...cleanReplay(permitted) as Record<string, unknown>, distinct_id: consent.browser, portfolio_session_id: consent.session, $geoip_disable: true, $ip: null, $current_url: `https://michaelpgibb.com${canonicalPath(location.pathname)}` };
+        event.properties = { ...cleanReplay(permitted) as Record<string, unknown>, distinct_id: consent.browser, portfolio_session_id: consent.session, environment: "production", schema_version: 1, source_component: "replay", page_path: canonicalPath(location.pathname), consent_version: 1, $geoip_disable: true, $ip: null, $current_url: `https://michaelpgibb.com${canonicalPath(location.pathname)}` };
         return event;
       },
       loaded(instance) { if (current !== generation) { instance.opt_out_capturing(); return; } instance.register({ portfolio_session_id: consent.session, $geoip_disable: true }); instance.startSessionRecording(); },
