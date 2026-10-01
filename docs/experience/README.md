@@ -23,7 +23,9 @@ Sign in to [the owner inbox](https://michaelpgibb.com/owner) with GitHub account
 | Contact conversion | https://us.posthog.com/project/638719/dashboard/2156484 |
 | Experience quality | https://us.posthog.com/project/638719/dashboard/2156485 |
 
-All 46 insight queries were exercised against the provider. Acceptance-test profiles use `portfolio_test=true`; filters join current person properties to exclude historical events as well. The controlled test yielded one inquiry, provider acceptance and delivered webhook; those records are verification evidence, not real prospect conversions. PostHog totals exclude them. Refresh cached dashboard results after changing filters. Replay masks all text and private sections while retaining public layout. CSS generated content/resources are stripped; browser and asset rendering can differ from the original page.
+All 46 insight queries were exercised against the provider. Acceptance-test profiles use `portfolio_test=true`; filters join current person properties to exclude historical events as well. The controlled test yielded one inquiry, provider acceptance and delivered webhook, and the owner confirmed inbox receipt; those records are verification evidence, not real prospect conversions. PostHog totals exclude them. Refresh cached dashboard results after changing filters. Replay masks all text and private sections while retaining public layout. CSS generated content/resources are stripped; browser and asset rendering can differ from the original page.
+
+The temporary dashboard setup/query key was revoked after validation; it is not a production dependency. Create another narrowly scoped temporary key only for a future authorized dashboard update. The persistent privacy key successfully queued deletion of a synthetic test profile; provider completion still needs separate verification.
 
 ## Reproduction and recovery configuration
 
